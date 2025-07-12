@@ -1,0 +1,37 @@
+import React from 'react';
+import StoryItem from './StoryItem';
+
+const OurStory: React.FC = () => {
+  // Replace with your actual YouTube or Vimeo embed URL
+  // Example YouTube embed URL: https://www.youtube.com/embed/YOUR_VIDEO_ID
+  const videoSrc = "/videos/our.mp4"; // Path to your local video file
+
+  return (
+    <div>
+      <StoryItem><h2>Kisah Kami</h2></StoryItem>
+      <StoryItem delay="0.2s"><p>Setiap kisah cinta memiliki awal yang unik, dan kisah kami dimulai dengan cara yang sederhana namun tak terlupakan. Dimas dan Niken pertama kali bertemu di sebuah acara komunitas, di mana percikan pertama mulai terasa di antara tawa dan obrolan ringan.</p></StoryItem>
+      <StoryItem delay="0.4s"><p>Seiring berjalannya waktu, persahabatan kami tumbuh menjadi sesuatu yang lebih dalam. Kami menemukan banyak kesamaan, mulai dari hobi hingga impian masa depan. Setiap momen yang kami habiskan bersama terasa begitu berarti, dan kami tahu bahwa kami telah menemukan belahan jiwa masing-masing.</p></StoryItem>
+      <StoryItem delay="0.6s"><p>Hingga pada suatu hari yang indah, Dimas melamar Niken di tempat yang memiliki makna khusus bagi kami berdua. Dengan hati yang penuh kebahagiaan, Niken menerima lamaran tersebut, menandai babak baru dalam perjalanan cinta kami.</p></StoryItem>
+      <StoryItem delay="0.8s"><p>Kini, kami siap untuk melangkah ke jenjang pernikahan, membangun keluarga, dan menciptakan lebih banyak kenangan indah bersama. Kami sangat antusias untuk berbagi kebahagiaan ini dengan Anda semua.</p></StoryItem>
+
+      <div className="mt-5">
+        <StoryItem delay="1s"><h3>Perjalanan Kami dalam Gerak</h3></StoryItem>
+        <StoryItem delay="1.2s">
+          <div className="embed-responsive embed-responsive-16by9" style={{ height: '400px' }}>
+            <video controls autoPlay muted playsInline className="embed-responsive-item" style={{ width: '100%', height: '100%' }}>
+              <source src={videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </StoryItem>
+        <StoryItem delay="1.4s">
+          <p className="mt-2 text-muted">
+            Pastikan format video Anda kompatibel dengan sebagian besar browser. MP4 dengan codec H.264 adalah yang paling umum.
+          </p>
+        </StoryItem>
+      </div>
+    </div>
+  );
+};
+
+export default OurStory;
