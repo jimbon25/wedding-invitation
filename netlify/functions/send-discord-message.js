@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function(event, context) {
+    const { default: fetch } = await import('node-fetch'); // Dynamic import for node-fetch
+
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
