@@ -11,8 +11,6 @@ const GuestBook: React.FC = () => {
   const [nameError, setNameError] = useState('');
   const [messageError, setMessageError] = useState('');
 
-  const GUESTBOOK_WEBHOOK_URL = process.env.REACT_APP_GUESTBOOK_WEBHOOK_URL; 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -37,13 +35,6 @@ const GuestBook: React.FC = () => {
       return;
     }
 
-    if (!GUESTBOOK_WEBHOOK_URL) {
-      setMessage('Mohon konfigurasikan URL Discord Webhook Anda untuk Buku Tamu di kode.');
-      setSubmitStatus('error');
-      setIsSubmitting(false);
-      return;
-    }
-
     const payload = {
       embeds: [
         {
@@ -59,7 +50,7 @@ const GuestBook: React.FC = () => {
     };
 
     try {
-      const response = await fetch(GUESTBOOK_WEBHOOK_URL, {
+      const response = await fetch('/.netlify/functions/send-discord-message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

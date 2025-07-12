@@ -15,8 +15,6 @@ const RSVPForm: React.FC = () => {
   const [attendanceError, setAttendanceError] = useState('');
   const [guestsError, setGuestsError] = useState('');
 
-  const DISCORD_WEBHOOK_URL = process.env.REACT_APP_RSVP_WEBHOOK_URL; 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -47,13 +45,6 @@ const RSVPForm: React.FC = () => {
       return;
     }
 
-    if (!DISCORD_WEBHOOK_URL) {
-      setMessage('Mohon konfigurasikan URL Discord Webhook Anda di kode.');
-      setSubmitStatus('error');
-      setIsSubmitting(false);
-      return;
-    }
-
     const payload = {
       embeds: [
         {
@@ -71,7 +62,7 @@ const RSVPForm: React.FC = () => {
     };
 
     try {
-      const response = await fetch(DISCORD_WEBHOOK_URL, {
+      const response = await fetch('/.netlify/functions/send-discord-message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
