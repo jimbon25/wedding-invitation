@@ -674,3 +674,20 @@ body.no-scroll {
   background-color: #A0522D; /* Darker shade on hover */
   border-color: #A0522D;
 }
+
+/* Guest Name Styling */
+.guest-info {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: inline-block; /* So it doesn't stretch full width */
+}
+
+.guest-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--secondary-color) !important; /* Use a standout color */
+  margin-top: 5px;
+  font-weight: 700;
+}
