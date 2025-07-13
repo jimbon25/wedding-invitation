@@ -13,7 +13,7 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
     <div className="cover-screen">
       <div className="cover-content text-center">
         <p className="cover-subtitle">The Wedding Of</p>
-        <h1 className="cover-title">Dimas & Niken</h1>
+        <h1 className="cover-title">D & N</h1>
         
         {guestName && (
           <div className="guest-info mt-4">
