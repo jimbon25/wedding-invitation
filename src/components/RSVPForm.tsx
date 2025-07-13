@@ -6,7 +6,7 @@ const RSVPForm: React.FC = () => {
   const [attendance, setAttendance] = useState('');
   const [guests, setGuests] = useState<number>(0);
   const [foodPreference, setFoodPreference] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(''); // This state is for success/error messages to the user
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
@@ -45,20 +45,13 @@ const RSVPForm: React.FC = () => {
       return;
     }
 
+    // Construct the payload as a simple data object, not a Discord embed
     const payload = {
-      embeds: [
-        {
-          title: 'Konfirmasi Kehadiran Pernikahan Baru',
-          color: 0x00ff00, // Green color
-          fields: [
-            { name: 'Nama', value: name, inline: true },
-            { name: 'Kehadiran', value: attendance, inline: true },
-            { name: 'Jumlah Tamu', value: guests.toString(), inline: true },
-            { name: 'Preferensi Makanan', value: foodPreference || 'Tidak ditentukan', inline: true },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
+      type: 'rsvp', // Important: This tells the Netlify function how to process it
+      name,
+      attendance,
+      guests: attendance === 'Yes, I will attend' ? guests : 0, // Only send guests if attending
+      foodPreference: attendance === 'Yes, I will attend' ? foodPreference : '', // Only send food pref if attending
     };
 
     try {
@@ -80,7 +73,7 @@ const RSVPForm: React.FC = () => {
       } else {
         setMessage('Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon coba lagi.');
         setSubmitStatus('error');
-        console.error('Discord Webhook Error:', response.status, response.statusText);
+        console.error('Server Error:', response.status, response.statusText);
       }
     } catch (error) {
       setMessage('Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon periksa koneksi internet Anda.');
@@ -105,6 +98,7 @@ const RSVPForm: React.FC = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
             {nameError && <div className="invalid-feedback">{nameError}</div>}
           </div>
