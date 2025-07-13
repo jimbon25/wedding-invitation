@@ -1,15 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StoryItem from './StoryItem';
+
+interface GuestbookEntry {
+  timestamp: string;
+  name: string;
+  message: string;
+}
 
 const GuestBook: React.FC = () => {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
-
-  // State for validation errors
   const [nameError, setNameError] = useState('');
   const [messageError, setMessageError] = useState('');
+  const [guestbookEntries, setGuestbookEntries] = useState<GuestbookEntry[]>([]);
+  const [isLoadingEntries, setIsLoadingEntries] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  const fetchGuestbookEntries = async () => {
+    setIsLoadingEntries(true);
+    setFetchError(null);
+    try {
+      const response = await fetch('/.netlify/functions/get-guestbook-entries');
+      if (!response.ok) {
+        throw new Error('Gagal memuat pesan buku tamu.');
+      }
+      const data: GuestbookEntry[] = await response.json();
+      setGuestbookEntries(data);
+    } catch (err) {
+      if (err instanceof Error) {
+        setFetchError(err.message);
+      } else {
+        setFetchError('Terjadi kesalahan saat memuat pesan.');
+      }
+      console.error('Error fetching guestbook entries:', err);
+    } finally {
+      setIsLoadingEntries(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchGuestbookEntries();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,17 +69,9 @@ const GuestBook: React.FC = () => {
     }
 
     const payload = {
-      embeds: [
-        {
-          title: 'Entri Buku Tamu Baru',
-          color: 0x008080, // Teal color
-          fields: [
-            { name: 'Nama', value: name, inline: true },
-            { name: 'Pesan', value: message, inline: false },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
+      type: 'guestbook', // Important for the Netlify function to differentiate
+      name,
+      message,
     };
 
     try {
@@ -59,17 +84,16 @@ const GuestBook: React.FC = () => {
       });
 
       if (response.ok) {
-        setMessage('Terima kasih atas pesan Anda! Pesan Anda telah tercatat.');
         setSubmitStatus('success');
         setName('');
         setMessage('');
+        // Re-fetch entries to show the new message
+        await fetchGuestbookEntries();
       } else {
-        setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon coba lagi.');
         setSubmitStatus('error');
-        console.error('Discord Webhook Error:', response.status, response.statusText);
+        console.error('Server Error:', response.status, response.statusText);
       }
     } catch (error) {
-      setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon periksa koneksi internet Anda.');
       setSubmitStatus('error');
       console.error('Network or other error:', error);
     } finally {
@@ -81,6 +105,7 @@ const GuestBook: React.FC = () => {
     <div>
       <StoryItem><h2>Buku Tamu</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon tinggalkan harapan dan pesan Anda untuk Dimas & Niken!</p></StoryItem>
+
       <StoryItem delay="0.4s">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -91,6 +116,7 @@ const GuestBook: React.FC = () => {
               id="guestName"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
             {nameError && <div className="invalid-feedback">{nameError}</div>}
           </div>
@@ -102,6 +128,7 @@ const GuestBook: React.FC = () => {
               rows={5}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              required
             ></textarea>
             {messageError && <div className="invalid-feedback">{messageError}</div>}
           </div>
@@ -110,13 +137,48 @@ const GuestBook: React.FC = () => {
           </button>
         </form>
       </StoryItem>
-      {message && (
+
+      {submitStatus === 'success' && (
         <StoryItem delay="0.6s">
-          <div className={`mt-3 alert ${submitStatus === 'success' ? 'alert-success' : 'alert-danger'}`}>
-            {message}
-          </div>
+          <div className="mt-3 alert alert-success">Terima kasih! Pesan Anda telah terkirim.</div>
         </StoryItem>
       )}
+      {submitStatus === 'error' && (
+        <StoryItem delay="0.6s">
+          <div className="mt-3 alert alert-danger">Terjadi kesalahan saat mengirim pesan Anda. Mohon coba lagi.</div>
+        </StoryItem>
+      )}
+
+      <StoryItem delay="0.8s">
+        <div className="mt-5">
+          <h4>Pesan dari Sahabat & Keluarga</h4>
+          {isLoadingEntries ? (
+            <p>Memuat pesan...</p>
+          ) : fetchError ? (
+            <p className="text-danger">Error: {fetchError}</p>
+          ) : guestbookEntries.length === 0 ? (
+            <p>Belum ada pesan. Jadilah yang pertama meninggalkan pesan!</p>
+          ) : (
+            guestbookEntries.map((entry, index) => (
+              <div className="card mt-3" key={index}>
+                <div className="card-body">
+                  <h5 className="card-title">{entry.name}</h5>
+                  <p className="card-text">{entry.message}</p>
+                  <small className="text-muted">
+                    {new Date(entry.timestamp).toLocaleString('id-ID', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </small>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </StoryItem>
     </div>
   );
 };
