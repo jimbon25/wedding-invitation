@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS CSS
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isInvitationOpened, setIsInvitationOpened] = useState(false); // New state for cover screen
+  const [isScrolled, setIsScrolled] = useState(false); // New state for scroll detection
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -34,6 +35,9 @@ const App: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOtherDropdownOpen, setIsOtherDropdownOpen] = useState(false); // New state for 'Lainnya' dropdown
+  const menuRef = useRef<HTMLDivElement>(null); // Ref for the mobile menu
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchCurrentX, setTouchCurrentX] = useState(0);
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -66,6 +70,29 @@ const App: React.FC = () => {
     }
   };
 
+  // Touch event handlers for swipe-to-close
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchCurrentX(e.touches[0].clientX);
+  }, []);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    setTouchCurrentX(e.touches[0].clientX);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    const swipeDistance = touchCurrentX - touchStartX;
+    // Define a threshold for closing the menu (e.g., 50 pixels to the right)
+    const swipeThreshold = 50;
+
+    if (swipeDistance > swipeThreshold && isOpen) {
+      setIsOpen(false); // Close the menu
+    }
+    // Reset touch positions
+    setTouchStartX(0);
+    setTouchCurrentX(0);
+  }, [touchCurrentX, touchStartX, isOpen]);
+
   useEffect(() => {
     AOS.init({
       duration: 1000, // values from 0 to 3000, with step 50ms
@@ -79,11 +106,41 @@ const App: React.FC = () => {
       document.body.classList.remove('no-scroll');
     }
 
-    // Clean up the class when component unmounts
+    // Handle scroll for navbar transparency
+    const handleScroll = () => {
+      if (window.scrollY > 50) { // Adjust this value as needed
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the class and event listener when component unmounts
     return () => {
       document.body.classList.remove('no-scroll');
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [isOpen]);
+
+  // Attach touch event listeners to the menu when it's open
+  useEffect(() => {
+    const menuElement = menuRef.current;
+    if (menuElement && isOpen) {
+      menuElement.addEventListener('touchstart', handleTouchStart);
+      menuElement.addEventListener('touchmove', handleTouchMove);
+      menuElement.addEventListener('touchend', handleTouchEnd);
+    }
+
+    return () => {
+      if (menuElement) {
+        menuElement.removeEventListener('touchstart', handleTouchStart as EventListener);
+        menuElement.removeEventListener('touchmove', handleTouchMove as EventListener);
+        menuElement.removeEventListener('touchend', handleTouchEnd as EventListener);
+      }
+    };
+  }, [isOpen, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   return (
     <Router>
@@ -91,13 +148,13 @@ const App: React.FC = () => {
 
       <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
         {isOpen && <div className="menu-overlay" onClick={toggleNavbar}></div>}
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+        <nav className={`navbar navbar-expand-lg navbar-light fixed-top ${isScrolled ? 'scrolled' : ''}`}>
           <div className="container-fluid d-flex align-items-center">
             <NavLink className="navbar-brand" to="/">Dimas & Niken</NavLink>
             <button className="navbar-toggler" type="button" onClick={toggleNavbar} aria-expanded={isOpen}>
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}>
+            <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none' }}>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
                   <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}>Beranda</NavLink>

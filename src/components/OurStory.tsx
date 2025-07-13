@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import StoryItem from './StoryItem';
 
 const OurStory: React.FC = () => {
-  // Replace with your actual YouTube or Vimeo embed URL
-  // Example YouTube embed URL: https://www.youtube.com/embed/YOUR_VIDEO_ID
-  const videoSrc = "/videos/our.mp4"; // Path to your local video file
+  const videoSrc = "/videos/our.mp4";
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Start muted by default
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
 
   return (
     <div>
@@ -17,11 +36,19 @@ const OurStory: React.FC = () => {
       <div className="mt-5">
         <StoryItem delay="1s"><h3>Perjalanan Kami dalam Gerak</h3></StoryItem>
         <StoryItem delay="1.2s">
-          <div className="embed-responsive embed-responsive-16by9" style={{ height: '400px' }}>
-            <video controls autoPlay muted playsInline className="embed-responsive-item" style={{ width: '100%', height: '100%' }}>
+          <div className="video-container embed-responsive embed-responsive-16by9" style={{ height: '400px' }}>
+            <video ref={videoRef} muted={isMuted} playsInline className="embed-responsive-item" style={{ width: '100%', height: '100%' }} poster="/images/g9.webp">
               <source src={videoSrc} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+            <div className="video-controls">
+              <button className="btn btn-light btn-lg video-play-button" onClick={togglePlay}>
+                <i className={`bi ${isPlaying ? 'bi-pause-fill' : 'bi-play-fill'}`}></i>
+              </button>
+              <button className="btn btn-light btn-sm video-mute-button" onClick={toggleMute}>
+                <i className={`bi ${isMuted ? 'bi-volume-mute-fill' : 'bi-volume-up-fill'}`}></i>
+              </button>
+            </div>
           </div>
         </StoryItem>
         <StoryItem delay="1.4s">
