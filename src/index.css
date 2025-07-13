@@ -111,8 +111,61 @@ h3 {
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  /* Hide the default icon */
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color); /* Use primary color for lines */
+  left: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-toggler-icon::before {
+  top: 0;
+}
+
+.navbar-toggler-icon::after {
+  bottom: 0;
+}
+
+/* Middle line */
+.navbar-toggler-icon span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color); /* Use primary color for lines */
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Animation for open state */
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon span {
+  opacity: 0;
+}
+
 
 .btn-primary, .btn-outline-primary, .btn-outline-secondary {
   transition: all 0.3s ease-in-out; /* Smooth transition for all buttons */
@@ -367,7 +420,121 @@ h3 {
   color: var(--primary-color);
 }
 
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off-screen to the right */
+    width: 75%; /* Adjust as needed, e.g., 75% of screen width */
+    max-width: 300px; /* Max width for larger mobile devices */
+    height: 100vh;
+    background-color: var(--secondary-color); /* Background color for the menu */
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 1040; /* Higher than navbar, lower than modal */
+    overflow-y: auto; /* Enable scrolling for long menus */
+    padding-top: 60px; /* Space for fixed navbar */
+  }
+
+  .navbar-collapse.show {
+    right: 0; /* Slide into view */
+  }
+
+  .navbar-nav {
+    flex-direction: column !important; /* Ensure vertical stacking */
+    padding: 20px;
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 10px;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  .navbar-nav .dropdown-menu {
+    position: static !important; /* Override Bootstrap's absolute positioning */
+    float: none !important;
+    width: 100%;
+    margin-top: 0;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    padding-left: 15px; /* Indent dropdown items slightly */
+    display: block; /* Ensure it's always block for accordion behavior */
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+  }
+
+  .navbar-nav .dropdown-menu.show {
+    height: auto; /* Allow height to expand */
+  }
+
+  .navbar-nav .dropdown-item {
+    padding-left: 20px; /* Indent dropdown items */
+  }
+
+  .navbar-nav .dropdown-toggle::after {
+    display: inline-block; /* Show dropdown arrow */
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .navbar-nav .dropdown-toggle.active::after {
+    transform: rotate(-180deg);
+  }
+
+  .d-flex.ms-auto {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    margin-top: 10px;
+  }
+
+  .d-flex.ms-auto .btn {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-bottom: 10px;
+  }
+}
+
+/* Menu Overlay for Mobile */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 1039; /* Below navbar-collapse (1040) */
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.menu-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Prevent body scrolling when menu is open */
+body.no-scroll {
+  overflow: hidden;
+}
+
 /* Cover Screen Styles */
+
 .cover-screen {
   position: fixed;
   top: 0;

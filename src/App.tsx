@@ -33,9 +33,18 @@ const App: React.FC = () => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isOtherDropdownOpen, setIsOtherDropdownOpen] = useState(false); // New state for 'Lainnya' dropdown
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
+    // Close 'Lainnya' dropdown if main navbar is closing
+    if (isOpen) {
+      setIsOtherDropdownOpen(false);
+    }
+  };
+
+  const toggleOtherDropdown = () => {
+    setIsOtherDropdownOpen(!isOtherDropdownOpen);
   };
 
   const handleShare = async () => {
@@ -62,17 +71,30 @@ const App: React.FC = () => {
       duration: 1000, // values from 0 to 3000, with step 50ms
       once: true, // whether animation should happen only once - while scrolling down
     });
-  }, []);
+
+    // Add/remove no-scroll class to body based on menu open state
+    if (isOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+
+    // Clean up the class when component unmounts
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [isOpen]);
 
   return (
     <Router>
       {!isInvitationOpened && <CoverScreen onOpenInvitation={handleOpenInvitation} />}
 
       <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
+        {isOpen && <div className="menu-overlay" onClick={toggleNavbar}></div>}
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
           <div className="container-fluid d-flex align-items-center">
             <NavLink className="navbar-brand" to="/">Dimas & Niken</NavLink>
-            <button className="navbar-toggler" type="button" onClick={toggleNavbar}>
+            <button className="navbar-toggler" type="button" onClick={toggleNavbar} aria-expanded={isOpen}>
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}>
@@ -93,16 +115,24 @@ const App: React.FC = () => {
                   <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp" onClick={() => setIsOpen(false)}>Konfirmasi Kehadiran</NavLink>
                 </li>
                 <li className="nav-item dropdown">
-                  <button className="nav-link dropdown-toggle" type="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <button
+                    className={`nav-link dropdown-toggle ${isOtherDropdownOpen ? 'active' : ''}`}
+                    type="button"
+                    id="navbarDropdown"
+                    onClick={toggleOtherDropdown}
+                    aria-expanded={isOtherDropdownOpen}
+                  >
                     Lainnya
                   </button>
-                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-info" onClick={() => setIsOpen(false)}>Informasi Hadiah</NavLink></li>
-                    <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/guestbook" onClick={() => setIsOpen(false)}>Buku Tamu</NavLink></li>
-                    <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/health-protocol" onClick={() => setIsOpen(false)}>Protokol Kesehatan</NavLink></li>
-                    <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/accommodation-info" onClick={() => setIsOpen(false)}>Akomodasi & Transportasi</NavLink></li>
-                    <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-registry" onClick={() => setIsOpen(false)}>Daftar Hadiah</NavLink></li>
-                  </ul>
+                  {isOtherDropdownOpen && (
+                    <ul className="dropdown-menu show" aria-labelledby="navbarDropdown">
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Informasi Hadiah</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Buku Tamu</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/health-protocol" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Protokol Kesehatan</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Akomodasi & Transportasi</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Daftar Hadiah</NavLink></li>
+                    </ul>
+                  )}
                 </li>
               </ul>
               <div className="d-flex ms-auto">
