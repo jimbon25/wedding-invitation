@@ -39,19 +39,9 @@ exports.handler = async function(event, context) {
                 };
                 break;
             case 'rsvp':
+                // SIMPLIFIED PAYLOAD FOR DEBUGGING
                 discordPayload = {
-                    embeds: [
-                        {
-                            title: 'Konfirmasi Kehadiran Baru',
-                            color: data.attendance === 'Hadir' ? 0x00FF00 : 0xFF0000, // Green for Hadir, Red for Tidak Hadir
-                            fields: [
-                                { name: 'Nama', value: data.name, inline: true },
-                                { name: 'Kehadiran', value: data.attendance, inline: true },
-                                { name: 'Jumlah Tamu', value: data.guests ? data.guests.toString() : 'N/A', inline: true },
-                            ],
-                            timestamp: new Date().toISOString(),
-                        },
-                    ],
+                    content: `New RSVP: ${data.name} - ${data.attendance} (${data.guests} guests). Food: ${data.foodPreference || 'N/A'}`
                 };
                 break;
             default:
@@ -73,7 +63,7 @@ exports.handler = async function(event, context) {
             try {
                 const serviceAccountAuth = new JWT({
                     email: GOOGLE_CLIENT_EMAIL,
-                    key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace escaped newlines
+                    key: GOOGLE_PRIVATE_KEY.replace(/\n/g, '\n'), // Replace escaped newlines
                     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
                 });
 
