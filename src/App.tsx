@@ -157,19 +157,19 @@ const App: React.FC = () => {
             <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none' }}>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}>Beranda</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}><i className="bi bi-house-door-fill me-2"></i>Beranda</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/our-story" onClick={() => setIsOpen(false)}>Kisah Kami</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/our-story" onClick={() => setIsOpen(false)}><i className="bi bi-book-fill me-2"></i>Kisah Kami</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/event-details" onClick={() => setIsOpen(false)}>Detail Acara</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/event-details" onClick={() => setIsOpen(false)}><i className="bi bi-calendar-event-fill me-2"></i>Detail Acara</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/gallery" onClick={() => setIsOpen(false)}>Galeri</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/gallery" onClick={() => setIsOpen(false)}><i className="bi bi-image-fill me-2"></i>Galeri</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp" onClick={() => setIsOpen(false)}>Konfirmasi Kehadiran</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp" onClick={() => setIsOpen(false)}><i className="bi bi-check-circle-fill me-2"></i>Konfirmasi Kehadiran</NavLink>
                 </li>
                 <li className="nav-item dropdown">
                   <button
@@ -183,11 +183,11 @@ const App: React.FC = () => {
                   </button>
                   {isOtherDropdownOpen && (
                     <ul className="dropdown-menu show" aria-labelledby="navbarDropdown">
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Informasi Hadiah</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Buku Tamu</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/health-protocol" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Protokol Kesehatan</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Akomodasi & Transportasi</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}>Daftar Hadiah</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>Informasi Hadiah</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/health-protocol" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-shield-heart-fill me-2"></i>Protokol Kesehatan</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>Akomodasi & Transportasi</NavLink></li>
+                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-card-list-fill me-2"></i>Daftar Hadiah</NavLink></li>
                     </ul>
                   )}
                 </li>
