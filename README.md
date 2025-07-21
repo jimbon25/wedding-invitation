@@ -125,5 +125,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Contact Me
 
 - GitHub: [jimbon25](https://github.com/jimbon25)
-- Instagram: [@jimbon25](https://instagram.com/dimasladty)
-- Facebook: [Jimbon Dua Lima](https://facebook.com/iv.dimas)
+- Instagram: [@dimasladty](https://instagram.com/dimasladty)
+- Facebook: [Dimas LA](https://facebook.com/iv.dimas)
