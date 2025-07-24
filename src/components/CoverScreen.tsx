@@ -48,16 +48,16 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
         />
       ))}
       <div className="cover-content text-center">
-        <p className="cover-subtitle">The Wedding Of</p>
-        <h1 className="cover-title">D & N</h1>
+        <p className="cover-subtitle animated-subtitle">The Wedding Of</p>
+        <h1 className="cover-title animated-title">D & N</h1>
         {guestName && (
           <div className="guest-info mt-4">
             <p className="mb-0">Kepada Yth. Bapak/Ibu/Saudara/i</p>
             <h2 className="guest-name">{guestName.replace(/\+/g, ' ')}</h2>
           </div>
         )}
-        <button className="btn btn-lg btn-primary cover-button mt-5" onClick={onOpenInvitation}>
-          Buka Undangan
+        <button className="cover-button-estetik mt-5" onClick={onOpenInvitation}>
+          <span className="cover-button-text">Buka Undangan</span>
         </button>
       </div>
     </div>
