@@ -735,6 +735,9 @@ body.no-scroll {
   .navbar {
     padding-top: 0 !important;
     margin-top: 0 !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(248, 245, 230, 0.85) !important;
   }
   .navbar .container-fluid {
     padding-top: 0 !important;
