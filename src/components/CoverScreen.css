@@ -1,11 +1,51 @@
-.floating-gif {
-  position: absolute;
-  width: 120px;
-  height: auto;
-  pointer-events: none;
-  z-index: 10001;
-  animation: floatY 3.5s ease-in-out infinite alternate, floatX 6s ease-in-out infinite alternate, rotateGif 8s linear infinite;
-}
+  .floating-gif {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    pointer-events: none;
+    z-index: 10001;
+    will-change: transform;
+  }
+
+  /* Keyframes untuk masing-masing GIF agar random */
+  @keyframes floatY0 {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-22px); }
+  }
+  @keyframes floatY1 {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-37px); }
+  }
+  @keyframes floatY2 {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-51px); }
+  }
+  @keyframes floatY3 {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-44px); }
+  }
+  @keyframes rotateGif0 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes rotateGif1 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+  @keyframes rotateGif2 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes rotateGif3 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  @media (max-width: 600px) {
+    .floating-gif {
+      width: 70px;
+    }
+  }
 
 @keyframes floatY {
   0% { transform: translateY(0); }

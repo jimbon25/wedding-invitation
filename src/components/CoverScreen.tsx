@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import './CoverScreen.css';
 
 interface CoverScreenProps {
@@ -10,33 +10,27 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
   const searchParams = new URLSearchParams(window.location.search);
   const guestName = searchParams.get('to');
 
-  // Tampilkan 4 GIF dengan posisi dan animasi random yang berubah dinamis
+  // Tampilkan 4 GIF di sudut layar, animasi smooth tanpa flicker
   const gifList = useMemo(() => ['/cover.gif', '/cover.gif', '/cover.gif', '/cover.gif'], []);
-  type GifState = {
-    top: string;
-    left: string;
-    animation: string;
-    animationDelay: string;
-  };
-  const getRandomGifState = useCallback((): GifState => {
-    const top = `${Math.random() * 70 + 5}%`;
-    const left = `${Math.random() * 80 + 5}%`;
-    const floatY = `${3 + Math.random() * 2}s`;
-    const floatX = `${5 + Math.random() * 2}s`;
-    const rotate = `${6 + Math.random() * 4}s`;
-    const animation = `floatY ${floatY} ease-in-out infinite alternate, floatX ${floatX} ease-in-out infinite alternate, rotateGif ${rotate} linear infinite`;
-    const animationDelay = `${Math.random() * 4}s`;
-    return { top, left, animation, animationDelay };
-  }, []);
-
-  const [gifStates, setGifStates] = useState<GifState[]>(() => gifList.map(() => getRandomGifState()));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGifStates(gifList.map(() => getRandomGifState()));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [gifList, getRandomGifState]);
+  const gifPositions = [
+    { top: '2%', left: '2%' },
+    { top: '2%', right: '2%' },
+    { bottom: '2%', left: '2%' },
+    { bottom: '2%', right: '2%' },
+  ];
+  // Buat parameter animasi random untuk tiap GIF
+  function getRandomFloat(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+  const gifAnimParams = useMemo(() => (
+    Array(4).fill(0).map(() => ({
+      floatY: getRandomFloat(20, 60), // px
+      floatYDuration: getRandomFloat(2.5, 5), // s
+      rotateDuration: getRandomFloat(8, 16), // s
+      delay: `${getRandomFloat(0, 2)}s`,
+      direction: Math.random() > 0.5 ? 'normal' : 'reverse',
+    }))
+  ), []);
 
   return (
     <div className="cover-screen">
@@ -47,10 +41,9 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
           alt={`Floating GIF ${idx+1}`}
           className="floating-gif"
           style={{
-            top: gifStates[idx].top,
-            left: gifStates[idx].left,
-            animation: gifStates[idx].animation,
-            animationDelay: gifStates[idx].animationDelay,
+            ...gifPositions[idx],
+            animation: `floatY${idx} ${gifAnimParams[idx].floatYDuration}s ease-in-out infinite alternate ${gifAnimParams[idx].direction}, rotateGif${idx} ${gifAnimParams[idx].rotateDuration}s linear infinite`,
+            animationDelay: gifAnimParams[idx].delay,
           }}
         />
       ))}
