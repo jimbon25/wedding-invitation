@@ -3,31 +3,29 @@
     font-size: 1.3rem;
     padding: 0.7em 1.7em;
     border-radius: 32px;
-    background: linear-gradient(90deg, #ffe5ec 0%, #fff9db 100%);
-    color: #444;
+    background: #fff;
+    color: #111;
     font-weight: bold;
     letter-spacing: 2px;
-    box-shadow: 0 4px 18px rgba(255,182,193,0.18), 0 1px 4px rgba(0,0,0,0.10);
-    border: none;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.10);
+    border: 2px solid #111;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
   }
   .cover-button-estetik:hover {
+    background: #111;
+    color: #fff;
     transform: scale(1.05) rotate(-1deg);
-    box-shadow: 0 8px 28px rgba(255,182,193,0.22), 0 2px 8px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12);
+    border-color: #fff;
   }
   .cover-button-text {
-    background: linear-gradient(90deg, #fbb1b1 0%, #ffe066 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
     font-weight: bold;
     letter-spacing: 2px;
-    text-shadow: 0 2px 8px rgba(255,182,193,0.18);
-    animation: shimmerText 2.5s linear infinite;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transition: color 0.2s;
   }
 @media (max-width: 600px) {
   .cover-button-estetik {
