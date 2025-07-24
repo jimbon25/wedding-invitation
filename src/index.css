@@ -468,17 +468,19 @@ h3 {
   .navbar-nav .nav-link {
     padding: 12px 0;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 1.1rem;
-    background: rgba(255,255,255,0.7);
-    margin-bottom: 6px;
-    box-shadow: 0 2px 8px rgba(85,107,47,0.04);
-    transition: background 0.2s, box-shadow 0.2s;
+    background: rgba(255,255,255,0.85);
+    margin-bottom: 8px;
+    border: 1px solid #e5e2d6;
+    box-shadow: none;
+    transition: background 0.2s, border 0.2s;
   }
   .navbar-nav .nav-link.active {
     background: var(--primary-color);
     color: white !important;
-    box-shadow: 0 4px 12px rgba(85,107,47,0.10);
+    border: 1.5px solid #556B2F;
+    box-shadow: 0 2px 8px rgba(85,107,47,0.08);
   }
 
   .navbar-nav .dropdown-menu {
