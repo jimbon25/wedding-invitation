@@ -437,15 +437,19 @@ h3 {
     position: fixed;
     top: 0;
     right: -100%; /* Start off-screen to the right */
-    width: 75%; /* Adjust as needed, e.g., 75% of screen width */
-    max-width: 300px; /* Max width for larger mobile devices */
+    width: 65%; /* Make menu less wide on mobile */
+    max-width: 260px; /* Slightly smaller max width */
     height: 100vh;
-    background-color: var(--secondary-color); /* Background color for the menu */
-    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    background-color: #f8f5e6; /* Softer pale gold for elegance */
+    box-shadow: -4px 0 16px rgba(85,107,47,0.10), -2px 0 5px rgba(0,0,0,0.10);
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
     transition: right 0.3s ease-in-out;
     z-index: 1040; /* Higher than navbar, lower than modal */
     overflow-y: auto; /* Enable scrolling for long menus */
     padding-top: 60px; /* Space for fixed navbar */
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
   .navbar-collapse.show {
@@ -454,7 +458,7 @@ h3 {
 
   .navbar-nav {
     flex-direction: column !important; /* Ensure vertical stacking */
-    padding: 20px;
+    padding: 10px 0 10px 0;
   }
 
   .navbar-nav .nav-item {
@@ -462,8 +466,19 @@ h3 {
   }
 
   .navbar-nav .nav-link {
-    padding: 10px 0;
+    padding: 12px 0;
     width: 100%;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+    box-shadow: 0 2px 8px rgba(85,107,47,0.04);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .navbar-nav .nav-link.active {
+    background: var(--primary-color);
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(85,107,47,0.10);
   }
 
   .navbar-nav .dropdown-menu {
