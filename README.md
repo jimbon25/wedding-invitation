@@ -29,11 +29,13 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - Slick Carousel (for gallery)
 
 
+
 ## Folder Structure
 
 - `src/` : All React source code and components
 - `public/` : Static files (images, music, video)
-- `netlify/functions/` : Serverless backend (send-discord-message.js)
+- `netlify/functions/` : Netlify serverless backend (send-discord-message.js)
+- `api/` : Vercel serverless functions (send-discord-message.js)
 - `build/` : Production output
 
 
@@ -41,7 +43,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 
 You can download or clone this repository using Git:
 
-**Linux / macOS Terminal:**
+**Linux / macOS:**
 ```bash
 git clone https://github.com/jimbon25/wedding-invitation.git
 ```
