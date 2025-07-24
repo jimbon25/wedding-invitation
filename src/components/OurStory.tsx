@@ -53,7 +53,6 @@ const OurStory: React.FC = () => {
         </StoryItem>
         <StoryItem delay="1.4s">
           <p className="mt-2 text-muted">
-            Pastikan format video Anda kompatibel dengan sebagian besar browser. MP4 dengan codec H.264 adalah yang paling umum.
           </p>
         </StoryItem>
       </div>

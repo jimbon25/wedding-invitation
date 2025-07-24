@@ -107,7 +107,6 @@ const Gallery: React.FC = () => {
         index={index}
       />
 
-      <StoryItem delay="0.8s"><p className="mt-4 text-muted">Untuk menambahkan foto Anda sendiri, ganti URL di array `images` di `src/components/Gallery.tsx`.</p></StoryItem>
     </div>
   );
 };

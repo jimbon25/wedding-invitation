@@ -21,7 +21,6 @@ const GiftRegistry: React.FC = () => {
 
       
 
-      <StoryItem delay="1s"><p className="mt-4 text-muted">Mohon ganti informasi placeholder dengan detail aktual untuk bank Anda, daftar hadiah online, dan ide hadiah.</p></StoryItem>
     </div>
   );
 };

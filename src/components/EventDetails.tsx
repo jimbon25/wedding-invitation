@@ -104,7 +104,6 @@ const EventDetails: React.FC = () => {
         </StoryItem>
       <StoryItem delay="1.4s">
         <p className="mt-2 text-muted">
-          Untuk menyematkan lokasi pernikahan Anda, buka Google Maps, cari lokasi Anda, klik 'Bagikan', lalu 'Sematkan peta', dan salin URL `src` dari kode iframe. Ganti `googleMapsEmbedUrl` di `src/components/EventDetails.tsx`.
         </p>
       </StoryItem>
     </div>

@@ -42,7 +42,6 @@ const AccommodationInfo: React.FC = () => {
           </li>
         </ul>
       </StoryItem>
-      <StoryItem delay="1.4s"><p className="mt-4 text-muted">Mohon ganti informasi placeholder dengan detail aktual untuk hotel dan opsi transportasi.</p></StoryItem>
     </div>
   );
 };
