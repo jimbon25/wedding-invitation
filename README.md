@@ -1,5 +1,3 @@
-
-
 # Dimas & Niken Wedding Invitation
 
 This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
@@ -59,6 +57,20 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 Automatic deployment to Netlify. RSVP and Guest Book use Netlify Functions to send data to Discord.
 
 
+## Deployment to Netlify
+
+This app is designed for deployment on Netlify. RSVP and Guest Book features use Netlify Functions to send data to Discord.
+
+### Setting Environment Variables on Netlify
+
+1. Go to your Netlify dashboard.
+2. Open your site settings.
+3. Navigate to "Site settings" > "Environment variables".
+4. Add `DISCORD_WEBHOOK_URL` with your Discord webhook URL.
+
+After setting the variable, redeploy your site to apply the changes.
+
+
 ## Environment Configuration
 
 Add a `.env` file in the project root for the Discord webhook:
@@ -67,6 +79,23 @@ DISCORD_WEBHOOK_URL=your_webhook_url
 ```
 
 
+## Troubleshooting
+
+- **RSVP/Guest Book not sent to Discord:**
+  - Make sure the `DISCORD_WEBHOOK_URL` environment variable is set and correct in the Netlify dashboard.
+  - Ensure your Discord webhook is still active and not deleted.
+  - Check Netlify Functions logs for detailed errors.
+
+- **Build failed on Netlify:**
+  - Make sure all dependencies are installed correctly.
+  - Check the Node.js version used on Netlify and match it with your project's supported version.
+
+- **App is not accessible:**
+  - Make sure your Netlify domain is active and there are no DNS issues.
+  - Check Netlify logs for runtime errors.
+
+- **Images, music, or videos not showing:**
+  - Make sure the files exist in the `public/` folder and the paths are correct in your code.
 
 
 ---
@@ -122,3 +151,24 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - GitHub: [jimbon25](https://github.com/jimbon25)
 - Instagram: [@dimasladty](https://instagram.com/dimasladty)
 - Facebook: [Dimas LA](https://facebook.com/iv.dimas)
+
+## Contribution
+
+Contributions, suggestions, and improvements are welcome! Please open an issue or submit a pull request if you have ideas to enhance this project.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Acknowledgements
+
+- [React](https://reactjs.org/)
+- [Create React App](https://create-react-app.dev/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Bootstrap Icons](https://icons.getbootstrap.com/)
+- [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/)
+- [Slick Carousel](https://kenwheeler.github.io/slick/)
+- [Netlify](https://www.netlify.com/)
+- [Discord](https://discord.com/)
+
+Special thanks to everyone who contributed to these open source projects and resources.
