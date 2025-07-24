@@ -82,19 +82,22 @@ h3 {
   }
 }
 
-.navbar {
-  background-color: transparent !important; /* Start transparent */
-  backdrop-filter: none; /* No blur initially */
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out; /* Smooth transition */
-}
+/* Navbar GIF size for desktop & mobile */
+ .navbar-gif {
+   height: 48px;
+   margin: 0 8px 4px 0;
+   border-radius: 8px;
+   object-fit: contain;
+   display: block;
+ }
 
-.navbar.scrolled {
-  background-color: var(--secondary-color) !important; /* Solid color when scrolled */
-  backdrop-filter: blur(10px); /* Apply blur effect when scrolled */
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Add shadow when scrolled */
+@media (max-width: 576px) {
+  .navbar-gif {
+    height: 110px !important;
+    min-height: 110px !important;
+    max-height: 110px !important;
+    margin-top: 0 !important;
+  }
 }
 
 
@@ -684,26 +687,28 @@ body.no-scroll {
   display: inline-block; /* So it doesn't stretch full width */
 }
 
-.guest-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  color: var(--secondary-color) !important; /* Use a standout color */
-  margin-top: 5px;
-  font-weight: 700;
-}
+ .guest-name {
+   font-family: 'Playfair Display', serif;
+   font-size: 1.8rem;
+   color: var(--secondary-color) !important; /* Use a standout color */
+   margin-top: 5px;
+   font-weight: 700;
+ }
 
 /* Navbar GIF size for desktop & mobile */
 .navbar-gif {
   height: 48px;
-  margin: 4px 8px 4px 0;
+  margin: 0 8px 0 0;
   border-radius: 8px;
   object-fit: contain;
   display: block;
 }
 @media (max-width: 576px) {
   .navbar-gif {
-    height: 80px !important;
-    min-height: 80px !important;
-    max-height: 80px !important;
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 }
