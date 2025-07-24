@@ -156,6 +156,11 @@ const App: React.FC = () => {
             </button>
             <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none' }}>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <img
+                  src="/navbar-gif.gif"
+                  alt="Cute Anime Girl"
+                  style={{ height: '40px', marginBottom: '8px', marginRight: '8px', borderRadius: '8px' }}
+                />
                 <li className="nav-item">
                   <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}><i className="bi bi-house-door-fill me-2"></i>Beranda</NavLink>
                 </li>
