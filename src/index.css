@@ -708,7 +708,11 @@ body.no-scroll {
     height: 170px !important;
     min-height: 170px !important;
     max-height: 170px !important;
-    margin-top: -8px !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
+  }
+  .navbar {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 }
