@@ -466,21 +466,21 @@ h3 {
   }
 
   .navbar-nav .nav-link {
-    padding: 12px 0;
+    padding: 10px 0;
     width: 100%;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    border-radius: 7px;
+    font-size: 0.98rem;
     background: rgba(255,255,255,0.85);
-    margin-bottom: 8px;
-    border: 1px solid #e5e2d6;
+    margin-bottom: 7px;
+    border: 0.5px solid #e5e2d6;
     box-shadow: none;
     transition: background 0.2s, border 0.2s;
   }
   .navbar-nav .nav-link.active {
     background: var(--primary-color);
     color: white !important;
-    border: 1.5px solid #556B2F;
-    box-shadow: 0 2px 8px rgba(85,107,47,0.08);
+    border: 1px solid #556B2F;
+    box-shadow: 0 2px 8px rgba(85,107,47,0.06);
   }
 
   .navbar-nav .dropdown-menu {
