@@ -21,7 +21,7 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
       }, 4000); // Ganti setiap 4 detik
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [gifList.length]);
 
   return (
     <div className="cover-screen">
