@@ -1,6 +1,6 @@
   .floating-gif {
     position: absolute;
-    width: 120px;
+    width: 200px;
     height: auto;
     pointer-events: none;
     z-index: 10001;
@@ -43,7 +43,7 @@
 
   @media (max-width: 600px) {
     .floating-gif {
-      width: 70px;
+      width: 120px;
     }
   }
 
