@@ -475,6 +475,10 @@ h3 {
     border: 0.5px solid #e5e2d6;
     box-shadow: none;
     transition: background 0.2s, border 0.2s;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
   }
   .navbar-nav .nav-link.active {
     background: var(--primary-color);
