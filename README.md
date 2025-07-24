@@ -22,8 +22,6 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
-This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
-
 
 ## Main Features
 
