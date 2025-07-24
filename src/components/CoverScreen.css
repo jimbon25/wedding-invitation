@@ -1,33 +1,40 @@
 /* Aesthetic button */
-.cover-button-estetik {
-  font-size: 1.7rem;
-  padding: 0.85em 2.5em;
-  border-radius: 40px;
-  background: linear-gradient(90deg, #ffb6c1 0%, #ffe066 100%);
-  color: #222;
-  font-weight: bold;
-  letter-spacing: 2px;
-  box-shadow: 0 6px 32px rgba(255,182,193,0.25), 0 2px 8px rgba(0,0,0,0.12);
-  border: none;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.cover-button-estetik:hover {
-  transform: scale(1.07) rotate(-2deg);
-  box-shadow: 0 10px 40px rgba(255,182,193,0.35), 0 4px 16px rgba(0,0,0,0.18);
-}
-.cover-button-text {
-  background: linear-gradient(90deg, #ff6f91 0%, #ffe066 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-  font-weight: bold;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 8px rgba(255,182,193,0.25);
-  animation: shimmerText 2.5s linear infinite;
+  .cover-button-estetik {
+    font-size: 1.3rem;
+    padding: 0.7em 1.7em;
+    border-radius: 32px;
+    background: linear-gradient(90deg, #ffe5ec 0%, #fff9db 100%);
+    color: #444;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 18px rgba(255,182,193,0.18), 0 1px 4px rgba(0,0,0,0.10);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cover-button-estetik:hover {
+    transform: scale(1.05) rotate(-1deg);
+    box-shadow: 0 8px 28px rgba(255,182,193,0.22), 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .cover-button-text {
+    background: linear-gradient(90deg, #fbb1b1 0%, #ffe066 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(255,182,193,0.18);
+    animation: shimmerText 2.5s linear infinite;
+  }
+@media (max-width: 600px) {
+  .cover-button-estetik {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 24px;
+  }
 }
 @keyframes shimmerText {
   0% { background-position: 0% 50%; }
