@@ -68,11 +68,6 @@ DISCORD_WEBHOOK_URL=your_webhook_url
 
 
 
-## Contribution & License
-
-This project is private and fully built by jimbon25 for Dimas & Niken's wedding. All code, assets, and content are owned by the author and may not be copied, redistributed, or used for commercial purposes without explicit permission.
-
-For questions or feature requests, please contact the repository owner.
 
 ---
 This website is made with ❤️ for Dimas & Niken's special moment.
