@@ -705,10 +705,10 @@ body.no-scroll {
 }
 @media (max-width: 576px) {
   .navbar-gif {
-    height: 140px !important;
-    min-height: 140px !important;
-    max-height: 140px !important;
-    margin-top: 0 !important;
+    height: 170px !important;
+    min-height: 170px !important;
+    max-height: 170px !important;
+    margin-top: -8px !important;
     margin-bottom: 0 !important;
   }
 }
