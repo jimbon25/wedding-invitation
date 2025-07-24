@@ -1,4 +1,9 @@
+
 # Dimas & Niken Wedding Invitation
+
+![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/jimbon25/wedding-invitation)
+![GitHub repo stars](https://img.shields.io/github/stars/jimbon25/wedding-invitation?style=social)
 
 This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
 
