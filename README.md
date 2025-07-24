@@ -38,6 +38,23 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - `build/` : Production output
 
 
+## How to Download
+
+You can download or clone this repository using Git:
+
+**Linux / macOS Terminal:**
+```bash
+git clone https://github.com/jimbon25/wedding-invitation.git
+```
+
+**Windows (Command Prompt or PowerShell):**
+```powershell
+git clone https://github.com/jimbon25/wedding-invitation.git
+```
+
+Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the source files directly.
+
+
 ## How to Run
 
 1. Clone this repository
@@ -96,6 +113,27 @@ DISCORD_WEBHOOK_URL=your_webhook_url
 
 - **Images, music, or videos not showing:**
   - Make sure the files exist in the `public/` folder and the paths are correct in your code.
+
+
+## Node.js Version
+
+Recommended Node.js versions: **16.x**, **18.x**, or **20.x**
+
+Make sure your local and Netlify environment use one of these versions for best compatibility.
+
+## FAQ
+
+**Q: Can I use this invitation for my own wedding?**
+A: Yes, you can fork and modify the code as you wish. Please keep the MIT license notice.
+
+**Q: Why is my RSVP/Guest Book not showing up in Discord?**
+A: Check your Discord webhook URL, Netlify environment variable, and Netlify Functions logs for errors.
+
+**Q: How do I change the wedding date or couple's name?**
+A: Edit the relevant values in the React components inside the `src/` folder.
+
+**Q: Can I deploy this on platforms other than Netlify?**
+A: The app is optimized for Netlify, but you can adapt it for other platforms with serverless function support.
 
 
 ---
