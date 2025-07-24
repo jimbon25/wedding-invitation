@@ -12,30 +12,42 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
 
   // Tampilkan 4 GIF di sudut-sudut
   const gifList = ['/cover.gif', '/cover.gif', '/cover.gif', '/cover.gif'];
-  const corners = [
-    { top: '5%', left: '5%' },
-    { top: '5%', right: '5%' },
-    { bottom: '5%', left: '5%' },
-    { bottom: '5%', right: '5%' },
-  ];
+  // ...existing code...
+  // Tampilkan 4 GIF dengan posisi dan animasi random
+  function getRandomPosition() {
+    // Hindari area tengah agar tidak bertumpuk dengan teks
+    const top = `${Math.random() * 70 + 5}%`;
+    const left = `${Math.random() * 80 + 5}%`;
+    return { top, left };
+  }
+  function getRandomAnimation() {
+    const floatY = `${3 + Math.random() * 2}s`;
+    const floatX = `${5 + Math.random() * 2}s`;
+    const rotate = `${6 + Math.random() * 4}s`;
+    return `floatY ${floatY} ease-in-out infinite alternate, floatX ${floatX} ease-in-out infinite alternate, rotateGif ${rotate} linear infinite`;
+  }
   function getRandomAnimationDelay() {
     return `${Math.random() * 4}s`;
   }
 
   return (
     <div className="cover-screen">
-      {gifList.map((gif, idx) => (
-        <img
-          key={idx}
-          src={gif}
-          alt={`Floating GIF ${idx+1}`}
-          className="floating-gif"
-          style={{
-            ...corners[idx],
-            animationDelay: getRandomAnimationDelay(),
-          }}
-        />
-      ))}
+      {gifList.map((gif, idx) => {
+        const pos = getRandomPosition();
+        return (
+          <img
+            key={idx}
+            src={gif}
+            alt={`Floating GIF ${idx+1}`}
+            className="floating-gif"
+            style={{
+              ...pos,
+              animation: getRandomAnimation(),
+              animationDelay: getRandomAnimationDelay(),
+            }}
+          />
+        );
+      })}
       <div className="cover-content text-center">
         <p className="cover-subtitle">The Wedding Of</p>
         <h1 className="cover-title">D & N</h1>
