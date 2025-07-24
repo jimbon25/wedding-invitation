@@ -159,7 +159,13 @@ const App: React.FC = () => {
                 <img
                   src="/navbar-gif.gif"
                   alt="Cute Anime Girl"
-                  style={{ height: '40px', marginBottom: '8px', marginRight: '8px', borderRadius: '8px' }}
+                  style={{
+                    height: '48px',
+                    margin: '4px 8px 4px 0',
+                    borderRadius: '8px',
+                    objectFit: 'contain',
+                    display: 'block'
+                  }}
                 />
                 <li className="nav-item">
                   <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}><i className="bi bi-house-door-fill me-2"></i>Beranda</NavLink>
