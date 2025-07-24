@@ -49,8 +49,13 @@ const GuestBook: React.FC = () => {
       ],
     };
 
+    // Pilih endpoint sesuai environment (Netlify/Vercel)
+    const endpoint = window.location.hostname.includes('vercel.app')
+      ? '/api/send-discord-message'
+      : '/.netlify/functions/send-discord-message';
+
     try {
-      const response = await fetch('/.netlify/functions/send-discord-message', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
