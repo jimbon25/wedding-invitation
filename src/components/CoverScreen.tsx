@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './CoverScreen.css';
 
 interface CoverScreenProps {
@@ -10,26 +10,26 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
   const searchParams = new URLSearchParams(window.location.search);
   const guestName = searchParams.get('to');
 
-  // Untuk slideshow GIF, bisa tambahkan lebih dari satu GIF di array ini
-  const gifList = ['/cover.gif'];
-  const [currentGif, setCurrentGif] = useState(0);
-
-  useEffect(() => {
-    if (gifList.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentGif((prev) => (prev + 1) % gifList.length);
-      }, 4000); // Ganti setiap 4 detik
-      return () => clearInterval(interval);
-    }
-  }, [gifList.length]);
+  // Tampilkan 4 GIF dengan posisi berbeda
+  const gifList = ['/cover.gif', '/cover.gif', '/cover.gif', '/cover.gif'];
+  const gifPositions = [
+    { style: { top: '18%', left: '25%', animation: 'floatY 3.5s ease-in-out infinite alternate, floatX 6s ease-in-out infinite alternate' } },
+    { style: { top: '30%', left: '70%', animation: 'floatY 4s ease-in-out infinite alternate, floatX 5.5s ease-in-out infinite alternate-reverse' } },
+    { style: { top: '60%', left: '35%', animation: 'floatY 3.2s ease-in-out infinite alternate-reverse, floatX 6.5s ease-in-out infinite alternate' } },
+    { style: { top: '75%', left: '65%', animation: 'floatY 4.2s ease-in-out infinite alternate, floatX 5.2s ease-in-out infinite alternate-reverse' } },
+  ];
 
   return (
     <div className="cover-screen">
-      <img
-        src={gifList[currentGif]}
-        alt="Floating GIF"
-        className="floating-gif"
-      />
+      {gifList.map((gif, idx) => (
+        <img
+          key={idx}
+          src={gif}
+          alt={`Floating GIF ${idx+1}`}
+          className="floating-gif"
+          style={gifPositions[idx].style}
+        />
+      ))}
       <div className="cover-content text-center">
         <p className="cover-subtitle">The Wedding Of</p>
         <h1 className="cover-title">D & N</h1>
