@@ -10,14 +10,17 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
   const searchParams = new URLSearchParams(window.location.search);
   const guestName = searchParams.get('to');
 
-  // Tampilkan 4 GIF dengan posisi berbeda
+  // Tampilkan 4 GIF di sudut-sudut
   const gifList = ['/cover.gif', '/cover.gif', '/cover.gif', '/cover.gif'];
-  const gifPositions = [
-    { style: { top: '18%', left: '25%', animation: 'floatY 3.5s ease-in-out infinite alternate, floatX 6s ease-in-out infinite alternate' } },
-    { style: { top: '30%', left: '70%', animation: 'floatY 4s ease-in-out infinite alternate, floatX 5.5s ease-in-out infinite alternate-reverse' } },
-    { style: { top: '60%', left: '35%', animation: 'floatY 3.2s ease-in-out infinite alternate-reverse, floatX 6.5s ease-in-out infinite alternate' } },
-    { style: { top: '75%', left: '65%', animation: 'floatY 4.2s ease-in-out infinite alternate, floatX 5.2s ease-in-out infinite alternate-reverse' } },
+  const corners = [
+    { top: '5%', left: '5%' },
+    { top: '5%', right: '5%' },
+    { bottom: '5%', left: '5%' },
+    { bottom: '5%', right: '5%' },
   ];
+  function getRandomAnimationDelay() {
+    return `${Math.random() * 4}s`;
+  }
 
   return (
     <div className="cover-screen">
@@ -27,7 +30,10 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
           src={gif}
           alt={`Floating GIF ${idx+1}`}
           className="floating-gif"
-          style={gifPositions[idx].style}
+          style={{
+            ...corners[idx],
+            animationDelay: getRandomAnimationDelay(),
+          }}
         />
       ))}
       <div className="cover-content text-center">

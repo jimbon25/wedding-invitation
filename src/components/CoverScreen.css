@@ -1,13 +1,23 @@
 .floating-gif {
   position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
+  width: 120px;
   height: auto;
   pointer-events: none;
   z-index: 10001;
-  animation: floatY 3.5s ease-in-out infinite alternate, floatX 6s ease-in-out infinite alternate;
+  animation: floatY 3.5s ease-in-out infinite alternate, floatX 6s ease-in-out infinite alternate, rotateGif 8s linear infinite;
+}
+
+@keyframes floatY {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-40px); }
+}
+@keyframes floatX {
+  0% { left: 0; }
+  100% { left: 20px; }
+}
+@keyframes rotateGif {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes floatY {
@@ -38,7 +48,7 @@
 
 .cover-content {
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background: none;
   position: relative;
   z-index: 10002;
 }
