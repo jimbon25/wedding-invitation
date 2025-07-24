@@ -19,15 +19,14 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
 
 
-## Technology Stack
+## Languages & Frameworks
 
-- React & TypeScript
-- React Router DOM
+- TypeScript
+- React
+- Node.js (Netlify Functions)
 - Bootstrap 5 & Bootstrap Icons
 - AOS (Animate On Scroll)
 - Slick Carousel (for gallery)
-- Netlify Functions (RSVP backend to Discord)
-- Node-Fetch (Discord integration)
 
 
 ## Folder Structure
