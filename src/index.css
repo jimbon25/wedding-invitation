@@ -702,6 +702,8 @@ body.no-scroll {
 }
 @media (max-width: 576px) {
   .navbar-gif {
-    height: 64px;
+    height: 80px !important;
+    min-height: 80px !important;
+    max-height: 80px !important;
   }
 }
