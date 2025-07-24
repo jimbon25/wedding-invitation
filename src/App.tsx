@@ -159,6 +159,7 @@ const App: React.FC = () => {
                 <img
                   src="/navbar-gif.gif"
                   alt="Cute Anime Girl"
+                  className="navbar-gif"
                   style={{
                     height: '48px',
                     margin: '4px 8px 4px 0',
