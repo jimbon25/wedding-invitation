@@ -14,7 +14,7 @@
     "aos": "^2.3.4",
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.6.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
