@@ -68,23 +68,28 @@ Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the
 4. Open in browser: [http://localhost:3000](http://localhost:3000)
 
 
+
 ## Deployment
 
-Automatic deployment to Netlify. RSVP and Guest Book use Netlify Functions to send data to Discord.
 
+### Netlify
+1. Make sure you have a Netlify account.
+2. Click "New site from Git" and connect to this repository.
+3. Set the environment variable `DISCORD_WEBHOOK_URL` in the Netlify dashboard.
+4. Build command: `npm run build`, publish directory: `build`.
+5. Deploy and your app is ready to use.
 
-## Deployment to Netlify
+### Vercel
+1. Make sure you have a Vercel account and your repo is pushed to GitHub.
+2. Import the project from GitHub to Vercel.
+3. Set the environment variable `DISCORD_WEBHOOK_URL` in the Vercel dashboard (Project Settings > Environment Variables).
+4. Build command: `npm run build`, output directory: `build`, install command: `npm install`.
+5. Make sure the `node-fetch` dependency in package.json is version 2.x (already set if you use this repo).
+6. Deploy and your app is ready to use.
 
-This app is designed for deployment on Netlify. RSVP and Guest Book features use Netlify Functions to send data to Discord.
-
-### Setting Environment Variables on Netlify
-
-1. Go to your Netlify dashboard.
-2. Open your site settings.
-3. Navigate to "Site settings" > "Environment variables".
-4. Add `DISCORD_WEBHOOK_URL` with your Discord webhook URL.
-
-After setting the variable, redeploy your site to apply the changes.
+> **Note:**
+> - The Discord webhook endpoint will automatically adjust (Netlify/Vercel) without any code changes needed.
+> - If you get a 500 error on Vercel, make sure the environment variable and dependency are correct.
 
 
 ## Environment Configuration
