@@ -571,15 +571,31 @@ h3 {
 
 /* Menu Overlay for Mobile */
 /* Overlay only covers area outside menu on mobile */
+/* Overlay covers entire screen, but only receives pointer events outside menu */
 .menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100vw - 65vw); /* 65vw is menu width */
+  width: 100vw;
   height: 100vh;
-  z-index: 1040; /* Lower than menu (1041) */
+  z-index: 1040;
   background: transparent;
   display: block;
+  pointer-events: none;
+}
+.menu-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35vw;
+  height: 100vh;
+  pointer-events: auto;
+}
+@media (min-width: 992px) {
+  .menu-overlay {
+    display: none !important;
+  }
 }
 @media (min-width: 992px) {
   .menu-overlay {
