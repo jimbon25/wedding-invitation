@@ -20,7 +20,6 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - [Contribution](#contribution)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
-- [Changelog](#changelog)
 
 
 ## Main Features
@@ -40,13 +39,15 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 ## Screenshot
 Here are some screenshots of the application:
 
-<img src="public/images/screenshoot/ss1.png" width="220"/>
-<img src="public/images/screenshoot/ss2.png" width="160"/>
-<img src="public/images/screenshoot/ss3.png" width="160"/>
-<img src="public/images/screenshoot/ss4.png" width="160"/>
-<img src="public/images/screenshoot/ss5.png" width="160"/>
-<img src="public/images/screenshoot/ss6.png" width="160"/>
-<img src="public/images/screenshoot/ss7.png" width="160"/>
+<p align="center">
+  <img src="public/images/screenshoot/ss1.png" width="90" alt="Screenshot 1"/>
+  <img src="public/images/screenshoot/ss2.png" width="60" alt="Screenshot 2"/>
+  <img src="public/images/screenshoot/ss3.png" width="60" alt="Screenshot 3"/>
+  <img src="public/images/screenshoot/ss4.png" width="60" alt="Screenshot 4"/>
+  <img src="public/images/screenshoot/ss5.png" width="60" alt="Screenshot 5"/>
+  <img src="public/images/screenshoot/ss6.png" width="60" alt="Screenshot 6"/>
+  <img src="public/images/screenshoot/ss7.png" width="60" alt="Screenshot 7"/>
+</p>
 
 
 ## Languages & Frameworks
@@ -246,20 +247,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Discord](https://discord.com/)
 
 Special thanks to everyone who contributed to these open source projects and resources.
-
-## Changelog
-
-
-### 2025-07-25
-- Added copy to clipboard icon for phone numbers in Accommodation Info section (same style as Gift Registry).
-- Desktop navbar optimized: menu items now display in a single line, font size and padding adjusted for clarity.
-- Dropdown menus improved: edge handling prevents clipping, last dropdown aligns right.
-- Fixed all CSS syntax errors in desktop navbar block.
-- No changes to mobile styles; mobile remains fully optimized.
-- Mobile menu: top row of small icons for music play/pause, share invitation, and dark mode toggle
-- Dark mode toggle moved to top of mobile menu
-- Share invitation now uses an icon, aligned with other icons
-- All icons resized and spaced for better mobile appearance
-- Mobile menu can be closed by swiping right or tapping outside
-- Health Protocol section removed
-- Footer redesigned for a modern look
