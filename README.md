@@ -1,6 +1,4 @@
-
-
-# Dimas & Niken Wedding Invitation
+# Wedding Invitation
 
 This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
 
@@ -21,6 +19,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - [Contribution](#contribution)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
+- [Changelog](#changelog)
 
 
 ## Main Features
@@ -235,3 +234,14 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Discord](https://discord.com/)
 
 Special thanks to everyone who contributed to these open source projects and resources.
+
+## Changelog
+
+### 2025-07-25
+- Mobile menu: top row of small icons for music play/pause, share invitation, and dark mode toggle
+- Dark mode toggle moved to top of mobile menu
+- Share invitation now uses an icon, aligned with other icons
+- All icons resized and spaced for better mobile appearance
+- Mobile menu can be closed by swiping right or tapping outside
+- Health Protocol section removed
+- Footer redesigned for a modern look
