@@ -169,7 +169,7 @@ const App: React.FC = () => {
             </button>
             <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none', background: darkMode ? 'var(--navbar-bg-dark, #233d2b)' : 'var(--navbar-bg-light, #f8f9fa)', paddingTop: 0, marginTop: 0 }}>
               {/* Baris icon: play music, bagikan, dark mode */}
-              <div className="w-100 d-flex justify-content-center align-items-center gap-3 mb-2" style={{marginBottom: '12px'}}>
+              <div className="w-100 d-flex justify-content-center align-items-center gap-3 mb-2" style={{marginTop: '12px', marginBottom: '12px'}}>
                 {/* Play Music Icon */}
                 <button
                   className={`btn btn-xs d-flex align-items-center justify-content-center ${isPlaying ? 'btn-primary spinning' : 'btn-outline-primary'}`}
