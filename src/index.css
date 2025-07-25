@@ -473,7 +473,7 @@ h3 {
     border-top-left-radius: 18px;
     border-bottom-left-radius: 18px;
     transition: right 0.3s ease-in-out;
-    z-index: 1040; /* Higher than navbar, lower than modal */
+    z-index: 1041; /* Higher than overlay (1040), lower than modal */
     overflow-y: auto; /* Enable scrolling for long menus */
     padding-top: 60px; /* Space for fixed navbar */
     padding-left: 18px;
@@ -570,17 +570,21 @@ h3 {
 }
 
 /* Menu Overlay for Mobile */
+/* Overlay only covers area outside menu on mobile */
 .menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-  z-index: 1039; /* Below navbar-collapse (1040) */
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
-  visibility: hidden;
+  width: calc(100vw - 65vw); /* 65vw is menu width */
+  height: 100vh;
+  z-index: 1040; /* Lower than menu (1041) */
+  background: transparent;
+  display: block;
+}
+@media (min-width: 992px) {
+  .menu-overlay {
+    display: none !important;
+  }
 }
 
 .menu-overlay.show {
