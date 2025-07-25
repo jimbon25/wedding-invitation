@@ -5,6 +5,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 ## Table of Contents
 
 - [Main Features](#main-features)
+- [Screenshot](#screenshot)
 - [Languages & Frameworks](#languages--frameworks)
 - [Folder Structure](#folder-structure)
 - [How to Download](#how-to-download)
@@ -35,6 +36,17 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
 - **Scroll to Top Button**: Easy navigation to the top of the page.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
+
+## Screenshot
+Here are some screenshots of the application:
+
+![Screenshot 1](public/images/screenshoot/ss1.png)
+![Screenshot 2](public/images/screenshoot/ss2.png)
+![Screenshot 3](public/images/screenshoot/ss3.png)
+![Screenshot 4](public/images/screenshoot/ss4.png)
+![Screenshot 5](public/images/screenshoot/ss5.png)
+![Screenshot 6](public/images/screenshoot/ss6.png)
+![Screenshot 7](public/images/screenshoot/ss7.png)
 
 
 ## Languages & Frameworks
