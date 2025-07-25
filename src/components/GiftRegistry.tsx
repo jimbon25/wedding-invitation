@@ -13,38 +13,6 @@ const GiftRegistry: React.FC = () => {
 
   return (
     <div>
-      <style>{`
-        .gift-list {
-          list-style-type: disc;
-        }
-        @media (max-width: 600px) {
-          .gift-list {
-            padding-left: 18px;
-            list-style-type: disc;
-          }
-          .gift-list li {
-            display: block !important;
-            margin-bottom: 12px;
-          }
-          .gift-list .rekening-row {
-            flex-direction: row !important;
-            align-items: center !important;
-          }
-          .gift-list .rekening-row .rekening-number {
-            margin-bottom: 0 !important;
-          }
-          .gift-list .rekening-row button {
-            margin-top: 0 !important;
-            margin-left: 2px !important;
-            width: auto;
-            justify-content: flex-start;
-          }
-          .gift-list .rekening-row span {
-            margin-left: 6px !important;
-            margin-right: 6px !important;
-          }
-        }
-      `}</style>
       <StoryItem><h2>Daftar Hadiah</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Kehadiran Anda di pernikahan kami adalah hadiah terbesar. Namun, jika Anda ingin memberikan hadiah, kami telah menyiapkan beberapa opsi:</p></StoryItem>
 
