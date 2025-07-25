@@ -34,7 +34,7 @@ const OurStory: React.FC = () => {
       <StoryItem delay="0.8s"><p>Kini, kami siap untuk melangkah ke jenjang pernikahan, membangun keluarga, dan menciptakan lebih banyak kenangan indah bersama. Kami sangat antusias untuk berbagi kebahagiaan ini dengan Anda semua.</p></StoryItem>
 
       <div className="mt-5">
-        <StoryItem delay="1s"><h3>Perjalanan Kami dalam Gerak</h3></StoryItem>
+        <StoryItem delay="1s"><h3>Perjalanan Kami dalam Video</h3></StoryItem>
         <StoryItem delay="1.2s">
           <div className="video-container embed-responsive embed-responsive-16by9" style={{ height: '400px' }}>
             <video ref={videoRef} muted={isMuted} playsInline className="embed-responsive-item" style={{ width: '100%', height: '100%' }} poster="/images/g9.webp">

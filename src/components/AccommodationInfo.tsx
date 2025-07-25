@@ -12,17 +12,17 @@ const AccommodationInfo: React.FC = () => {
         <ul>
           <li>
             <strong>Hotel A</strong><br />
-            Address: [Hotel A Address]<br />
-            Phone: [Hotel A Phone]<br />
-            Website: <span className="link-like">[Hotel A Website]</span><br />
-            Notes: [e.g., 5-star hotel, close to venue]
+            Address: Jl. Soekarno - Hatta No.55, Jajar, Kepuhkembeng, Kec. Peterongan, Kabupaten Jombang, Jawa Timur 61481<br />
+            Phone: 085607777009<br />
+            Website: <span className="link-like"><a href="https://www.tripadvisor.co.id/Hotel_Review-g3561625-d12708910-Reviews-Green_Red_Hotel_Syariah_Jombang-Jombang_East_Java_Java.html" target="_blank" rel="noopener noreferrer">tripadvisor.co.id</a></span><br />
+            Notes: Hotel syariah, dekat dengan venue
           </li>
           <li className="mt-3">
             <strong>Hotel B</strong><br />
-            Address: [Hotel B Address]<br />
-            Phone: [Hotel B Phone]<br />
-            Website: <span className="link-like">[Hotel B Website]</span><br />
-            Notes: [e.g., Budget-friendly, good reviews]
+            Address: Jl. Soekarno - Hatta No.25, Nglungge, Keplaksari, Kec. Peterongan, Kabupaten Jombang, Jawa Timur 61481<br />
+            Phone: (0321) 878800<br />
+            Website: <span className="link-like"><a href="https://www.traveloka.com/id-id/hotel/indonesia/hotel-yusro-jombang-family-hotel-restaurant--convention-9000000966369" target="_blank" rel="noopener noreferrer">traveloka.com</a></span><br />
+            Notes: Family hotel, restoran & convention, harga terjangkau
           </li>
         </ul>
       </StoryItem>
