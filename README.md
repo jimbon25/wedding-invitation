@@ -237,7 +237,9 @@ Special thanks to everyone who contributed to these open source projects and res
 
 ## Changelog
 
+
 ### 2025-07-25
+- Added copy to clipboard icon for phone numbers in Accommodation Info section (same style as Gift Registry).
 - Desktop navbar optimized: menu items now display in a single line, font size and padding adjusted for clarity.
 - Dropdown menus improved: edge handling prevents clipping, last dropdown aligns right.
 - Fixed all CSS syntax errors in desktop navbar block.
