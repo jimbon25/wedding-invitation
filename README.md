@@ -40,13 +40,13 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 ## Screenshot
 Here are some screenshots of the application:
 
-![Screenshot 1](public/images/screenshoot/ss1.png)
-![Screenshot 2](public/images/screenshoot/ss2.png)
-![Screenshot 3](public/images/screenshoot/ss3.png)
-![Screenshot 4](public/images/screenshoot/ss4.png)
-![Screenshot 5](public/images/screenshoot/ss5.png)
-![Screenshot 6](public/images/screenshoot/ss6.png)
-![Screenshot 7](public/images/screenshoot/ss7.png)
+<img src="public/images/screenshoot/ss1.png" width="300"/>
+<img src="public/images/screenshoot/ss2.png" width="300"/>
+<img src="public/images/screenshoot/ss3.png" width="300"/>
+<img src="public/images/screenshoot/ss4.png" width="300"/>
+<img src="public/images/screenshoot/ss5.png" width="300"/>
+<img src="public/images/screenshoot/ss6.png" width="300"/>
+<img src="public/images/screenshoot/ss7.png" width="300"/>
 
 
 ## Languages & Frameworks
