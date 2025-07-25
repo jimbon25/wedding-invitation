@@ -160,13 +160,14 @@ const App: React.FC = () => {
 
       <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
         {isOpen && <div className="menu-overlay" onClick={toggleNavbar}></div>}
-        <nav className={`navbar navbar-expand-lg navbar-light fixed-top ${isScrolled ? 'scrolled' : ''}`}>
-          <div className="container-fluid d-flex align-items-center">
+        <nav className={`navbar navbar-expand-lg fixed-top ${darkMode ? 'navbar-dark' : 'navbar-light'} ${isScrolled ? 'scrolled' : ''} ${darkMode ? 'bg-dark' : 'bg-light'}`}
+          style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', paddingTop: 0, marginTop: 0 } : { background: 'var(--navbar-bg-light, #f8f9fa)', paddingTop: 0, marginTop: 0 }}>
+          <div className="container-fluid d-flex align-items-center" style={{paddingTop: 0, marginTop: 0}}>
             <NavLink className="navbar-brand" to="/">Dimas & Niken</NavLink>
             <button className="navbar-toggler" type="button" onClick={toggleNavbar} aria-expanded={isOpen}>
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none' }}>
+            <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none', background: darkMode ? 'var(--navbar-bg-dark, #233d2b)' : 'var(--navbar-bg-light, #f8f9fa)', paddingTop: 0, marginTop: 0 }}>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <img
                   src="/navbar-gif.gif"
@@ -174,10 +175,11 @@ const App: React.FC = () => {
                   className="navbar-gif"
                   style={{
                     height: '48px',
-                    margin: '4px 8px 4px 0',
+                    margin: '0 8px 0 0',
                     borderRadius: '8px',
                     objectFit: 'contain',
-                    display: 'block'
+                    display: 'block',
+                    verticalAlign: 'top'
                   }}
                 />
                 <li className="nav-item">
@@ -197,20 +199,21 @@ const App: React.FC = () => {
                 </li>
                 <li className="nav-item dropdown">
                   <button
-                    className={`nav-link dropdown-toggle ${isOtherDropdownOpen ? 'active' : ''}`}
+                    className={`nav-link dropdown-toggle ${isOtherDropdownOpen ? 'active' : ''} ${darkMode ? 'text-light' : ''}`}
                     type="button"
                     id="navbarDropdown"
                     onClick={toggleOtherDropdown}
                     aria-expanded={isOtherDropdownOpen}
+                    style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', color: 'var(--navbar-text-dark, #fff)' } : {}}
                   >
                     Lainnya
                   </button>
                   {isOtherDropdownOpen && (
-                    <ul className="dropdown-menu show" aria-labelledby="navbarDropdown">
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift me-2"></i>Informasi Hadiah</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>Akomodasi & Transportasi</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>Daftar Hadiah</NavLink></li>
+                    <ul className={`dropdown-menu show ${darkMode ? 'dropdown-menu-dark' : ''}`} aria-labelledby="navbarDropdown" style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', color: 'var(--navbar-text-dark, #fff)' } : {}}>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift me-2"></i>Informasi Hadiah</NavLink></li>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>Akomodasi & Transportasi</NavLink></li>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>Daftar Hadiah</NavLink></li>
                     </ul>
                   )}
                 </li>
@@ -226,9 +229,9 @@ const App: React.FC = () => {
                   className={`btn btn-sm ms-2 ${darkMode ? 'btn-dark' : 'btn-light'}`}
                   onClick={toggleDarkMode}
                   title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                  style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.375rem', width: '32px', height: '32px', borderRadius: '0.25rem' }}
                 >
-                  <i className={`bi ${darkMode ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'}`}></i>
+                  <i className={`bi ${darkMode ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'}`} style={{ fontSize: '1.25rem', margin: 0, display: 'block' }}></i>
                 </button>
               </div>
             </div>
