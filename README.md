@@ -39,15 +39,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 ## Screenshot
 Here are some screenshots of the application:
 
-<p align="center">
-  <img src="public/images/screenshoot/ss1.png" width="90" alt="Screenshot 1"/>
-  <img src="public/images/screenshoot/ss2.png" width="60" alt="Screenshot 2"/>
-  <img src="public/images/screenshoot/ss3.png" width="60" alt="Screenshot 3"/>
-  <img src="public/images/screenshoot/ss4.png" width="60" alt="Screenshot 4"/>
-  <img src="public/images/screenshoot/ss5.png" width="60" alt="Screenshot 5"/>
-  <img src="public/images/screenshoot/ss6.png" width="60" alt="Screenshot 6"/>
-  <img src="public/images/screenshoot/ss7.png" width="60" alt="Screenshot 7"/>
-</p>
+<img src="public/images/screenshoot/ss.jpg" width="90" alt="Screenshot 1"/>
 
 
 ## Languages & Frameworks
