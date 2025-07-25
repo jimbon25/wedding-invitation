@@ -45,13 +45,13 @@ const GiftRegistry: React.FC = () => {
               >
                 {showSaweria ? 'Tutup Barcode Saweria' : 'Klik untuk barcode'}
               </button>
-              {showSaweria && (
-                <span id="saweria-barcode" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '10px' }}>
-                  <img src="/images/saweria.png" alt="Barcode Saweria" style={{ maxWidth: '180px', width: '100%', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} />
-                  <div style={{ fontSize: '0.85em', color: '#555', marginTop: '4px' }}>Scan barcode Saweria</div>
-                </span>
-              )}
             </div>
+            {showSaweria && (
+              <div id="saweria-barcode" style={{ marginTop: '10px', textAlign: 'left' }}>
+                <img src="/images/saweria.png" alt="Barcode Saweria" style={{ maxWidth: '180px', width: '100%', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} />
+                <div style={{ fontSize: '0.85em', color: '#555', marginTop: '4px' }}>Scan barcode Saweria</div>
+              </div>
+            )}
           </li>
           <li><strong>Nama Bank:</strong> BCA</li>
           <li>
