@@ -168,6 +168,36 @@ const App: React.FC = () => {
               <span className="navbar-toggler-icon"></span>
             </button>
             <div ref={menuRef} className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} style={{ transform: isOpen && touchStartX !== 0 ? `translateX(${Math.max(0, touchCurrentX - touchStartX)}px)` : 'none', background: darkMode ? 'var(--navbar-bg-dark, #233d2b)' : 'var(--navbar-bg-light, #f8f9fa)', paddingTop: 0, marginTop: 0 }}>
+              {/* Baris icon: play music, bagikan, dark mode */}
+              <div className="w-100 d-flex justify-content-center align-items-center gap-3 mb-2" style={{marginBottom: '12px'}}>
+                {/* Play Music Icon */}
+                <button
+                  className={`btn btn-xs d-flex align-items-center justify-content-center ${isPlaying ? 'btn-primary spinning' : 'btn-outline-primary'}`}
+                  onClick={togglePlay}
+                  title={isPlaying ? 'Pause Music' : 'Play Music'}
+                  style={{ width: '24px', height: '24px', borderRadius: '0.18rem', padding: 0 }}
+                >
+                  <i className={`bi ${isPlaying ? 'bi-pause-fill' : 'bi-play-fill'}`} style={{ fontSize: '1rem', margin: 0 }}></i>
+                </button>
+                {/* Bagikan Icon */}
+                <button
+                  className="btn btn-xs d-flex align-items-center justify-content-center btn-outline-secondary"
+                  onClick={handleShare}
+                  title="Bagikan Undangan"
+                  style={{ width: '24px', height: '24px', borderRadius: '0.18rem', padding: 0 }}
+                >
+                  <i className="bi bi-share-fill" style={{ fontSize: '1rem', margin: 0 }}></i>
+                </button>
+                {/* Dark Mode Icon */}
+                <button
+                  className={`btn btn-xs d-flex align-items-center justify-content-center ${darkMode ? 'btn-dark' : 'btn-light'}`}
+                  onClick={toggleDarkMode}
+                  title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                  style={{ width: '24px', height: '24px', borderRadius: '0.18rem', padding: 0 }}
+                >
+                  <i className={`bi ${darkMode ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'}`} style={{ fontSize: '1rem', margin: 0 }}></i>
+                </button>
+              </div>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <img
                   src="/navbar-gif.gif"
@@ -219,20 +249,7 @@ const App: React.FC = () => {
                 </li>
               </ul>
               <div className="d-flex ms-auto align-items-center">
-                <button className={`btn btn-sm btn-outline-primary ms-2 music-icon-container ${isPlaying ? 'spinning' : ''}`} onClick={togglePlay}>
-                  <i className={`bi ${isPlaying ? 'bi-pause-fill' : 'bi-play-fill'} music-icon`}></i>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary ms-2" onClick={handleShare}>
-                  Bagikan
-                </button>
-                <button
-                  className={`btn btn-sm ms-2 ${darkMode ? 'btn-dark' : 'btn-light'}`}
-                  onClick={toggleDarkMode}
-                  title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.375rem', width: '32px', height: '32px', borderRadius: '0.25rem' }}
-                >
-                  <i className={`bi ${darkMode ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'}`} style={{ fontSize: '1.25rem', margin: 0, display: 'block' }}></i>
-                </button>
+                {/* ...hapus tombol play music dan bagikan di bawah, sudah dipindah ke atas... */}
               </div>
             </div>
           </div>
