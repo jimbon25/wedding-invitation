@@ -39,6 +39,18 @@ const App: React.FC = () => {
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchCurrentX, setTouchCurrentX] = useState(0);
 
+  // Dark mode state
+  const [darkMode, setDarkMode] = useState(() => {
+    // Cek preferensi user di localStorage
+    const saved = localStorage.getItem('darkMode');
+    return saved === 'true';
+  });
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', darkMode);
+    localStorage.setItem('darkMode', darkMode.toString());
+  }, [darkMode]);
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
     // Close 'Lainnya' dropdown if main navbar is closing
@@ -203,12 +215,20 @@ const App: React.FC = () => {
                   )}
                 </li>
               </ul>
-              <div className="d-flex ms-auto">
+              <div className="d-flex ms-auto align-items-center">
                 <button className={`btn btn-sm btn-outline-primary ms-2 music-icon-container ${isPlaying ? 'spinning' : ''}`} onClick={togglePlay}>
                   <i className={`bi ${isPlaying ? 'bi-pause-fill' : 'bi-play-fill'} music-icon`}></i>
                 </button>
                 <button className="btn btn-sm btn-outline-secondary ms-2" onClick={handleShare}>
                   Bagikan
+                </button>
+                <button
+                  className={`btn btn-sm ms-2 ${darkMode ? 'btn-dark' : 'btn-light'}`}
+                  onClick={toggleDarkMode}
+                  title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                  style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                >
+                  <i className={`bi ${darkMode ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'}`}></i>
                 </button>
               </div>
             </div>

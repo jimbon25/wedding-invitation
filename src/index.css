@@ -1,3 +1,31 @@
+:root {
+  --background-dark: #181A1B;
+  --text-dark: #EEE;
+  --primary-dark: #9CAF88;
+  --secondary-dark: #222;
+  --light-text-dark: #AAA;
+}
+
+.dark-mode {
+  --background-color: var(--background-dark);
+  --text-color: var(--text-dark);
+  --primary-color: var(--primary-dark);
+  --secondary-color: var(--secondary-dark);
+  --light-text-color: var(--light-text-dark);
+}
+
+body.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-color);
+}
+
+.main-content {
+  background: none;
+}
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap');
 
 @import '~bootstrap/dist/css/bootstrap.min.css';
@@ -236,7 +264,7 @@ h3 {
 }
 
 .main-content {
-  background-color: white;
+  background-color: var(--background-color);
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
