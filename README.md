@@ -34,7 +34,6 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Guest Book**: Guests can leave messages and wishes.
 - **Gift Info & Registry**: Bank account, e-wallet, and gift registry information.
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
-- **Health Protocol**: Health protocol information for the event.
 - **Scroll to Top Button**: Easy navigation to the top of the page.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
 
