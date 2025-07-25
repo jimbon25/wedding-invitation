@@ -238,15 +238,24 @@ const App: React.FC = () => {
           </div>
         </nav>
 
-        <MainContentWrapper />
+        {/* Overlay for closing navbar when clicking outside */}
+        {isOpen && (
+          <div
+            style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1040, background: 'transparent' }}
+            onClick={() => setIsOpen(false)}
+          />
+        )}
 
-        <audio ref={audioRef} loop>
-          {/* Replace with your actual music file URL */}
-          <source src="/music/wedding-joy-189888.mp3" type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-        <Footer />
-        <ScrollToTopButton />
+        <div onClick={() => isOpen && setIsOpen(false)} style={{ minHeight: '100vh' }}>
+          <MainContentWrapper />
+          <audio ref={audioRef} loop>
+            {/* Replace with your actual music file URL */}
+            <source src="/music/wedding-joy-189888.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <Footer />
+          <ScrollToTopButton />
+        </div>
       </div>
     </Router>
   );
