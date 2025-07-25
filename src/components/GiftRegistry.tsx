@@ -72,7 +72,9 @@ const GiftRegistry: React.FC = () => {
                 aria-expanded={showSaweria}
                 aria-controls="saweria-barcode"
               >
-                {showSaweria ? 'Tutup Barcode Saweria' : 'Klik untuk barcode'}
+                {showSaweria ? 'Tutup Barcode Saweria' : (
+                  <span style={{ fontSize: '0.92em', color: '#556B2F', fontWeight: 'bold' }}>Klik untuk barcode</span>
+                )}
               </button>
             </div>
             {showSaweria && (
