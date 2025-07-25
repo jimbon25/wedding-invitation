@@ -238,6 +238,10 @@ Special thanks to everyone who contributed to these open source projects and res
 ## Changelog
 
 ### 2025-07-25
+- Desktop navbar optimized: menu items now display in a single line, font size and padding adjusted for clarity.
+- Dropdown menus improved: edge handling prevents clipping, last dropdown aligns right.
+- Fixed all CSS syntax errors in desktop navbar block.
+- No changes to mobile styles; mobile remains fully optimized.
 - Mobile menu: top row of small icons for music play/pause, share invitation, and dark mode toggle
 - Dark mode toggle moved to top of mobile menu
 - Share invitation now uses an icon, aligned with other icons
