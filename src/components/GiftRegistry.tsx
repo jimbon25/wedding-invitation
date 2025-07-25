@@ -14,25 +14,34 @@ const GiftRegistry: React.FC = () => {
   return (
     <div>
       <style>{`
+        .gift-list {
+          list-style-type: disc;
+        }
         @media (max-width: 600px) {
           .gift-list {
-            padding-left: 0;
+            padding-left: 18px;
+            list-style-type: disc;
           }
           .gift-list li {
             display: block !important;
             margin-bottom: 12px;
           }
           .gift-list .rekening-row {
-            flex-direction: column !important;
-            align-items: flex-start !important;
+            flex-direction: row !important;
+            align-items: center !important;
+          }
+          .gift-list .rekening-row .rekening-number {
+            margin-bottom: 0 !important;
           }
           .gift-list .rekening-row button {
-            margin-top: 6px !important;
-            margin-left: 0 !important;
+            margin-top: 0 !important;
+            margin-left: 2px !important;
+            width: auto;
+            justify-content: flex-start;
           }
           .gift-list .rekening-row span {
-            margin-left: 0 !important;
-            margin-right: 0 !important;
+            margin-left: 6px !important;
+            margin-right: 6px !important;
           }
         }
       `}</style>
@@ -47,8 +56,8 @@ const GiftRegistry: React.FC = () => {
           <li>
             <button
               style={{
-                background: '#f7f7f7',
-                border: '1px solid #ddd',
+                background: 'none',
+                border: 'none',
                 borderRadius: '6px',
                 padding: '4px 12px',
                 cursor: 'pointer',
@@ -76,7 +85,7 @@ const GiftRegistry: React.FC = () => {
           <li><strong>Nama Bank:</strong> BCA</li>
           <li className="rekening-row" style={{ display: 'flex', alignItems: 'center' }}>
             <strong>Nomor Rekening:</strong>
-            <span style={{ marginLeft: '6px', marginRight: '6px' }}>123456789</span>
+            <span className="rekening-number" style={{ marginLeft: '6px', marginRight: '6px' }}>123456789</span>
             <button
               onClick={handleCopy}
               title="Copy nomor rekening"
