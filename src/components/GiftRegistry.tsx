@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StoryItem from './StoryItem';
 
 const GiftRegistry: React.FC = () => {
+  // ...existing code...
   const [showSaweria, setShowSaweria] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -13,6 +14,34 @@ const GiftRegistry: React.FC = () => {
 
   return (
     <div>
+      {/* Toast notification for copy to clipboard */}
+      {copied && (
+        <div style={{
+          position: 'fixed',
+          left: '50%',
+          bottom: '32px',
+          transform: 'translateX(-50%)',
+          background: '#2d7cff',
+          color: '#fff',
+          padding: '6px 16px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.12)',
+          fontSize: '0.92em',
+          zIndex: 9999,
+          animation: 'fadeInOut 1.5s',
+          border: '2px solid #2d7cff',
+        }}>
+          Tersalin!
+        </div>
+      )}
+      <style>{`
+        @keyframes fadeInOut {
+          0% { opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+      `}</style>
       <StoryItem><h2>Daftar Hadiah</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Kehadiran Anda di pernikahan kami adalah hadiah terbesar. Namun, jika Anda ingin memberikan hadiah, kami telah menyiapkan beberapa opsi:</p></StoryItem>
 
@@ -73,7 +102,6 @@ const GiftRegistry: React.FC = () => {
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2d7cff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
               </button>
-              {copied && <span style={{ color: '#2d7cff', fontSize: '0.9em', marginLeft: '8px' }}>Tersalin!</span>}
             </div>
           </li>
           <li><strong>Atas Nama:</strong> Dimas Luis Aditya & Niken Aristania Fitri</li>
