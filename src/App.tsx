@@ -241,12 +241,12 @@ const App: React.FC = () => {
         {/* Overlay for closing navbar when clicking outside */}
         {isOpen && (
           <div
-            style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1040, background: 'transparent' }}
+            className="navbar-menu-overlay"
             onClick={() => setIsOpen(false)}
           />
         )}
 
-        <div onClick={() => isOpen && setIsOpen(false)} style={{ minHeight: '100vh' }}>
+        <div style={{ minHeight: '100vh' }}>
           <MainContentWrapper />
           <audio ref={audioRef} loop>
             {/* Replace with your actual music file URL */}
