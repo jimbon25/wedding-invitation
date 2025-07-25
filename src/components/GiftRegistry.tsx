@@ -21,7 +21,7 @@ const GiftRegistry: React.FC = () => {
           left: '50%',
           bottom: '32px',
           transform: 'translateX(-50%)',
-          background: '#2d7cff',
+          background: '#556B2F',
           color: '#fff',
           padding: '6px 16px',
           borderRadius: '8px',
@@ -29,7 +29,7 @@ const GiftRegistry: React.FC = () => {
           fontSize: '0.92em',
           zIndex: 9999,
           animation: 'fadeInOut 1.5s',
-          border: '2px solid #2d7cff',
+          border: '2px solid #556B2F',
         }}>
           Tersalin!
         </div>
@@ -56,13 +56,13 @@ const GiftRegistry: React.FC = () => {
               <button
                 style={{
                   background: 'none',
-                  border: 'none',
+                  border: '2px solid #556B2F',
                   borderRadius: '6px',
                   padding: '4px 12px',
                   cursor: 'pointer',
                   fontWeight: 'bold',
                   fontSize: '0.98em',
-                  color: '#2d7cff',
+                  color: '#556B2F',
                   outline: 'none',
                   marginLeft: '8px',
                   marginBottom: '2px',

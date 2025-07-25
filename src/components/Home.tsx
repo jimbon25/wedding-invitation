@@ -45,19 +45,19 @@ const Home: React.FC = () => {
         <StoryItem delay="0.6s"><h3 className="text-white mt-5">Countdown</h3></StoryItem>
         <StoryItem delay="0.8s">
           <div className="d-flex justify-content-center gap-3 countdown-container">
-            <div className="p-2 rounded countdown-item">
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
               <h4>{countdown.days}</h4>
               <p>Hari</p>
             </div>
-            <div className="p-2 rounded countdown-item">
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
               <h4>{countdown.hours}</h4>
               <p>Jam</p>
             </div>
-            <div className="p-2 rounded countdown-item">
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
               <h4>{countdown.minutes}</h4>
               <p>Menit</p>
             </div>
-            <div className="p-2 rounded countdown-item">
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
               <h4>{countdown.seconds}</h4>
               <p>Detik</p>
             </div>
