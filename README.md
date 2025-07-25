@@ -7,17 +7,14 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - [Main Features](#main-features)
 - [Screenshot](#screenshot)
 - [Languages & Frameworks](#languages--frameworks)
-- [Folder Structure](#folder-structure)
 - [How to Download](#how-to-download)
 - [How to Run](#how-to-run)
 - [Deployment](#deployment)
 - [Environment Configuration](#environment-configuration)
 - [Troubleshooting](#troubleshooting)
 - [Node.js Version](#nodejs-version)
-- [FAQ](#faq)
 - [Available Scripts](#available-scripts)
 - [Contact Me](#contact-me)
-- [Contribution](#contribution)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -51,16 +48,6 @@ Here are some screenshots of the application:
 - Bootstrap 5 & Bootstrap Icons
 - AOS (Animate On Scroll)
 - Slick Carousel (for gallery)
-
-
-
-## Folder Structure
-
-- `src/` : All React source code and components
-- `public/` : Static files (images, music, video)
-- `netlify/functions/` : Netlify serverless backend (send-discord-message.js)
-- `api/` : Vercel serverless functions (send-discord-message.js)
-- `build/` : Production output
 
 
 ## How to Download
@@ -151,23 +138,6 @@ Recommended Node.js versions: **16.x**, **18.x**, or **20.x**
 
 Make sure your local and Netlify environment use one of these versions for best compatibility.
 
-## FAQ
-
-**Q: Can I use this invitation for my own wedding?**
-A: Yes, you can fork and modify the code as you wish. Please keep the MIT license notice.
-
-**Q: Why is my RSVP/Guest Book not showing up in Discord?**
-A: Check your Discord webhook URL, Netlify environment variable, and Netlify Functions logs for errors.
-
-**Q: How do I change the wedding date or couple's name?**
-A: Edit the relevant values in the React components inside the `src/` folder.
-
-**Q: Can I deploy this on platforms other than Netlify?**
-A: The app is optimized for Netlify, but you can adapt it for other platforms with serverless function support.
-
-
----
-This website is made with ❤️ for Dimas & Niken's special moment.
 
 ## Available Scripts
 
@@ -220,9 +190,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - Instagram: [@dimasladty](https://instagram.com/dimasladty)
 - Facebook: [Dimas LA](https://facebook.com/iv.dimas)
 
-## Contribution
-
-Contributions, suggestions, and improvements are welcome! Please open an issue or submit a pull request if you have ideas to enhance this project.
 
 ## License
 
@@ -238,5 +205,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Slick Carousel](https://kenwheeler.github.io/slick/)
 - [Netlify](https://www.netlify.com/)
 - [Discord](https://discord.com/)
-
-Special thanks to everyone who contributed to these open source projects and resources.
