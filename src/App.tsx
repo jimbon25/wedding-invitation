@@ -197,7 +197,6 @@ const App: React.FC = () => {
                     <ul className="dropdown-menu show" aria-labelledby="navbarDropdown">
                       <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift me-2"></i>Informasi Hadiah</NavLink></li>
                       <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li>
-                      <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/health-protocol" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-shield-plus me-2"></i>Protokol Kesehatan</NavLink></li>
                       <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>Akomodasi & Transportasi</NavLink></li>
                       <li><NavLink className={({ isActive }) => "dropdown-item" + (isActive ? " active" : "")} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>Daftar Hadiah</NavLink></li>
                     </ul>
