@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 const GeminiChat: React.FC = () => {
-  const [messages, setMessages] = useState<{ from: 'user' | 'ai', text: string }[]>([]);
+  const [messages, setMessages] = useState<{ from: 'user' | 'ai', text: string }[]>([
+    { from: 'ai', text: 'Halo! Saya asisten AI undangan pernikahan Dimas & Niken. Silakan tanya apa saja seputar acara, lokasi, RSVP, atau info lain yang ingin kamu ketahui.' }
+  ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
