@@ -101,8 +101,12 @@ const GeminiChat: React.FC = () => {
           style={{ flex: 1, borderRadius: 8, border: '1px solid #ccc', padding: 8, fontSize: '0.98em' }}
           disabled={loading}
         />
-        <button onClick={sendMessage} disabled={loading || !input.trim()} style={{ borderRadius: 8, padding: '8px 14px', background: '#9CAF88', color: '#fff', border: 'none', fontWeight: 600 }}>
-          Kirim
+        <button onClick={sendMessage} disabled={loading || !input.trim()} style={{ borderRadius: 8, padding: '8px 12px', background: '#9CAF88', color: '#fff', border: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Kirim">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.5 10.833l13.334-5.555c.833-.347 1.667.486 1.32 1.32l-5.555 13.334c-.347.833-1.486.833-1.833 0l-2.222-5.555-5.555-2.222c-.833-.347-.833-1.486 0-1.833z" fill="#fff"/>
+            <path d="M2.5 10.833l13.334-5.555c.833-.347 1.667.486 1.32 1.32l-5.555 13.334c-.347.833-1.486.833-1.833 0l-2.222-5.555-5.555-2.222c-.833-.347-.833-1.486 0-1.833z" fill="#fff" fillOpacity=".3"/>
+            <path d="M2.5 10.833l5.555 2.222 2.222 5.555 5.555-13.334-13.334 5.555z" fill="#fff" fillOpacity=".7"/>
+          </svg>
         </button>
       </div>
     </div>
