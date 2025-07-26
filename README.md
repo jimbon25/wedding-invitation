@@ -7,12 +7,14 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 <img src="public/images/screenshoot/ss.jpg" width="500" alt="Screenshot 1"/>
 </p>
 
+
 ## Table of Contents
 
 - [Main Features](#main-features)
 - [Languages & Frameworks](#languages--frameworks)
 - [How to Download](#how-to-download)
 - [How to Run](#how-to-run)
+- [Gemini AI Chat Setup](#gemini-ai-chat-setup)
 - [Deployment](#deployment)
 - [Environment Configuration](#environment-configuration)
 - [Troubleshooting](#troubleshooting)
@@ -21,7 +23,6 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - [Contact Me](#contact-me)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
-
 
 
 ## Main Features
@@ -81,6 +82,24 @@ Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the
 4. Open in browser: [http://localhost:3000](http://localhost:3000)
 
 
+
+
+## Gemini AI Chat Setup
+
+To enable the Gemini AI Chat feature:
+
+1. Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. In your Netlify or Vercel dashboard, add a new environment variable:
+   - **Key:** `GEMINI_API_KEY`
+   - **Value:** (your Gemini API key)
+3. Deploy or redeploy your site so the environment variable is available to the serverless function.
+4. The floating Gemini icon and chat bubble will appear automatically, allowing guests to ask questions about the invitation.
+
+> **Note:**
+> - Your Gemini API key is kept secure in the backend (serverless function) and never exposed to the browser.
+> - The AI will only answer questions about the wedding invitation and will politely decline out-of-context questions.
+
+---
 
 ## Deployment
 
