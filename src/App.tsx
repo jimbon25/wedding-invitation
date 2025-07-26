@@ -272,6 +272,11 @@ const App: React.FC = () => {
           </audio>
           <Footer />
           <ScrollToTopButton />
+          {/* Floating Gemini Chat Icon & Bubble */}
+          {typeof window !== 'undefined' && (
+            require('./components/FloatingGeminiChat').default ?
+              React.createElement(require('./components/FloatingGeminiChat').default) : null
+          )}
         </div>
       </div>
     </Router>
