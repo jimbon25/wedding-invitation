@@ -16,7 +16,10 @@ const GeminiChat: React.FC = () => {
         body: JSON.stringify({ prompt: input })
       });
       const data = await res.json();
-      const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, tidak ada jawaban.';
+      let aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!aiText) {
+        aiText = '[Tidak ada jawaban dari Gemini API]\n' + JSON.stringify(data, null, 2);
+      }
       setMessages(msgs => [...msgs, { from: 'ai', text: aiText }]);
     } catch {
       setMessages(msgs => [...msgs, { from: 'ai', text: 'Terjadi kesalahan.' }]);
