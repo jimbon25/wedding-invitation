@@ -23,6 +23,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - [Acknowledgements](#acknowledgements)
 
 
+
 ## Main Features
 
 - **Cover Screen**: Personalized opening screen with guest name from URL.
@@ -36,6 +37,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
 - **Scroll to Top Button**: Easy navigation to the top of the page.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
+- **Gemini AI Chat**: Floating Gemini icon with AI chat bubble, allowing guests to ask questions about the wedding invitation and get instant answers powered by Google Gemini AI.
 
 
 ## Languages & Frameworks
