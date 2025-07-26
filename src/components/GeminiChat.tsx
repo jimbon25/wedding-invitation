@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const GeminiChat: React.FC = () => {
   const [messages, setMessages] = useState<{ from: 'user' | 'ai', text: string }[]>([
@@ -6,11 +6,14 @@ const GeminiChat: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [typingDot, setTypingDot] = useState(0);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
     setMessages([...messages, { from: 'user', text: input }]);
     setLoading(true);
+    setInput('');
     try {
       const res = await fetch('/.netlify/functions/gemini-chat', {
         method: 'POST',
@@ -26,9 +29,22 @@ const GeminiChat: React.FC = () => {
     } catch {
       setMessages(msgs => [...msgs, { from: 'ai', text: 'Terjadi kesalahan.' }]);
     }
-    setInput('');
     setLoading(false);
   };
+
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
+
+  // Animated typing indicator
+  useEffect(() => {
+    if (!loading) return;
+    const interval = setInterval(() => {
+      setTypingDot(d => (d + 1) % 4);
+    }, 400);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   return (
     <div style={{ maxWidth: 350, minWidth: 260, background: '#fff', borderRadius: 16, boxShadow: '0 4px 24px rgba(0,0,0,0.13)', padding: 16, position: 'relative' }}>
@@ -48,7 +64,32 @@ const GeminiChat: React.FC = () => {
             }}>{msg.text}</span>
           </div>
         ))}
-        {loading && <div style={{ color: '#888', fontSize: '0.95em' }}>Mengetik...</div>}
+        {loading && (
+          <div style={{ color: '#888', fontSize: '0.95em', display: 'flex', alignItems: 'center', height: 24 }}>
+            <span>Mengetik</span>
+            <span style={{ display: 'inline-block', width: 24, marginLeft: 2 }}>
+              <span style={{
+                display: 'inline-block',
+                width: 5, height: 5, borderRadius: '50%', background: '#bbb', margin: '0 1px',
+                opacity: typingDot === 0 ? 1 : 0.3,
+                transition: 'opacity 0.2s'
+              }}></span>
+              <span style={{
+                display: 'inline-block',
+                width: 5, height: 5, borderRadius: '50%', background: '#bbb', margin: '0 1px',
+                opacity: typingDot === 1 ? 1 : 0.3,
+                transition: 'opacity 0.2s'
+              }}></span>
+              <span style={{
+                display: 'inline-block',
+                width: 5, height: 5, borderRadius: '50%', background: '#bbb', margin: '0 1px',
+                opacity: typingDot === 2 ? 1 : 0.3,
+                transition: 'opacity 0.2s'
+              }}></span>
+            </span>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
       <div style={{ display: 'flex', gap: 6 }}>
         <input
