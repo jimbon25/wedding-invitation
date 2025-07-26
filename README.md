@@ -1,11 +1,15 @@
 # Wedding Invitation
 
 This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
+- **Screenshot:**
+
+<p align="center">
+<img src="public/images/screenshoot/ss.jpg" width="500" alt="Screenshot 1"/>
+</p>
 
 ## Table of Contents
 
 - [Main Features](#main-features)
-- [Screenshot](#screenshot)
 - [Languages & Frameworks](#languages--frameworks)
 - [How to Download](#how-to-download)
 - [How to Run](#how-to-run)
@@ -33,12 +37,6 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Scroll to Top Button**: Easy navigation to the top of the page.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
 
-## Screenshot
-Here are some screenshots of the application:
-
-<p align="center">
-<img src="public/images/screenshoot/ss.jpg" width="500" alt="Screenshot 1"/>
-</p>
 
 ## Languages & Frameworks
 
