@@ -15,14 +15,10 @@ const Gallery: React.FC = () => {
     { src: '/images/gallery/g2.webp' },
     { src: '/images/gallery/g3.webp' },
     { src: '/images/gallery/g4.webp' },
-    { src: '/images/gallery/g5.webp' },
-    { src: '/images/gallery/g6.webp' },
     { src: '/images/gallery/g7.webp' },
     { src: '/images/gallery/g8.webp' },
     { src: '/images/gallery/g9.webp' },
     { src: '/images/gallery/g10.webp' },
-    { src: '/images/gallery/g11.webp' },
-    { src: '/images/gallery/g12.webp' },
   ];
 
   const midPoint = Math.ceil(allImages.length / 2);
