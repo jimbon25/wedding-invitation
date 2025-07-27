@@ -183,7 +183,7 @@ const RSVPForm: React.FC = () => {
           )}
           <div className="mb-3">
             <ReCAPTCHA
-              sitekey="6Lc4gZArAAAAAARCTuzL03hW6DtWcD-QUcFcyCXv"
+              sitekey="6LeahZArAAAAAD46TApigkNmPwS7qMCuLt8EAUG9"
               onChange={token => {
                 setCaptchaToken(token);
                 setCaptchaError('');
