@@ -16,7 +16,7 @@
   <img src="https://img.shields.io/github/last-commit/jimbon25/wedding-invitation?logo=github" alt="Last Commit" />
 </p>
 
-This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
+This digital wedding invitation app is built with React, TypeScript, providing a seamless, interactive, and responsive experience for all guests. It features personalized invitations, RSVP and guest book forms protected by Google reCAPTCHA, and all submissions are securely sent to Discord via serverless functions. The app also includes a photo gallery, event details, gift and accommodation info, and a floating Gemini AI chat for instant Q&A. All guest interactions are processed securely, and the modern UI ensures accessibility and ease of use across devices.
 - **Screenshot:**
 
 <p align="center">
@@ -48,20 +48,20 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Our Story**: The couple's journey and love story.
 - **Event Details**: Information about time, location, and agenda.
 - **Gallery**: Prewedding and special moment photos.
-- **RSVP Confirmation**: Form for guests to confirm attendance, number of guests, and food preferences. Data is sent to Discord via Netlify Function. **Protected by Google reCAPTCHA to prevent spam bots.**
+- **RSVP Confirmation**: Form for guests to confirm attendance. Data is sent to Discord via Netlify Function. **Protected by Google reCAPTCHA to prevent spam bots.**
 - **Guest Book**: Guests can leave messages and wishes. **Protected by Google reCAPTCHA to prevent spam bots.**
 - **Gift Info & Registry**: Bank account, e-wallet, and gift registry information.
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
-- **Scroll to Top Button**: Easy navigation to the top of the page.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
-- **Gemini AI Chat**: Floating Gemini icon with AI chat bubble, allowing guests to ask questions about the wedding invitation and get instant answers powered by Google Gemini AI.
+- **Gemini AI Chat**: Floating Gemini AI Chat for instant Q&A about the event.
+
 
 
 ## Languages & Frameworks
 
 - TypeScript
 - React
-- Node.js (Netlify Functions)
+- Node.js
 - Bootstrap 5 & Bootstrap Icons
 - AOS (Animate On Scroll)
 - Slick Carousel (for gallery)
