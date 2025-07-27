@@ -1,5 +1,21 @@
 # Wedding Invitation
 
+<!-- Badges -->
+<p align="left">
+  <!-- Netlify Deploy Status Badge -->
+  <a href="https://app.netlify.com/projects/wedding-invitation-dn/deploys">
+    <img src="https://api.netlify.com/api/v1/badges/7ed1979a-a91d-47b6-b442-0debc1cbb755/deploy-status" alt="Netlify Status" />
+  </a>
+  <!-- License Badge -->
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License" />
+  </a>
+  <!-- Node.js Version Badge -->
+  <img src="https://img.shields.io/badge/node.js-16%20%7C%2018%20%7C%2020-brightgreen" alt="Node.js Version" />
+  <!-- Last Commit Badge -->
+  <img src="https://img.shields.io/github/last-commit/jimbon25/wedding-invitation?logo=github" alt="Last Commit" />
+</p>
+
 This is a digital wedding invitation app for Dimas & Niken, built with React, TypeScript, and Netlify Functions. The website is designed to be interactive, responsive, and user-friendly for all guests.
 - **Screenshot:**
 
@@ -12,7 +28,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 
 - [Main Features](#main-features)
 - [Languages & Frameworks](#languages--frameworks)
-- [How to Download](#how-to-download)
+- [Download](#download)
 - [How to Run](#how-to-run)
 - [Gemini AI Chat Setup](#gemini-ai-chat-setup)
 - [Deployment](#deployment)
@@ -51,7 +67,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - Slick Carousel (for gallery)
 
 
-## How to Download
+## Download
 
 
 You can download or clone this repository using Git:
@@ -71,8 +87,8 @@ Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the
 
 ## How to Run
 
-1. Clone this repository ([GitHub Docs: Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
-2. Install dependencies ([npm Docs: install command](https://docs.npmjs.com/cli/v10/commands/npm-install)):
+1. Clone this repository ([Wedding-invitation](https://github.com/jimbon25/wedding-invitation.git))
+2. Install dependencies:
    ```bash
    npm install
    ```
