@@ -32,8 +32,8 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 - **Our Story**: The couple's journey and love story.
 - **Event Details**: Information about time, location, and agenda.
 - **Gallery**: Prewedding and special moment photos.
-- **RSVP Confirmation**: Form for guests to confirm attendance, number of guests, and food preferences. Data is sent to Discord via Netlify Function.
-- **Guest Book**: Guests can leave messages and wishes.
+- **RSVP Confirmation**: Form for guests to confirm attendance, number of guests, and food preferences. Data is sent to Discord via Netlify Function. **Protected by Google reCAPTCHA to prevent spam bots.**
+- **Guest Book**: Guests can leave messages and wishes. **Protected by Google reCAPTCHA to prevent spam bots.**
 - **Gift Info & Registry**: Bank account, e-wallet, and gift registry information.
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
 - **Scroll to Top Button**: Easy navigation to the top of the page.
@@ -53,6 +53,7 @@ This is a digital wedding invitation app for Dimas & Niken, built with React, Ty
 
 ## How to Download
 
+
 You can download or clone this repository using Git:
 
 **Linux / macOS:**
@@ -70,8 +71,8 @@ Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the
 
 ## How to Run
 
-1. Clone this repository
-2. Install dependencies:
+1. Clone this repository ([GitHub Docs: Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
+2. Install dependencies ([npm Docs: install command](https://docs.npmjs.com/cli/v10/commands/npm-install)):
    ```bash
    npm install
    ```
@@ -86,7 +87,8 @@ Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the
 
 ## Gemini AI Chat Setup
 
-To enable the Gemini AI Chat feature:
+
+To enable the Gemini AI Chat feature ([Google Gemini API Docs](https://ai.google.dev/gemini-api/docs/get-started)):
 
 1. Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 2. In your Netlify or Vercel dashboard, add a new environment variable:
@@ -105,14 +107,14 @@ To enable the Gemini AI Chat feature:
 
 
 ### Netlify
-1. Make sure you have a Netlify account.
+1. Make sure you have a Netlify account ([Netlify Docs: Getting Started](https://docs.netlify.com/get-started/)).
 2. Click "New site from Git" and connect to this repository.
 3. Set the environment variable `DISCORD_WEBHOOK_URL` in the Netlify dashboard.
 4. Build command: `npm run build`, publish directory: `build`.
 5. Deploy and your app is ready to use.
 
 ### Vercel
-1. Make sure you have a Vercel account and your repo is pushed to GitHub.
+1. Make sure you have a Vercel account ([Vercel Docs: Getting Started](https://vercel.com/docs/get-started)) and your repo is pushed to GitHub.
 2. Import the project from GitHub to Vercel.
 3. Set the environment variable `DISCORD_WEBHOOK_URL` in the Vercel dashboard (Project Settings > Environment Variables).
 4. Build command: `npm run build`, output directory: `build`, install command: `npm install`.
@@ -126,22 +128,37 @@ To enable the Gemini AI Chat feature:
 
 ## Environment Configuration
 
-Add a `.env` file in the project root for the Discord webhook:
+
+### Environment Variables
+
+
+Set the following environment variables in your Netlify ([Netlify Docs: Environment Variables](https://docs.netlify.com/configure-builds/environment-variables/)) or Vercel ([Vercel Docs: Environment Variables](https://vercel.com/docs/projects/environment-variables)) dashboard:
+
 ```
 DISCORD_WEBHOOK_URL=your_webhook_url
+GEMINI_API_KEY=your_gemini_api_key
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
 ```
+
+**RECAPTCHA_SECRET_KEY** is obtained from the Google reCAPTCHA dashboard (use the v2 secret key, not the site key!).
+
+**Note:** Never put your secret key in the frontend code.
+
+**Google reCAPTCHA:** [Register and get your keys here](https://www.google.com/recaptcha/admin/create)
 
 
 ## Troubleshooting
 
-- **RSVP/Guest Book not sent to Discord:**
-  - Make sure the `DISCORD_WEBHOOK_URL` environment variable is set and correct in the Netlify dashboard.
-  - Ensure your Discord webhook is still active and not deleted.
+- **RSVP/Guest Book not sent to Discord:** ([Netlify Functions Docs](https://docs.netlify.com/functions/overview/))
+  - Make sure the `DISCORD_WEBHOOK_URL` environment variable is correct in the Netlify dashboard.
+  - Make sure the Discord webhook is still active.
   - Check Netlify Functions logs for detailed errors.
+  - If you get a captcha-related error, make sure the `RECAPTCHA_SECRET_KEY` environment variable is correct and the site key in the frontend is from reCAPTCHA v2.
 
 - **Build failed on Netlify:**
-  - Make sure all dependencies are installed correctly.
-  - Check the Node.js version used on Netlify and match it with your project's supported version.
+  - Make sure all dependencies are installed.
+  - Check the Node.js version in Netlify matches the project recommendation.
+  - If you get a reCAPTCHA "Invalid key type" error, make sure the site key used is v2 (not v3/invisible).
 
 - **App is not accessible:**
   - Make sure your Netlify domain is active and there are no DNS issues.
@@ -153,7 +170,8 @@ DISCORD_WEBHOOK_URL=your_webhook_url
 
 ## Node.js Version
 
-Recommended Node.js versions: **16.x**, **18.x**, or **20.x**
+
+Recommended Node.js versions: **16.x**, **18.x**, or **20.x** ([Node.js Downloads](https://nodejs.org/en/download/))
 
 Make sure your local and Netlify environment use one of these versions for best compatibility.
 
