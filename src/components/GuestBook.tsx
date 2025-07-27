@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 
 const GuestBook: React.FC = () => {
@@ -6,6 +7,8 @@ const GuestBook: React.FC = () => {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState('');
 
   // State for validation errors
   const [nameError, setNameError] = useState('');
@@ -17,6 +20,7 @@ const GuestBook: React.FC = () => {
     setSubmitStatus(null);
     setNameError('');
     setMessageError('');
+    setCaptchaError('');
 
     let isValid = true;
 
@@ -30,7 +34,25 @@ const GuestBook: React.FC = () => {
       isValid = false;
     }
 
+    if (!captchaToken) {
+      setCaptchaError('Mohon verifikasi captcha.');
+      isValid = false;
+    }
+
     if (!isValid) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Verifikasi captcha ke backend
+    const verifyRes = await fetch('/.netlify/functions/verify-recaptcha', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: captchaToken })
+    });
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success) {
+      setCaptchaError('Verifikasi captcha gagal. Silakan coba lagi.');
       setIsSubmitting(false);
       return;
     }
@@ -68,6 +90,7 @@ const GuestBook: React.FC = () => {
         setSubmitStatus('success');
         setName('');
         setMessage('');
+        setCaptchaToken(null);
       } else {
         setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon coba lagi.');
         setSubmitStatus('error');
@@ -109,6 +132,16 @@ const GuestBook: React.FC = () => {
               onChange={(e) => setMessage(e.target.value)}
             ></textarea>
             {messageError && <div className="invalid-feedback">{messageError}</div>}
+          </div>
+          <div className="mb-3">
+            <ReCAPTCHA
+              sitekey="6Lc4gZArAAAAAARCTuzL03hW6DtWcD-QUcFcyCXv"
+              onChange={(token: string | null) => {
+                setCaptchaToken(token);
+                setCaptchaError('');
+              }}
+            />
+            {captchaError && <div className="text-danger mt-2">{captchaError}</div>}
           </div>
           <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
             {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}

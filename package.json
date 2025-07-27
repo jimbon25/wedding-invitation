@@ -17,6 +17,7 @@
     "node-fetch": "^2.6.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-router-dom": "^7.6.3",
     "react-scripts": "^5.0.1",
     "react-slick": "^0.30.3",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
+    "@types/react-google-recaptcha": "^2.1.9",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-slick": "^0.23.13"
   },
