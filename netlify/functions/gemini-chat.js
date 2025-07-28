@@ -9,9 +9,8 @@ Jika ada pertanyaan tentang siapa yang buat ai ini jawab dimas yang membuatnya. 
 
 - Nama mempelai: Dimas Luis Aditya & Niken Aristania Fitri
 - Tanggal acara: Sabtu, 25 Juli 2026
-- Lokasi: Kepuhkembeng, Dusun klagen, Kec. Peterongan, Kabupaten Jombang, Jawa Timur
+- Lokasi: Masjid Agung Baitul Mukminin, Jl. KH. A. Dahlan No.28, Jombatan, Kec. Jombang, Kabupaten Jombang, Jawa Timur 61419
 - Waktu acara: 10.00 WIB - selesai
-- Live streaming: Tersedia link live streaming di halaman Event Details
 - Gift Info & Gift Registry:
   - Bank BCA a.n. Dimas Luis Aditya 1234567890
   - Saweria: https://saweria.co/dimasla

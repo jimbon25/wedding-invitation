@@ -5,12 +5,12 @@ const EventDetails: React.FC = () => {
   // Replace with your actual wedding date, time, location, and address
   const weddingDateText = "Sabtu, 25 Juli 2026";
   const weddingTimeText = "10:00 AM - Selesai";
-  const venueName = "Kepuhkembeng";
-  const venueAddress = "Kepuhkembeng, Kec. Peterongan, Kabupaten Jombang, Jawa Timur";
+  const venueName = "Masjid Agung Baitul Mukminin ";
+  const venueAddress = "Jl. KH. A. Dahlan No.28, Jombatan, Kec. Jombang, Kabupaten Jombang, Jawa Timur 61419";
 
   // IMPORTANT: Replace this with your Google Maps embed URL
   // Go to Google Maps, search for your venue, click 'Share', then 'Embed a map', and copy the src URL.
-  const googleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1245.838069249515!2d112.25597325688064!3d-7.543369577526712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1752212567943!5m2!1sid!2sid";
+  const googleMapsEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2156.5709343839785!2d112.23215068201172!3d-7.556604254007488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7840220123f1ad%3A0x937bb9770f73e064!2sMasjid%20Agung%20Baitul%20Mukminin%20Kabupaten%20Jombang!5e0!3m2!1sid!2sid!4v1753665752204!5m2!1sid!2sid";
 
   // Function to format date for ICS
   const formatDateToICS = (date: Date) => {
