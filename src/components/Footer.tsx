@@ -40,10 +40,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
             <p className="text-muted mb-0" style={{ fontSize: '0.82rem', color: 'var(--light-text-color)', fontFamily: 'Playfair Display, serif', fontWeight: 500 }}>
-              &copy; {new Date().getFullYear()} Dimas & Niken Wedding Invitation. All Rights Reserved.
-            </p>
-            <p className="text-muted mb-0" style={{ fontSize: '0.98rem', color: 'var(--light-text-color)', fontFamily: 'Dancing Script, cursive', fontWeight: 600, letterSpacing: '0.5px' }}>
-              Designed with ❤️ for a beautiful beginning.
+              &copy; {new Date().getFullYear()} Dimas & Niken Wedding.
             </p>
           </div>
         </div>
