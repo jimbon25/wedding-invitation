@@ -43,6 +43,7 @@ This digital wedding invitation app is built with React, TypeScript, providing a
 
 ## Main Features
 
+
 - **Cover Screen**: Personalized opening screen with guest name from URL.
 - **Countdown**: Countdown timer to the wedding day.
 - **Our Story**: The couple's journey and love story.
@@ -154,9 +155,12 @@ Set the following environment variables in your Netlify ([Netlify Docs: Environm
 DISCORD_WEBHOOK_URL=your_webhook_url
 GEMINI_API_KEY=your_gemini_api_key
 RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
 ```
 
 **RECAPTCHA_SECRET_KEY** is obtained from the Google reCAPTCHA dashboard (use the v2 secret key, not the site key!).
+
 
 **Note:** Never put your secret key in the frontend code.
 
@@ -258,20 +262,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Slick Carousel](https://kenwheeler.github.io/slick/)
 - [Netlify](https://www.netlify.com/)
 - [Discord](https://discord.com/)
-
----
-
-## Update July 2025
-
-- **Vercel Compatibility:**
-  - The app now supports deployment on both Netlify and Vercel. All serverless endpoints (for Discord, Telegram, and reCAPTCHA) are auto-selected based on the deployment environment.
-  - API routes for Telegram and reCAPTCHA are available in both `netlify/functions/` (Netlify) and `api/` (Vercel).
-- **Telegram Integration:**
-  - RSVP and Guestbook submissions are now sent to both Discord (via webhook) and Telegram (via bot), with message formats tailored for each platform.
-  - Environment variables required: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` (and `RECAPTCHA_SECRET_KEY` for reCAPTCHA verification).
-- **No Breaking Changes:**
-  - Existing Discord and reCAPTCHA logic is preserved. No changes are needed to your workflow if you only use Netlify.
-- **Security:**
-  - reCAPTCHA is always verified server-side before any notification is sent, protecting against spam and bots.
-
-See the code and comments for details on how endpoints are selected and how to configure environment variables for both platforms.
