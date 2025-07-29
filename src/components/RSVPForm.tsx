@@ -54,18 +54,23 @@ const RSVPForm: React.FC = () => {
       return;
     }
 
-    // Verifikasi captcha ke backend
-    const verifyRes = await fetch('/.netlify/functions/verify-recaptcha', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: captchaToken })
-    });
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success) {
-      setCaptchaError('Verifikasi captcha gagal. Silakan coba lagi.');
-      setIsSubmitting(false);
-      return;
-    }
+        // Pilih endpoint reCAPTCHA sesuai environment
+        const recaptchaEndpoint = window.location.hostname.includes('vercel.app')
+          ? '/api/verify-recaptcha'
+          : '/.netlify/functions/verify-recaptcha';
+
+        // Verifikasi captcha ke backend
+        const verifyRes = await fetch(recaptchaEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: captchaToken })
+        });
+        const verifyData = await verifyRes.json();
+        if (!verifyData.success) {
+          setCaptchaError('Verifikasi captcha gagal. Silakan coba lagi.');
+          setIsSubmitting(false);
+          return;
+        }
 
     const payload = {
       embeds: [
@@ -98,16 +103,22 @@ const RSVPForm: React.FC = () => {
         body: JSON.stringify(payload),
       });
 
-      // Kirim ke Telegram (tidak menunggu hasil, agar tidak mengganggu UX)
-      fetch('/.netlify/functions/send-telegram-message', {
+      // Kirim ke Telegram (format khusus RSVP, tidak menunggu hasil)
+          const telegramEndpoint = window.location.hostname.includes('vercel.app')
+            ? '/api/send-telegram-message'
+            : '/.netlify/functions/send-telegram-message';
+
+          fetch(telegramEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          type: 'rsvp',
           nama: name,
           kehadiran: attendance,
           jumlahTamu: guests,
+          preferensiMakanan: foodPreference,
           pesan: message
         }),
       });

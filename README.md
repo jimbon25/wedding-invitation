@@ -16,7 +16,7 @@
   <img src="https://img.shields.io/github/last-commit/jimbon25/wedding-invitation?logo=github" alt="Last Commit" />
 </p>
 
-This digital wedding invitation app is built with React, TypeScript, providing a seamless, interactive, and responsive experience for all guests. It features personalized invitations, RSVP and guest book forms protected by Google reCAPTCHA, and all submissions are securely sent to Discord via serverless functions. The app also includes a photo gallery, event details, gift and accommodation info, and a floating Gemini AI chat for instant Q&A. All guest interactions are processed securely, and the modern UI ensures accessibility and ease of use across devices.
+This digital wedding invitation app is built with React, TypeScript, providing a seamless, interactive, and responsive experience for all guests. It features personalized invitations, RSVP and guest book forms protected by Google reCAPTCHA, and all submissions are securely sent to Discord via serverless functions, as well as to Telegram via bot integration. The app supports both Netlify and Vercel deployments, with all serverless endpoints (Discord, Telegram, reCAPTCHA) auto-selected based on the environment. The app also includes a photo gallery, event details, gift and accommodation info, and a floating Gemini AI chat for instant Q&A. All guest interactions are processed securely, and the modern UI ensures accessibility and ease of use across devices.
 - **Screenshot:**
 
 <p align="center">
@@ -258,3 +258,20 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Slick Carousel](https://kenwheeler.github.io/slick/)
 - [Netlify](https://www.netlify.com/)
 - [Discord](https://discord.com/)
+
+---
+
+## Update July 2025
+
+- **Vercel Compatibility:**
+  - The app now supports deployment on both Netlify and Vercel. All serverless endpoints (for Discord, Telegram, and reCAPTCHA) are auto-selected based on the deployment environment.
+  - API routes for Telegram and reCAPTCHA are available in both `netlify/functions/` (Netlify) and `api/` (Vercel).
+- **Telegram Integration:**
+  - RSVP and Guestbook submissions are now sent to both Discord (via webhook) and Telegram (via bot), with message formats tailored for each platform.
+  - Environment variables required: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` (and `RECAPTCHA_SECRET_KEY` for reCAPTCHA verification).
+- **No Breaking Changes:**
+  - Existing Discord and reCAPTCHA logic is preserved. No changes are needed to your workflow if you only use Netlify.
+- **Security:**
+  - reCAPTCHA is always verified server-side before any notification is sent, protecting against spam and bots.
+
+See the code and comments for details on how endpoints are selected and how to configure environment variables for both platforms.
