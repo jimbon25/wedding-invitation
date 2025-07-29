@@ -77,12 +77,25 @@ const GuestBook: React.FC = () => {
       : '/.netlify/functions/send-discord-message';
 
     try {
+      // Kirim ke Discord
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
+      });
+
+      // Kirim ke Telegram (tidak menunggu hasil, agar tidak mengganggu UX)
+      fetch('/.netlify/functions/send-telegram-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nama: name,
+          pesan: message
+        }),
       });
 
       if (response.ok) {
