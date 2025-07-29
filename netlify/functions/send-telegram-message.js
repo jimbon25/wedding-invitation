@@ -20,9 +20,17 @@ exports.handler = async function(event, context) {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
-  // Format pesan, sesuaikan dengan kebutuhan RSVP/Guestbook
-  const { nama, kehadiran, jumlahTamu, pesan } = body;
-  const text = `RSVP Baru:\nNama: ${nama || '-'}\nKehadiran: ${kehadiran || '-'}\nJumlah Tamu: ${jumlahTamu || '-'}\nPesan: ${pesan || '-'}`;
+  // Format pesan sesuai tipe
+  let text = '';
+  if (body.type === 'rsvp') {
+    const { nama, kehadiran, jumlahTamu, preferensiMakanan, pesan } = body;
+    text = `RSVP Baru:\nNama: ${nama || '-'}\nKehadiran: ${kehadiran || '-'}\nJumlah Tamu: ${jumlahTamu || '-'}\nPreferensi Makanan: ${preferensiMakanan || '-'}\nPesan: ${pesan || '-'}`;
+  } else if (body.type === 'guestbook') {
+    const { nama, pesan } = body;
+    text = `Guestbook Baru:\nNama: ${nama || '-'}\nPesan: ${pesan || '-'}`;
+  } else {
+    text = 'Pesan tidak diketahui sumbernya.';
+  }
 
   try {
     const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
