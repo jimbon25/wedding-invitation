@@ -131,7 +131,8 @@ exports.handler = async function(event, context) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: TELEGRAM_CHAT_ID,
-        text
+        text,
+        parse_mode: 'Markdown'
       })
     });
     const data = await response.json();
