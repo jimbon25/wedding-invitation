@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import StoryItem from './StoryItem';
 
 const Home: React.FC = () => {
@@ -42,25 +43,48 @@ const Home: React.FC = () => {
         <StoryItem delay="0.2s"><h2 className="text-white">Wedding Invitation</h2></StoryItem>
         <StoryItem delay="0.4s"><p className="lead text-white">Bergabunglah bersama kami merayakan hari istimewa kami!</p></StoryItem>
 
-        <StoryItem delay="0.6s"><h3 className="text-white mt-5">Countdown</h3></StoryItem>
-        <StoryItem delay="0.8s">
+        <StoryItem delay="0.7s"><h3 className="text-white mt-5">Countdown</h3></StoryItem>
+        <StoryItem delay="0.9s">
           <div className="d-flex justify-content-center gap-3 countdown-container">
-            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.days}</h4>
               <p>Hari</p>
             </div>
-            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.hours}</h4>
               <p>Jam</p>
             </div>
-            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.minutes}</h4>
               <p>Menit</p>
             </div>
-            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'rgba(255,255,255,0.08)' }}>
+            <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.seconds}</h4>
               <p>Detik</p>
             </div>
+          </div>
+        </StoryItem>
+        <StoryItem delay="1.1s">
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
+            <Link
+              to="/rsvp-guestbook"
+              className="btn btn-primary"
+              style={{
+                fontWeight: 500,
+                fontSize: '0.85rem',
+                borderRadius: '30px',
+                padding: '7px 18px',
+                boxShadow: '0 2px 12px rgba(85,107,47,0.10)',
+                background: 'rgba(255,255,255,0.08)',
+                border: '2px solid #556B2F',
+                color: '#fff',
+                backdropFilter: 'blur(2px)',
+                transition: 'background 0.2s, color 0.2s',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Menuju RSVP & Buku Tamu
+            </Link>
           </div>
         </StoryItem>
       </div>
