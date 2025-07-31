@@ -187,7 +187,7 @@ const RSVPForm: React.FC = () => {
 
   return (
     <div>
-      <ToastNotification show={showToast} message={toastMsg} type={submitStatus === 'success' ? 'success' : 'error'} onClose={() => setShowToast(false)} />
+      <ToastNotification show={showToast} message={toastMsg} />
       <StoryItem><h2>Konfirmasi Kehadiran</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon beritahu kami jika Anda bisa hadir!</p></StoryItem>
       <StoryItem delay="0.4s">

@@ -173,7 +173,7 @@ const GuestBook: React.FC = () => {
 
   return (
     <div>
-      <ToastNotification show={showToast} message={toastMsg} type={submitStatus === 'success' ? 'success' : 'error'} onClose={() => setShowToast(false)} />
+      <ToastNotification show={showToast} message={toastMsg} />
       <StoryItem><h2>Buku Tamu</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon tinggalkan harapan dan pesan Anda untuk Dimas & Niken!</p></StoryItem>
       <StoryItem delay="0.4s">
