@@ -41,8 +41,8 @@ This digital wedding invitation app is built with React, TypeScript, providing a
 - [Acknowledgements](#acknowledgements)
 
 
-## Main Features
 
+## Main Features
 
 - **Cover Screen**: Personalized opening screen with guest name from URL.
 - **Countdown**: Countdown timer to the wedding day.
@@ -55,8 +55,7 @@ This digital wedding invitation app is built with React, TypeScript, providing a
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
 - **Gemini AI Chat**: Floating Gemini AI Chat for instant Q&A about the event.
-
-
+- **Visit Tracking**: Every guest visit is tracked (timestamp, session ID, referrer, IP, user agent) for analytics and anti-abuse, sent securely to Telegram via serverless function.
 
 ## Languages & Frameworks
 
@@ -146,8 +145,8 @@ To enable the Gemini AI Chat feature ([Google Gemini API Docs](https://ai.google
 ## Environment Configuration
 
 
-### Environment Variables
 
+### Environment Variables & Tracking
 
 Set the following environment variables in your Netlify ([Netlify Docs: Environment Variables](https://docs.netlify.com/configure-builds/environment-variables/)) or Vercel ([Vercel Docs: Environment Variables](https://vercel.com/docs/projects/environment-variables)) dashboard:
 
@@ -162,7 +161,11 @@ TELEGRAM_CHAT_ID=your_telegram_chat_id
 **RECAPTCHA_SECRET_KEY** is obtained from the Google reCAPTCHA dashboard (use the v2 secret key, not the site key!).
 
 
+
 **Note:** Never put your secret key in the frontend code.
+
+**Visit Tracking:**
+Every time a guest opens the invitation, a visit is tracked and sent to the backend (timestamp, session ID, referrer, IP, user agent). This helps with analytics, anti-abuse, and monitoring. Data is sent securely to Telegram via serverless function and is never exposed to the frontend.
 
 **Google reCAPTCHA:** [Register and get your keys here](https://www.google.com/recaptcha/admin/create)
 
