@@ -18,6 +18,19 @@ const GuestBook: React.FC = () => {
   const [messageError, setMessageError] = useState('');
 
   // Confetti/check animation
+  // Guestbook list (dummy, bisa fetch dari backend/Discord/Telegram API)
+  const [guestbookList, setGuestbookList] = useState([
+    { name: 'Andi', message: 'Selamat menempuh hidup baru! 🎉', source: 'Telegram' },
+    { name: 'Budi', message: 'Semoga bahagia selalu.', source: 'Discord' }
+    // TODO: fetch dari backend jika ada API
+  ]);
+
+  // Jika ingin fetch dari backend, gunakan useEffect di sini
+  // useEffect(() => {
+  //   fetch('/api/guestbook')
+  //     .then(res => res.json())
+  //     .then(data => setGuestbookList(data));
+  // }, []);
   const confettiRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (submitStatus === 'success') {
@@ -151,6 +164,11 @@ const GuestBook: React.FC = () => {
         setName('');
         setMessage('');
         setCaptchaToken(null);
+        // Tambahkan pesan baru ke list (dummy, update jika fetch dari backend)
+        setGuestbookList(prev => [
+          { name, message, source: 'Kamu' },
+          ...prev
+        ]);
       } else if (response.status === 429) {
         setMessage('Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
         setSubmitStatus('error');
@@ -250,6 +268,22 @@ const GuestBook: React.FC = () => {
           </div>
         </StoryItem>
       )}
+
+      {/* List Guestbook (Telegram & Discord) */}
+      <StoryItem delay="0.8s">
+        <h5 className="mt-4 mb-2">Ucapan Tamu</h5>
+        <ul className="list-group">
+          {guestbookList.length === 0 && (
+            <li className="list-group-item text-muted">Belum ada ucapan.</li>
+          )}
+          {guestbookList.map((item, idx) => (
+            <li className="list-group-item" key={idx}>
+              <span className="fw-bold">{item.name}</span>: {item.message}
+              <span className="badge bg-secondary ms-2" style={{fontSize:'0.8em'}}>{item.source}</span>
+            </li>
+          ))}
+        </ul>
+      </StoryItem>
     </div>
   );
 };
