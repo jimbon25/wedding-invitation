@@ -397,6 +397,13 @@ h3 {
 .img-fluid {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.gallery-slider .img-fluid:hover, .gallery-slider .img-fluid:focus {
+  transform: scale(1.07);
+  box-shadow: 0 8px 24px rgba(85,107,47,0.18);
+  z-index: 2;
 }
 
 .main-content {

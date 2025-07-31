@@ -124,8 +124,9 @@ const Gallery: React.FC = () => {
             </button>
           </div>
           {/* Top Slider */}
+
           <StoryItem delay="0.4s">
-            <Slider {...finalSettings}>
+            <Slider {...finalSettings} className="gallery-slider">
               {imagesTop.map((image, idx) => (
                 <div key={idx} className="p-2" onClick={() => handleImageClick(idx)}>
                   <img src={image.src} className="img-fluid rounded shadow-sm" alt={`Couple's moment ${idx + 1}`} loading="lazy" />
@@ -135,8 +136,9 @@ const Gallery: React.FC = () => {
           </StoryItem>
 
           {/* Bottom Slider */}
+
           <StoryItem delay="0.6s">
-            <Slider {...finalSettings}>
+            <Slider {...finalSettings} className="gallery-slider">
               {imagesBottom.map((image, idx) => (
                 <div key={idx} className="p-2" onClick={() => handleImageClick(midPoint + idx)}>
                   <img src={image.src} className="img-fluid rounded shadow-sm" alt={`Couple's moment ${midPoint + idx + 1}`} loading="lazy" />

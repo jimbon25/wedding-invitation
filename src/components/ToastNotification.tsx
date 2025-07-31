@@ -15,7 +15,7 @@ const ToastNotification: React.FC<ToastNotificationProps> = ({ show, message }) 
         bottom: 40,
         transform: 'translateX(-50%)',
         zIndex: 20000,
-        background: 'rgba(40,40,40,0.95)',
+        background: '#556B2F',
         color: '#fff',
         padding: '10px 22px',
         borderRadius: 20,
