@@ -31,6 +31,7 @@ const FloatingMenu: React.FC = () => {
 
   // Drag logic (touch/mobile)
   const onTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
     setDragging(true);
     const touch = e.touches[0];
     offset.current = {
@@ -39,8 +40,8 @@ const FloatingMenu: React.FC = () => {
     };
   };
   const onTouchMove = (e: React.TouchEvent) => {
-    if (!dragging) return;
     e.preventDefault();
+    if (!dragging) return;
     const touch = e.touches[0];
     setPos({
       x: touch.clientX - offset.current.x,
@@ -122,6 +123,7 @@ const FloatingMenu: React.FC = () => {
           transition: 'background 0.2s, box-shadow 0.2s, width 0.22s, height 0.22s, font-size 0.22s',
           backdropFilter: 'blur(2px)',
           position: 'relative',
+          touchAction: 'none',
         }}
       >
         <i
