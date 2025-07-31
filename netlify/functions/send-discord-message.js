@@ -97,6 +97,24 @@ exports.handler = async function(event, context) {
             discordPayload = {
                 content: `📖 Buku Tamu Baru\n👤 Nama: ${data.name || '-'}\n💬 Pesan: ${data.message || '-'}`
             };
+        } else if (data.type === 'rsvp') {
+            // RSVP: gunakan embed Discord agar lebih rapi
+            discordPayload = {
+                embeds: [
+                  {
+                    title: 'Konfirmasi Kehadiran Pernikahan Baru',
+                    color: 65280,
+                    fields: [
+                      { name: 'Nama', value: data.name || '-', inline: true },
+                      { name: 'Kehadiran', value: data.attendance || '-', inline: true },
+                      { name: 'Jumlah Tamu', value: (data.guests !== undefined ? String(data.guests) : '-'), inline: true },
+                      { name: 'Preferensi Makanan', value: data.foodPreference || 'Tidak ditentukan', inline: true },
+                      { name: 'Pesan', value: data.message || '-', inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                  }
+                ]
+            };
         } else {
             // fallback: kirim semua data sebagai JSON string
             discordPayload = {
