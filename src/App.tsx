@@ -225,7 +225,7 @@ const App: React.FC = () => {
                   <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/gallery" onClick={() => setIsOpen(false)}><i className="bi bi-image-fill me-2"></i>Galeri</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp" onClick={() => setIsOpen(false)}><i className="bi bi-check-circle-fill me-2"></i>Konfirmasi Kehadiran</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp-guestbook" onClick={() => setIsOpen(false)}><i className="bi bi-check-circle-fill me-2"></i>RSVP & Buku Tamu</NavLink>
                 </li>
                 <li className="nav-item dropdown">
                   <button
@@ -241,7 +241,7 @@ const App: React.FC = () => {
                   {isOtherDropdownOpen && (
                     <ul className={`dropdown-menu show ${darkMode ? 'dropdown-menu-dark' : ''}`} aria-labelledby="navbarDropdown" style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', color: 'var(--navbar-text-dark, #fff)' } : {}}>
                       <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift me-2"></i>Informasi Hadiah</NavLink></li>
-                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li>
+                      {/* <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li> */}
                       <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>Akomodasi & Transportasi</NavLink></li>
                       <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>Daftar Hadiah</NavLink></li>
                     </ul>
