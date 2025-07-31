@@ -106,8 +106,8 @@ const GuestBook: React.FC = () => {
     // Payload untuk backend
     const payload = {
       type: 'guestbook',
-      nama: name.trim(),
-      pesan: message.trim(),
+      name: name.trim(),
+      message: message.trim(),
       captcha: captchaToken
     };
 
@@ -138,8 +138,8 @@ const GuestBook: React.FC = () => {
         },
         body: JSON.stringify({
           type: 'guestbook',
-          nama: name,
-          pesan: message
+          name: name,
+          message: message
         }),
       });
 
