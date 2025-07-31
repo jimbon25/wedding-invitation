@@ -237,6 +237,7 @@ const RSVPForm: React.FC = () => {
               onChange={(e) => setName(e.target.value)}
               inputMode="text"
               autoComplete="name"
+              maxLength={50}
               style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}
             />
             {nameError && <div className="invalid-feedback">{nameError}</div>}

@@ -3,6 +3,43 @@ const rateLimitMap = new Map();
 const RATE_LIMIT = 5; // max 5 requests
 const WINDOW_MS = 60 * 1000; // per 1 minute
 exports.handler = async function(event, context) {
+    // CORS strict
+    const ALLOWED_ORIGINS = [
+      'https://wedding-invitation-dn.netlify.app',
+      'http://localhost:3000' // opsional untuk dev
+    ];
+    const origin = event.headers.origin || '';
+    if (event.httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': origin,
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        },
+        body: ''
+      };
+    }
+    if (!ALLOWED_ORIGINS.includes(origin)) {
+      return {
+        statusCode: 403,
+        headers: { 'Access-Control-Allow-Origin': origin },
+        body: 'Forbidden: CORS'
+      };
+    }
+    // Helper: escape HTML
+    function sanitizeInput(str, maxLen = 300) {
+        if (typeof str !== 'string') return '';
+        let s = str.slice(0, maxLen);
+        s = s.replace(/[<>&'"`]/g, c => ({
+            '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&#39;', '"': '&quot;', '`': '&#96;'
+        }[c]));
+        return s;
+    }
+    function isValidName(name) {
+        return typeof name === 'string' && name.length <= 50 && /^[a-zA-Z .,'-]+$/.test(name);
+    }
+
     const { default: fetch } = await import('node-fetch'); // Dynamic import for node-fetch
 
     if (event.httpMethod !== 'POST') {
@@ -39,6 +76,20 @@ exports.handler = async function(event, context) {
 
     try {
         const data = JSON.parse(event.body);
+        // Validasi & sanitasi data
+        if (data.name && !isValidName(data.name)) {
+            return { statusCode: 400, body: 'Invalid name' };
+        }
+        if (data.message && typeof data.message === 'string' && data.message.length > 300) {
+            return { statusCode: 400, body: 'Message too long' };
+        }
+        // Escape input
+        if (data.name) data.name = sanitizeInput(data.name, 50);
+        if (data.message) data.message = sanitizeInput(data.message, 300);
+        // Escape all string fields in data (optional, for extra safety)
+        Object.keys(data).forEach(k => {
+            if (typeof data[k] === 'string') data[k] = sanitizeInput(data[k], 300);
+        });
 
         const response = await fetch(DISCORD_WEBHOOK_URL, {
             method: 'POST',

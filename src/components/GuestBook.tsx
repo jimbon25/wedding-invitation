@@ -52,6 +52,7 @@ const GuestBook: React.FC = () => {
   }, [submitStatus]);
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
@@ -59,11 +60,18 @@ const GuestBook: React.FC = () => {
     setMessageError('');
     setCaptchaError('');
 
+    // Blacklist kata kasar/spam/link sederhana
+    const blacklist = [
+      'anjing', 'babi', 'bangsat', 'kontol', 'memek', 'asu', 'tolol', 'goblok', 'http://', 'https://', 'www.', '.com', '.xyz', '.net', '.org', 'sex', 'porno', 'judi', 'slot', 'casino'
+    ];
+    if (blacklist.some(word => message.toLowerCase().includes(word))) {
+      setMessageError('Pesan mengandung kata yang tidak diperbolehkan.');
+      setIsSubmitting(false);
+      return;
+    }
+
     let isValid = true;
-
-
     // Validasi nama hanya huruf, spasi, titik, koma, dan tanda hubung
-    // NOTE: Jika target ES5, hapus flag 'u' pada regex berikut agar tidak error.
     const namePattern = /^[a-zA-Z .,'-]+$/;
     if (!name.trim()) {
       setNameError('Nama tidak boleh kosong.');
@@ -86,7 +94,8 @@ const GuestBook: React.FC = () => {
 
     if (!captchaToken) {
       setCaptchaError('Mohon verifikasi captcha.');
-      isValid = false;
+      setIsSubmitting(false);
+      return;
     }
 
     if (!isValid) {
@@ -94,36 +103,12 @@ const GuestBook: React.FC = () => {
       return;
     }
 
-        // Pilih endpoint reCAPTCHA sesuai environment
-        const recaptchaEndpoint = window.location.hostname.includes('vercel.app')
-          ? '/api/verify-recaptcha'
-          : '/.netlify/functions/verify-recaptcha';
-
-        // Verifikasi captcha ke backend
-        const verifyRes = await fetch(recaptchaEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: captchaToken })
-        });
-        const verifyData = await verifyRes.json();
-        if (!verifyData.success) {
-          setCaptchaError('Verifikasi captcha gagal. Silakan coba lagi.');
-          setIsSubmitting(false);
-          return;
-        }
-
+    // Payload untuk backend
     const payload = {
-      embeds: [
-        {
-          title: 'Entri Buku Tamu Baru',
-          color: 0x008080, // Teal color
-          fields: [
-            { name: 'Nama', value: name, inline: true },
-            { name: 'Pesan', value: message, inline: false },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
+      type: 'guestbook',
+      nama: name.trim(),
+      pesan: message.trim(),
+      captcha: captchaToken
     };
 
     // Pilih endpoint sesuai environment (Netlify/Vercel)
@@ -142,11 +127,11 @@ const GuestBook: React.FC = () => {
       });
 
       // Kirim ke Telegram (format khusus Guestbook, tidak menunggu hasil)
-          const telegramEndpoint = window.location.hostname.includes('vercel.app')
-            ? '/api/send-telegram-message'
-            : '/.netlify/functions/send-telegram-message';
+      const telegramEndpoint = window.location.hostname.includes('vercel.app')
+        ? '/api/send-telegram-message'
+        : '/.netlify/functions/send-telegram-message';
 
-          fetch(telegramEndpoint, {
+      fetch(telegramEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -223,6 +208,7 @@ const GuestBook: React.FC = () => {
               onChange={(e) => setName(e.target.value)}
               inputMode="text"
               autoComplete="name"
+              maxLength={50}
               style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}
             />
             {nameError && <div className="invalid-feedback">{nameError}</div>}
@@ -237,6 +223,7 @@ const GuestBook: React.FC = () => {
               onChange={(e) => setMessage(e.target.value)}
               inputMode="text"
               autoComplete="off"
+              maxLength={300}
               style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}
             ></textarea>
             {messageError && <div className="invalid-feedback">{messageError}</div>}
