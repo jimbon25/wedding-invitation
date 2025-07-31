@@ -519,7 +519,7 @@ h3 {
 .scroll-to-top {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   z-index: 1000;
 }
 
@@ -546,7 +546,7 @@ h3 {
 @media (max-width: 576px) {
   .scroll-to-top {
     bottom: 15px;
-    right: 15px;
+    left: 15px;
   }
   .scroll-to-top .btn {
     width: 45px;

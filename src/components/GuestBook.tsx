@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 
@@ -7,6 +8,8 @@ const GuestBook: React.FC = () => {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState('');
 
@@ -124,17 +127,28 @@ const GuestBook: React.FC = () => {
       if (response.ok) {
         setMessage('Terima kasih atas pesan Anda! Pesan Anda telah tercatat.');
         setSubmitStatus('success');
+        setShowToast(true);
+        setToastMsg('Pesan buku tamu berhasil dikirim!');
         setName('');
         setMessage('');
         setCaptchaToken(null);
+      } else if (response.status === 429) {
+        setMessage('Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
+        setSubmitStatus('error');
+        setShowToast(true);
+        setToastMsg('Terlalu banyak permintaan, coba lagi nanti.');
       } else {
         setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon coba lagi.');
         setSubmitStatus('error');
+        setShowToast(true);
+        setToastMsg('Gagal mengirim pesan buku tamu.');
         console.error('Discord Webhook Error:', response.status, response.statusText);
       }
     } catch (error) {
       setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon periksa koneksi internet Anda.');
       setSubmitStatus('error');
+      setShowToast(true);
+      setToastMsg('Gagal mengirim pesan buku tamu.');
       console.error('Network or other error:', error);
     } finally {
       setIsSubmitting(false);
@@ -143,14 +157,23 @@ const GuestBook: React.FC = () => {
 
   // Batasi submit spam: disable tombol submit selama 3 detik setelah submit
   React.useEffect(() => {
+    let timer1: NodeJS.Timeout | undefined;
+    let timer2: NodeJS.Timeout | undefined;
     if (submitStatus) {
-      const timer = setTimeout(() => setSubmitStatus(null), 3000);
-      return () => clearTimeout(timer);
+      timer1 = setTimeout(() => setSubmitStatus(null), 3000);
     }
-  }, [submitStatus]);
+    if (showToast) {
+      timer2 = setTimeout(() => setShowToast(false), 3000);
+    }
+    return () => {
+      if (timer1) clearTimeout(timer1);
+      if (timer2) clearTimeout(timer2);
+    };
+  }, [submitStatus, showToast]);
 
   return (
     <div>
+      <ToastNotification show={showToast} message={toastMsg} type={submitStatus === 'success' ? 'success' : 'error'} onClose={() => setShowToast(false)} />
       <StoryItem><h2>Buku Tamu</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon tinggalkan harapan dan pesan Anda untuk Dimas & Niken!</p></StoryItem>
       <StoryItem delay="0.4s">

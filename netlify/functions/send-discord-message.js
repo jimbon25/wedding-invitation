@@ -1,3 +1,7 @@
+// Simple in-memory rate limiter (per IP)
+const rateLimitMap = new Map();
+const RATE_LIMIT = 5; // max 5 requests
+const WINDOW_MS = 60 * 1000; // per 1 minute
 exports.handler = async function(event, context) {
     const { default: fetch } = await import('node-fetch'); // Dynamic import for node-fetch
 
@@ -10,6 +14,27 @@ exports.handler = async function(event, context) {
     if (!DISCORD_WEBHOOK_URL) {
         console.error('DISCORD_WEBHOOK_URL environment variable is not set.');
         return { statusCode: 500, body: 'Discord Webhook URL not configured.' };
+    }
+
+    // Rate limit logic
+    const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'] || event.headers['x-real-ip'] || 'unknown';
+    const now = Date.now();
+    let entry = rateLimitMap.get(ip);
+    if (!entry) {
+      entry = { count: 1, start: now };
+      rateLimitMap.set(ip, entry);
+    } else {
+      if (now - entry.start < WINDOW_MS) {
+        if (entry.count >= RATE_LIMIT) {
+          return { statusCode: 429, body: 'Too many requests. Please try again later.' };
+        }
+        entry.count++;
+      } else {
+        // Reset window
+        entry.count = 1;
+        entry.start = now;
+      }
+      rateLimitMap.set(ip, entry);
     }
 
     try {

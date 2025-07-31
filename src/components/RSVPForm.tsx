@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 
@@ -12,6 +13,8 @@ const RSVPForm: React.FC = () => {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
 
   // State for validation errors
   const [nameError, setNameError] = useState('');
@@ -136,19 +139,30 @@ const RSVPForm: React.FC = () => {
       if (response.ok) {
         setMessage('Terima kasih atas konfirmasi kehadiran Anda! Tanggapan Anda telah tercatat.');
         setSubmitStatus('success');
+        setShowToast(true);
+        setToastMsg('Konfirmasi kehadiran berhasil dikirim!');
         setName('');
         setAttendance('');
         setGuests(0);
         setFoodPreference('');
         setCaptchaToken(null);
+      } else if (response.status === 429) {
+        setMessage('Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
+        setSubmitStatus('error');
+        setShowToast(true);
+        setToastMsg('Terlalu banyak permintaan, coba lagi nanti.');
       } else {
         setMessage('Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon coba lagi.');
         setSubmitStatus('error');
+        setShowToast(true);
+        setToastMsg('Gagal mengirim konfirmasi kehadiran.');
         console.error('Discord Webhook Error:', response.status, response.statusText);
       }
     } catch (error) {
       setMessage('Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon periksa koneksi internet Anda.');
       setSubmitStatus('error');
+      setShowToast(true);
+      setToastMsg('Gagal mengirim konfirmasi kehadiran.');
       console.error('Network or other error:', error);
     } finally {
       setIsSubmitting(false);
@@ -157,14 +171,23 @@ const RSVPForm: React.FC = () => {
 
   // Batasi submit spam: disable tombol submit selama 3 detik setelah submit
   useEffect(() => {
+    let timer1: NodeJS.Timeout | undefined;
+    let timer2: NodeJS.Timeout | undefined;
     if (submitStatus) {
-      const timer = setTimeout(() => setSubmitStatus(null), 3000);
-      return () => clearTimeout(timer);
+      timer1 = setTimeout(() => setSubmitStatus(null), 3000);
     }
-  }, [submitStatus]);
+    if (showToast) {
+      timer2 = setTimeout(() => setShowToast(false), 3000);
+    }
+    return () => {
+      if (timer1) clearTimeout(timer1);
+      if (timer2) clearTimeout(timer2);
+    };
+  }, [submitStatus, showToast]);
 
   return (
     <div>
+      <ToastNotification show={showToast} message={toastMsg} type={submitStatus === 'success' ? 'success' : 'error'} onClose={() => setShowToast(false)} />
       <StoryItem><h2>Konfirmasi Kehadiran</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon beritahu kami jika Anda bisa hadir!</p></StoryItem>
       <StoryItem delay="0.4s">
