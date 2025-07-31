@@ -120,19 +120,12 @@ const RSVPForm: React.FC = () => {
         }
 
     const payload = {
-      embeds: [
-        {
-          title: 'Konfirmasi Kehadiran Pernikahan Baru',
-          color: 0x00ff00, // Green color
-          fields: [
-            { name: 'Nama', value: name, inline: true },
-            { name: 'Kehadiran', value: attendance, inline: true },
-            { name: 'Jumlah Tamu', value: guests.toString(), inline: true },
-            { name: 'Preferensi Makanan', value: foodPreference || 'Tidak ditentukan', inline: true },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
+      type: 'rsvp',
+      name: name.trim(),
+      attendance,
+      guests,
+      foodPreference,
+      message: message.trim(),
     };
 
     // Pilih endpoint sesuai environment (Netlify/Vercel)
