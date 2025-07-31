@@ -40,6 +40,7 @@ const FloatingMenu: React.FC = () => {
   };
   const onTouchMove = (e: React.TouchEvent) => {
     if (!dragging) return;
+    e.preventDefault();
     const touch = e.touches[0];
     setPos({
       x: touch.clientX - offset.current.x,
