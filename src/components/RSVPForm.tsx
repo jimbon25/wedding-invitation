@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
@@ -21,39 +21,6 @@ const RSVPForm: React.FC = () => {
   const [attendanceError, setAttendanceError] = useState('');
   const [guestsError, setGuestsError] = useState('');
 
-  // Confetti/check animation
-  const confettiRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (submitStatus === 'success') {
-      // Inject keyframes if not present
-      if (!document.head.querySelector('style[data-confetti]')) {
-        const style = document.createElement('style');
-        style.innerHTML = `@keyframes fallConfetti { to { transform: translateY(420px) rotate(18deg); opacity: 0.2; } }`;
-        style.setAttribute('data-confetti', '1');
-        document.head.appendChild(style);
-      }
-      // Show confetti/check
-      if (confettiRef.current) {
-        const container = confettiRef.current;
-        container.innerHTML = '';
-        // 70% confetti, 30% check
-        const emojis = Math.random() < 0.7 ? ['🎉','✨','💖','🎊','🥳','💐'] : ['✅'];
-        for (let i = 0; i < 18; i++) {
-          const el = document.createElement('span');
-          el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-          el.style.position = 'absolute';
-          el.style.left = Math.random()*90 + '%';
-          el.style.top = '-30px';
-          el.style.fontSize = (Math.random()*18+22)+'px';
-          el.style.opacity = '0.85';
-          el.style.animation = `fallConfetti 1.2s cubic-bezier(.6,.2,.4,1) forwards`;
-          el.style.animationDelay = (Math.random()*0.5)+'s';
-          container.appendChild(el);
-        }
-        setTimeout(()=>{ if(container) container.innerHTML=''; }, 1800);
-      }
-    }
-  }, [submitStatus]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,7 +181,6 @@ const RSVPForm: React.FC = () => {
 
   return (
     <div style={{position:'relative'}}>
-      <div ref={confettiRef} style={{pointerEvents:'none',position:'absolute',left:0,top:0,width:'100%',height:'100%',zIndex:20}} />
       <ToastNotification show={showToast} message={toastMsg} />
       <StoryItem><h2>Konfirmasi Kehadiran</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon beritahu kami jika Anda bisa hadir!</p></StoryItem>
