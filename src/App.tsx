@@ -57,7 +57,7 @@ const App: React.FC = () => {
       sessionId = Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
       localStorage.setItem('sessionId', sessionId);
     }
-    fetch('/.netlify/functions/track-visit', {
+    fetch('/.netlify/functions/guest-visiter', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -1,4 +1,4 @@
-// netlify/functions/track-visit.js
+// netlify/functions/guest-visiter.js
 const fetch = require('node-fetch');
 
 // Simple in-memory rate limit store (reset on cold start)
@@ -51,8 +51,9 @@ exports.handler = async function(event, context) {
   const text = `Undangan dibuka:\nGuest: ${guest}\nIP: ${ip}\nUser Agent: ${userAgent}\nWaktu: ${timestamp}\nSession ID: ${sessionId}\nReferrer: ${referrer}`;
 
   // Kirim ke Telegram
-  const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-  const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+  // Use dedicated bot/channel for visit tracking
+  const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_TRACK_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
+  const TELEGRAM_CHAT_ID = process.env.TELEGRAM_TRACK_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
     return { statusCode: 500, headers: corsHeaders, body: 'Telegram bot token or chat ID not configured.' };
   }
