@@ -48,6 +48,18 @@ const App: React.FC = () => {
     return saved === 'true';
   });
   useEffect(() => {
+    // Tracking kunjungan undangan ke Telegram
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get('guest');
+    fetch('/.netlify/functions/track-visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        guest,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString()
+      })
+    });
     document.body.classList.toggle('dark-mode', darkMode);
     localStorage.setItem('darkMode', darkMode.toString());
   }, [darkMode]);
