@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 
@@ -29,8 +29,18 @@ const RSVPForm: React.FC = () => {
 
     let isValid = true;
 
+
+    // Validasi nama hanya huruf, spasi, titik, koma, dan tanda hubung
+    // NOTE: Jika target ES5, hapus flag 'u' pada regex berikut agar tidak error.
+    const namePattern = /^[a-zA-Z .,'-]+$/;
     if (!name.trim()) {
       setNameError('Nama tidak boleh kosong.');
+      isValid = false;
+    } else if (!namePattern.test(name.trim())) {
+      setNameError('Nama hanya boleh huruf, spasi, titik, koma, dan tanda hubung.');
+      isValid = false;
+    } else if (name.length > 50) {
+      setNameError('Nama terlalu panjang (maksimal 50 karakter).');
       isValid = false;
     }
 
@@ -145,12 +155,20 @@ const RSVPForm: React.FC = () => {
     }
   };
 
+  // Batasi submit spam: disable tombol submit selama 3 detik setelah submit
+  useEffect(() => {
+    if (submitStatus) {
+      const timer = setTimeout(() => setSubmitStatus(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
+
   return (
     <div>
       <StoryItem><h2>Konfirmasi Kehadiran</h2></StoryItem>
       <StoryItem delay="0.2s"><p>Mohon beritahu kami jika Anda bisa hadir!</p></StoryItem>
       <StoryItem delay="0.4s">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">Nama Anda:</label>
             <input
@@ -159,6 +177,9 @@ const RSVPForm: React.FC = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              inputMode="text"
+              autoComplete="name"
+              style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}
             />
             {nameError && <div className="invalid-feedback">{nameError}</div>}
           </div>
@@ -187,6 +208,9 @@ const RSVPForm: React.FC = () => {
                   value={guests}
                   onChange={(e) => setGuests(parseInt(e.target.value) || 0)}
                   min="0"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}
                 />
                 {guestsError && <div className="invalid-feedback">{guestsError}</div>}
               </div>
@@ -217,7 +241,7 @@ const RSVPForm: React.FC = () => {
             />
             {captchaError && <div className="text-danger mt-2">{captchaError}</div>}
           </div>
-          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+          <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting || submitStatus === 'success'} style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}>
             {isSubmitting ? 'Mengirim...' : 'Kirim Konfirmasi'}
           </button>
         </form>
