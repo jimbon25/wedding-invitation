@@ -19,7 +19,7 @@ const FloatingMenu: React.FC = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Drag logic
+  // Drag logic (mouse)
   const onMouseDown = (e: React.MouseEvent) => {
     setDragging(true);
     offset.current = {
@@ -27,6 +27,27 @@ const FloatingMenu: React.FC = () => {
       y: e.clientY - pos.y,
     };
     document.body.style.userSelect = 'none';
+  };
+
+  // Drag logic (touch/mobile)
+  const onTouchStart = (e: React.TouchEvent) => {
+    setDragging(true);
+    const touch = e.touches[0];
+    offset.current = {
+      x: touch.clientX - pos.x,
+      y: touch.clientY - pos.y,
+    };
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!dragging) return;
+    const touch = e.touches[0];
+    setPos({
+      x: touch.clientX - offset.current.x,
+      y: touch.clientY - offset.current.y,
+    });
+  };
+  const onTouchEnd = () => {
+    setDragging(false);
   };
   const onMouseMove = React.useCallback((e: MouseEvent) => {
     if (!dragging) return;
@@ -78,6 +99,9 @@ const FloatingMenu: React.FC = () => {
       {/* Floating button */}
       <div
         onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={() => setMini(false)}
         style={{
