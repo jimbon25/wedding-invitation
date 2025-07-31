@@ -105,7 +105,7 @@ exports.handler = async function(event, context) {
     // Support field name/message dari frontend, fallback ke nama/pesan
     const nama = body.nama || body.name || '-';
     const pesan = body.pesan || body.message || '-';
-    text = `📖 Buku Tamu Baru\n👤 Nama: ${nama}\n💬 Pesan: ${pesan}`;
+    text = `Buku Tamu Baru:\nNama: ${nama}\nPesan: ${pesan}`;
   } else {
     text = 'Pesan tidak diketahui sumbernya.';
   }
