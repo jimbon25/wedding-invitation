@@ -8,7 +8,17 @@ interface CoverScreenProps {
 const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
   // Ambil nama tamu dari parameter URL 'to'
   const searchParams = new URLSearchParams(window.location.search);
-  const guestName = searchParams.get('to');
+  let guestName = searchParams.get('to');
+  // Blacklist kata terlarang (filter kasar/spam)
+  const guestBlacklist = [
+    'babi', 'anjing', 'asu', 'kontol', 'memek', 'tolol', 'goblok', 'bangsat', 'judi', 'casino', 'sex', 'porno', 'spammer', 'admin', 'bot', 'test', 'http', 'https', 'www', '.com', '.xyz', '.net', '.org'
+  ];
+  if (guestName) {
+    const guestLower = guestName.toLowerCase();
+    if (guestBlacklist.some(word => guestLower.includes(word))) {
+      guestName = null;
+    }
+  }
 
   // Tampilkan 4 GIF di sudut layar, animasi smooth tanpa flicker
   const gifList = useMemo(() => ['/cover.gif', '/cover.gif', '/cover.gif', '/cover.gif'], []);
