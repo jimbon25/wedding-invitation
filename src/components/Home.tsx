@@ -41,7 +41,28 @@ const Home: React.FC = () => {
       <div className="hero-section text-center d-flex flex-column justify-content-center align-items-center">
         <StoryItem><h1 className="display-3 text-white">Dimas & Niken</h1></StoryItem>
         <StoryItem delay="0.2s"><h2 className="text-white">Wedding Invitation</h2></StoryItem>
-        <StoryItem delay="0.4s"><p className="lead text-white">Bergabunglah bersama kami merayakan hari istimewa kami!</p></StoryItem>
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0 0 0' }}>
+          <Link
+            to="/rsvp-guestbook"
+            className="btn btn-primary"
+            style={{
+              fontWeight: 500,
+              fontSize: '0.85rem',
+              borderRadius: '30px',
+              padding: '7px 18px',
+              boxShadow: '0 2px 12px rgba(85,107,47,0.10)',
+              background: 'rgba(255,255,255,0.08)',
+              border: '2px solid #556B2F',
+              color: '#fff',
+              backdropFilter: 'blur(2px)',
+              transition: 'background 0.2s, color 0.2s',
+              letterSpacing: '0.5px',
+            }}
+          >
+            Klik RSVP & Buku Tamu
+          </Link>
+        </div>
+        {/* <StoryItem delay="0.4s"><p className="lead text-white">Bergabunglah bersama kami merayakan hari istimewa kami!</p></StoryItem> */}
 
         <StoryItem delay="0.7s"><h3 className="text-white mt-5">Countdown</h3></StoryItem>
         <StoryItem delay="0.9s">
@@ -62,29 +83,6 @@ const Home: React.FC = () => {
               <h4>{countdown.seconds}</h4>
               <p>Detik</p>
             </div>
-          </div>
-        </StoryItem>
-        <StoryItem delay="1.1s">
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
-            <Link
-              to="/rsvp-guestbook"
-              className="btn btn-primary"
-              style={{
-                fontWeight: 500,
-                fontSize: '0.85rem',
-                borderRadius: '30px',
-                padding: '7px 18px',
-                boxShadow: '0 2px 12px rgba(85,107,47,0.10)',
-                background: 'rgba(255,255,255,0.08)',
-                border: '2px solid #556B2F',
-                color: '#fff',
-                backdropFilter: 'blur(2px)',
-                transition: 'background 0.2s, color 0.2s',
-                letterSpacing: '0.5px',
-              }}
-            >
-              Menuju RSVP & Buku Tamu
-            </Link>
           </div>
         </StoryItem>
       </div>
