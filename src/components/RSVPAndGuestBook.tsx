@@ -5,7 +5,7 @@ import StoryItem from './StoryItem';
 
 const RSVPAndGuestBook: React.FC = () => {
   return (
-    <div>
+    <div id="rsvp-guestbook">
       <StoryItem><h1>Konfirmasi Kehadiran & Buku Tamu</h1></StoryItem>
       <div className="row g-4 mt-3 align-items-stretch">
         <div className="col-12 col-lg-6 d-flex flex-column">
