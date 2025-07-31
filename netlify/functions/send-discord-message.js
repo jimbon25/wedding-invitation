@@ -95,7 +95,7 @@ exports.handler = async function(event, context) {
         let discordPayload = {};
         if (data.type === 'guestbook') {
             discordPayload = {
-                content: `Buku Tamu: ${data.name || '-'}: ${data.message || '-'} `
+                content: `📖 Buku Tamu Baru\n👤 Nama: ${data.name || '-'}\n💬 Pesan: ${data.message || '-'}`
             };
         } else {
             // fallback: kirim semua data sebagai JSON string
