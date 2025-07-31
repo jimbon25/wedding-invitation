@@ -102,8 +102,10 @@ exports.handler = async function(event, context) {
     const { nama, kehadiran, jumlahTamu, preferensiMakanan, pesan } = body;
     text = `RSVP Baru:\nNama: ${nama || '-'}\nKehadiran: ${kehadiran || '-'}\nJumlah Tamu: ${jumlahTamu || '-'}\nPreferensi Makanan: ${preferensiMakanan || '-'}\nPesan: ${pesan || '-'}`;
   } else if (body.type === 'guestbook') {
-    const { nama, pesan } = body;
-    text = `Guestbook Baru:\nNama: ${nama || '-'}\nPesan: ${pesan || '-'}`;
+    // Support field name/message dari frontend, fallback ke nama/pesan
+    const nama = body.nama || body.name || '-';
+    const pesan = body.pesan || body.message || '-';
+    text = `📖 Buku Tamu Baru\n👤 Nama: ${nama}\n💬 Pesan: ${pesan}`;
   } else {
     text = 'Pesan tidak diketahui sumbernya.';
   }
