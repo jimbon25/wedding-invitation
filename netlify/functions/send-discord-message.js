@@ -95,7 +95,17 @@ exports.handler = async function(event, context) {
         let discordPayload = {};
         if (data.type === 'guestbook') {
             discordPayload = {
-                content: `📖 Buku Tamu Baru\n👤 Nama: ${data.name || '-'}\n💬 Pesan: ${data.message || '-'}`
+                embeds: [
+                  {
+                    title: 'Buku Tamu Baru',
+                    color: 3447003,
+                    fields: [
+                      { name: 'Nama', value: data.name || '-', inline: true },
+                      { name: 'Pesan', value: data.message || '-', inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                  }
+                ]
             };
         } else if (data.type === 'rsvp') {
             // RSVP: gunakan embed Discord agar lebih rapi
