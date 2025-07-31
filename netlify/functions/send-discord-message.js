@@ -91,12 +91,25 @@ exports.handler = async function(event, context) {
             if (typeof data[k] === 'string') data[k] = sanitizeInput(data[k], 300);
         });
 
+        // Format payload sesuai Discord Webhook (harus ada 'content')
+        let discordPayload = {};
+        if (data.type === 'guestbook') {
+            discordPayload = {
+                content: `Buku Tamu: ${data.name || '-'}: ${data.message || '-'} `
+            };
+        } else {
+            // fallback: kirim semua data sebagai JSON string
+            discordPayload = {
+                content: JSON.stringify(data)
+            };
+        }
+
         const response = await fetch(DISCORD_WEBHOOK_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(discordPayload),
         });
 
         if (!response.ok) {
