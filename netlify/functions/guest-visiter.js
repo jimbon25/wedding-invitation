@@ -5,6 +5,7 @@ const UAParser = require('ua-parser-js');
 
 // Simple in-memory rate limit store (reset on cold start)
 const ipVisitMap = {};
+const sessionVisitMap = {};
 
 exports.handler = async function(event, context) {
   const allowedOrigin = 'https://wedding-invitation-dn.netlify.app';
@@ -35,20 +36,38 @@ exports.handler = async function(event, context) {
   const sessionId = data.sessionId || '-';
   const referrer = event.headers['referer'] || event.headers['referrer'] || '-';
 
+
   const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'] || '-';
   const now = Date.now();
-  const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in ms
+  const RATE_LIMIT_WINDOW = 10 * 60 * 1000; // 10 menit dalam ms
   // Clean up old entries (optional, for memory safety)
   for (const key in ipVisitMap) {
     if (now - ipVisitMap[key] > RATE_LIMIT_WINDOW) {
       delete ipVisitMap[key];
     }
   }
-  // Rate limit: if IP has visited in the last hour, block
-  if (ipVisitMap[ip] && now - ipVisitMap[ip] < RATE_LIMIT_WINDOW) {
-    return { statusCode: 429, headers: corsHeaders, body: 'Rate limit: Only one visit per hour per IP is allowed.' };
+  for (const key in sessionVisitMap) {
+    if (now - sessionVisitMap[key] > RATE_LIMIT_WINDOW) {
+      delete sessionVisitMap[key];
+    }
+  }
+  // Rate limit: if IP/sessionId has visited in the last 10 minutes, block
+  if ((ipVisitMap[ip] && now - ipVisitMap[ip] < RATE_LIMIT_WINDOW) ||
+      (sessionId !== '-' && sessionVisitMap[sessionId] && now - sessionVisitMap[sessionId] < RATE_LIMIT_WINDOW)) {
+    return { statusCode: 429, headers: corsHeaders, body: 'Rate limit: Only one visit per 10 minutes per IP/session is allowed.' };
   }
   ipVisitMap[ip] = now;
+  if (sessionId !== '-') sessionVisitMap[sessionId] = now;
+
+  // Proteksi spam guest: blacklist
+  const guestBlacklist = [
+    'bot', 'test', 'admin', 'spammer', 'babi', 'anjing', 'asu', 'kontol', 'memek', 'tolol', 'goblok', 'casino', 'judi', 'sex', 'porno', 'http', 'https', 'www', '.com', '.xyz', '.net', '.org'
+  ];
+  const guestLower = String(guest).toLowerCase();
+  if (guestBlacklist.some(word => guestLower.includes(word))) {
+    // Anggap sukses, tapi tidak kirim ke Telegram
+    return { statusCode: 200, headers: corsHeaders, body: JSON.stringify({ success: true, filtered: true }) };
+  }
 
   // Parse user agent for more detail
   let browser = '-', os = '-', device = '-';
@@ -60,24 +79,8 @@ exports.handler = async function(event, context) {
     device = uaResult.device.type ? `${uaResult.device.type} (${uaResult.device.vendor || ''} ${uaResult.device.model || ''})` : 'Desktop';
   } catch (e) {}
 
-  // Lookup location by IP (optional, best effort, no error if fail)
-  let location = '-';
-  try {
-    if (ip && ip !== '-') {
-      const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-      if (geoRes.ok) {
-        const geo = await geoRes.json();
-        if (geo && geo.city && geo.country_name) {
-          location = `${geo.city}, ${geo.country_name}`;
-        } else if (geo && geo.country_name) {
-          location = geo.country_name;
-        }
-      }
-    }
-  } catch (e) {}
-
-  // Format pesan untuk Telegram (lebih detail)
-  const text = `Undangan dibuka:\nGuest: ${guest}\nIP: ${ip}\nLokasi: ${location}\nBrowser: ${browser}\nOS: ${os}\nDevice: ${device}\nUser Agent: ${userAgent}\nWaktu: ${timestamp}\nSession ID: ${sessionId}\nReferrer: ${referrer}`;
+  // Format pesan untuk Telegram (tanpa lokasi)
+  const text = `Undangan dibuka:\nGuest: ${guest}\nIP: ${ip}\nBrowser: ${browser}\nOS: ${os}\nDevice: ${device}\nUser Agent: ${userAgent}\nWaktu: ${timestamp}\nSession ID: ${sessionId}\nReferrer: ${referrer}`;
 
   // Kirim ke Telegram
   // Use dedicated bot/channel for visit tracking
