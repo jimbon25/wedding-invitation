@@ -3,10 +3,12 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS CSS
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
 
+
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import MainContentWrapper from './components/MainContentWrapper';
 import CoverScreen from './components/CoverScreen';
+import FloatingMenu from './components/FloatingMenu';
 
 const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -277,6 +279,8 @@ const App: React.FC = () => {
             require('./components/FloatingGeminiChat').default ?
               React.createElement(require('./components/FloatingGeminiChat').default) : null
           )}
+          {/* Floating AssistiveTouch-style Menu */}
+          <FloatingMenu />
         </div>
       </div>
     </Router>
