@@ -51,13 +51,20 @@ const App: React.FC = () => {
     // Tracking kunjungan undangan ke Telegram
     const params = new URLSearchParams(window.location.search);
     const guest = params.get('guest');
+    // Session ID: generate if not exist
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
+      localStorage.setItem('sessionId', sessionId);
+    }
     fetch('/.netlify/functions/track-visit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         guest,
         userAgent: navigator.userAgent,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        sessionId
       })
     });
     document.body.classList.toggle('dark-mode', darkMode);

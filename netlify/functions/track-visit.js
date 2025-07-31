@@ -29,6 +29,8 @@ exports.handler = async function(event, context) {
   const guest = data.guest || '-';
   const userAgent = data.userAgent || '-';
   const timestamp = data.timestamp || new Date().toISOString();
+  const sessionId = data.sessionId || '-';
+  const referrer = event.headers['referer'] || event.headers['referrer'] || '-';
 
   const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'] || '-';
   const now = Date.now();
@@ -46,7 +48,7 @@ exports.handler = async function(event, context) {
   ipVisitMap[ip] = now;
 
   // Format pesan untuk Telegram
-  const text = `Undangan dibuka:\nGuest: ${guest}\nIP: ${ip}\nUser Agent: ${userAgent}\nWaktu: ${timestamp}`;
+  const text = `Undangan dibuka:\nGuest: ${guest}\nIP: ${ip}\nUser Agent: ${userAgent}\nWaktu: ${timestamp}\nSession ID: ${sessionId}\nReferrer: ${referrer}`;
 
   // Kirim ke Telegram
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
