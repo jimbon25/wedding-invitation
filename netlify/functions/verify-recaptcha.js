@@ -42,11 +42,11 @@ exports.handler = async function(event, context) {
   try {
     const body = JSON.parse(event.body);
     token = body.token || body.recaptchaToken;
-    name = escapeMarkdown(body.name || body.nama || '');
-    message = escapeMarkdown(body.message || body.pesan || '');
-    attendance = escapeMarkdown(body.attendance || body.kehadiran || '');
-    guests = escapeMarkdown(body.guests || body.jumlahTamu || '');
-    foodPreference = escapeMarkdown(body.foodPreference || body.preferensiMakanan || '');
+    name = escapeMarkdown(String(body.name || body.nama || ''));
+    message = escapeMarkdown(String(body.message || body.pesan || ''));
+    attendance = escapeMarkdown(String(body.attendance || body.kehadiran || ''));
+    guests = escapeMarkdown(String(body.guests || body.jumlahTamu || ''));
+    foodPreference = escapeMarkdown(String(body.foodPreference || body.preferensiMakanan || ''));
     type = body.type || '';
 
     // Validasi panjang nama dan pesan (backend, anti-bypass)
