@@ -23,7 +23,17 @@ const RSVPForm: React.FC = () => {
 
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
+    // Honeypot anti-bot
+    const form = e.target as HTMLFormElement;
+    if (form.website && form.website.value) {
+      setSubmitStatus('error');
+      setShowToast(true);
+      setToastMsg('Permintaan tidak valid.');
+      setIsSubmitting(false);
+      return;
+    }
     setIsSubmitting(true);
     setSubmitStatus(null);
     setNameError('');
@@ -32,7 +42,6 @@ const RSVPForm: React.FC = () => {
     setCaptchaError('');
 
     let isValid = true;
-
 
     // Validasi nama hanya huruf, spasi, titik, koma, dan tanda hubung
     // NOTE: Jika target ES5, hapus flag 'u' pada regex berikut agar tidak error.
@@ -148,6 +157,8 @@ const RSVPForm: React.FC = () => {
       <StoryItem delay="0.2s"><p>Mohon beritahu kami jika Anda bisa hadir!</p></StoryItem>
       <StoryItem delay="0.4s">
         <form onSubmit={handleSubmit} autoComplete="off">
+          {/* Honeypot field untuk anti-bot */}
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" style={{display:'none'}} aria-hidden="true" />
           <div className="mb-3">
             <label htmlFor="name" className="form-label">Nama Anda:</label>
             <input

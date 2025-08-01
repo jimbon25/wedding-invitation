@@ -1,14 +1,74 @@
 // netlify/functions/verify-recaptcha.js
 const fetch = require('node-fetch');
 
-exports.handler = async function(event, context) {
 
+// Simple in-memory rate limiter (per instance, not global)
+const RATE_LIMIT_WINDOW = 10 * 60 * 1000; // 10 menit
+const RATE_LIMIT_MAX = 5; // max 5 request per window
+const ipRequestLog = {};
+
+// Escape karakter khusus Markdown Telegram/Discord agar tidak menyebabkan format error
+function escapeMarkdown(text) {
+  if (!text) return '';
+  // Escape karakter untuk Telegram Markdown (mode Markdown, bukan HTML)
+  // Karakter: _ * [ ] ( ) ~ ` > # + - = | { } . !
+  return text.replace(/([_*\]()~`>#+\-=|{}.!])/g, '$1')
+    .replace(/([[\]])/g, '$1'); // [ dan ] tidak perlu di-escape di dalam karakter class
+}
+
+exports.handler = async function(event, context) {
+  // ...existing code...
   // Ganti dengan domain undangan Anda
   const allowedOrigin = 'https://wedding-invitation-dn.netlify.app';
   const corsHeaders = {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Vary': 'Origin'
   };
+
+  let token, name, message, attendance, guests, foodPreference, type;
+  try {
+    const body = JSON.parse(event.body);
+    token = body.token || body.recaptchaToken;
+    name = escapeMarkdown(body.name || body.nama || '');
+    message = escapeMarkdown(body.message || body.pesan || '');
+    attendance = escapeMarkdown(body.attendance || body.kehadiran || '');
+    guests = escapeMarkdown(body.guests || body.jumlahTamu || '');
+    foodPreference = escapeMarkdown(body.foodPreference || body.preferensiMakanan || '');
+    type = body.type || '';
+
+    // Validasi panjang nama dan pesan (backend, anti-bypass)
+    if (name.length > 25) {
+      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Nama terlalu panjang (maksimal 25 karakter).' }) };
+    }
+    if (message.length > 150) {
+      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Pesan terlalu panjang (maksimal 150 karakter).' }) };
+    }
+  } catch (e) {
+    return { statusCode: 400, headers: corsHeaders, body: 'Invalid JSON' };
+  }
+  // Ambil IP address dari header (Netlify: x-forwarded-for)
+  const ip = event.headers['x-forwarded-for'] ? event.headers['x-forwarded-for'].split(',')[0].trim() : 'unknown';
+  const now = Date.now();
+  if (!ipRequestLog[ip]) {
+    ipRequestLog[ip] = [];
+  }
+  // Hapus request yang sudah lewat window
+  ipRequestLog[ip] = ipRequestLog[ip].filter(ts => now - ts < RATE_LIMIT_WINDOW);
+  if (ipRequestLog[ip].length >= RATE_LIMIT_MAX) {
+    return {
+      statusCode: 429,
+      headers: {
+        'Content-Type': 'application/json',
+        'Retry-After': String(Math.ceil((RATE_LIMIT_WINDOW - (now - ipRequestLog[ip][0])) / 1000)),
+        'Access-Control-Allow-Origin': 'https://wedding-invitation-dn.netlify.app',
+        'Vary': 'Origin'
+      },
+      body: JSON.stringify({ success: false, error: 'Terlalu banyak permintaan dari IP ini. Coba lagi nanti.' })
+    };
+  }
+  ipRequestLog[ip].push(now);
+
+  // ...moved to top...
 
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: corsHeaders, body: 'Method Not Allowed' };
@@ -19,19 +79,8 @@ exports.handler = async function(event, context) {
     return { statusCode: 500, headers: corsHeaders, body: 'reCAPTCHA secret key not configured.' };
   }
 
-  let token, name, message, attendance, guests, foodPreference, type;
-  try {
-    const body = JSON.parse(event.body);
-    token = body.token || body.recaptchaToken;
-    name = body.name || body.nama || '';
-    message = body.message || body.pesan || '';
-    attendance = body.attendance || body.kehadiran || '';
-    guests = body.guests || body.jumlahTamu || '';
-    foodPreference = body.foodPreference || body.preferensiMakanan || '';
-    type = body.type || '';
-  } catch (e) {
-    return { statusCode: 400, headers: corsHeaders, body: 'Invalid JSON' };
-  }
+
+  // ...existing code...
 
   try {
     // 1. Verifikasi reCAPTCHA

@@ -21,7 +21,17 @@ const GuestBook: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
 
+
     e.preventDefault();
+    // Honeypot anti-bot
+    const form = e.target as HTMLFormElement;
+    if (form.website && form.website.value) {
+      setSubmitStatus('error');
+      setShowToast(true);
+      setToastMsg('Permintaan tidak valid.');
+      setIsSubmitting(false);
+      return;
+    }
     setIsSubmitting(true);
     setSubmitStatus(null);
     setNameError('');
@@ -145,6 +155,8 @@ const GuestBook: React.FC = () => {
       <StoryItem delay="0.2s"><p>Mohon tinggalkan harapan dan pesan Anda untuk Dimas & Niken!</p></StoryItem>
       <StoryItem delay="0.4s">
         <form onSubmit={handleSubmit} autoComplete="off">
+          {/* Honeypot field untuk anti-bot */}
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" style={{display:'none'}} aria-hidden="true" />
           <div className="mb-3">
             <label htmlFor="guestName" className="form-label">Nama Anda:</label>
             <input
