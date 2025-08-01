@@ -76,6 +76,25 @@ exports.handler = async function(event, context) {
 
     try {
         const data = JSON.parse(event.body);
+        // --- Tambahan: Verifikasi reCAPTCHA ---
+        const recaptchaToken = data.recaptchaToken;
+        if (!recaptchaToken) {
+            return { statusCode: 400, body: 'reCAPTCHA token missing.' };
+        }
+        const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
+        if (!RECAPTCHA_SECRET_KEY) {
+            return { statusCode: 500, body: 'reCAPTCHA secret key not configured.' };
+        }
+        const recaptchaRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
+        });
+        const recaptchaData = await recaptchaRes.json();
+        if (!recaptchaData.success) {
+            return { statusCode: 400, body: 'reCAPTCHA verification failed.' };
+        }
+        // --- END Tambahan ---
         // Validasi & sanitasi data
         if (data.name && !isValidName(data.name)) {
             return { statusCode: 400, body: 'Invalid name' };
