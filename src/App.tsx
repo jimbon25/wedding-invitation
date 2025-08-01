@@ -10,8 +10,11 @@ import CoverScreen from './components/CoverScreen';
 import FloatingMenu from './components/FloatingMenu';
 import FloatingGeminiChat from './components/FloatingGeminiChat';
 import { SecurityUtils } from './utils/security';
+import { LanguageProvider, useLanguage } from './utils/LanguageContext';
 
 const App: React.FC = () => {
+  const { language, setLanguage, t } = useLanguage();
+
   // Environment validation on startup
   useEffect(() => {
     const envValidation = SecurityUtils.validateEnvVars();
@@ -93,8 +96,8 @@ const App: React.FC = () => {
 
   const handleShare = async () => {
     const shareData = {
-      title: 'Undangan Pernikahan',
-      text: 'Anda diundang ke pernikahan Dimas & Niken!',
+      title: t('share_invitation'),
+      text: t('share_message'),
       url: window.location.href,
     };
 
@@ -103,7 +106,7 @@ const App: React.FC = () => {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(window.location.href);
-        alert('Tautan disalin ke clipboard!');
+        alert(t('link_copied'));
       }
     } catch (err) {
       console.error('Error sharing:', err);
@@ -215,12 +218,21 @@ const App: React.FC = () => {
                 >
                   <i className="bi bi-share-fill" style={{ fontSize: '1rem', margin: 0 }}></i>
                 </button>
+                {/* Language Toggle Button */}
+                <button
+                  className={`btn btn-xs d-flex align-items-center justify-content-center btn-outline-secondary`}
+                  onClick={() => setLanguage(language === 'id' ? 'en' : 'id')}
+                  title={language === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+                  style={{ width: '24px', height: '24px', borderRadius: '0.18rem', padding: 0 }}
+                >
+                  <span style={{ fontSize: '0.7rem', fontWeight: 'bold' }}>{language === 'id' ? 'EN' : 'ID'}</span>
+                </button>
                 {/* Dark Mode Icon */}
                 <button
                   className={`btn btn-xs d-flex align-items-center justify-content-center ${darkMode ? 'btn-dark' : 'btn-light'}`}
                   onClick={toggleDarkMode}
                   title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                  style={{ width: '24px', height: '24px', borderRadius: '0.18rem', padding: 0 }}
+                  style={{ width: '24px', height: '24px', borderRadius: '0.18rem', padding: 0, marginLeft: '6px' }}
                 >
                   <i className={`bi ${darkMode ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'}`} style={{ fontSize: '1rem', margin: 0 }}></i>
                 </button>
@@ -240,19 +252,19 @@ const App: React.FC = () => {
                   }}
                 />
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}><i className="bi bi-house-door-fill me-2"></i>Beranda</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/" onClick={() => setIsOpen(false)}><i className="bi bi-house-door-fill me-2"></i>{t('home')}</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/our-story" onClick={() => setIsOpen(false)}><i className="bi bi-book-fill me-2"></i>Kisah Kami</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/our-story" onClick={() => setIsOpen(false)}><i className="bi bi-book-fill me-2"></i>{t('our_story')}</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/event-details" onClick={() => setIsOpen(false)}><i className="bi bi-calendar-event-fill me-2"></i>Detail Acara</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/event-details" onClick={() => setIsOpen(false)}><i className="bi bi-calendar-event-fill me-2"></i>{t('event_details')}</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/gallery" onClick={() => setIsOpen(false)}><i className="bi bi-image-fill me-2"></i>Galeri</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/gallery" onClick={() => setIsOpen(false)}><i className="bi bi-image-fill me-2"></i>{t('gallery')}</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp-guestbook" onClick={() => setIsOpen(false)}><i className="bi bi-check-circle-fill me-2"></i>RSVP & Buku Tamu</NavLink>
+                  <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to="/rsvp-guestbook" onClick={() => setIsOpen(false)}><i className="bi bi-check-circle-fill me-2"></i>{t('rsvp_guestbook')}</NavLink>
                 </li>
                 <li className="nav-item dropdown">
                   <button
@@ -263,14 +275,14 @@ const App: React.FC = () => {
                     aria-expanded={isOtherDropdownOpen}
                     style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', color: 'var(--navbar-text-dark, #fff)' } : {}}
                   >
-                    Lainnya
+                    {t('others')}
                   </button>
                   {isOtherDropdownOpen && (
                     <ul className={`dropdown-menu show ${darkMode ? 'dropdown-menu-dark' : ''}`} aria-labelledby="navbarDropdown" style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', color: 'var(--navbar-text-dark, #fff)' } : {}}>
-                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift me-2"></i>Informasi Hadiah</NavLink></li>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift me-2"></i>{t('gift_info')}</NavLink></li>
                       {/* <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/guestbook" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-journal-text me-2"></i>Buku Tamu</NavLink></li> */}
-                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>Akomodasi & Transportasi</NavLink></li>
-                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>Daftar Hadiah</NavLink></li>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/accommodation-info" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-car-front-fill me-2"></i>{t('accommodation_info')}</NavLink></li>
+                      <li><NavLink className={({ isActive }) => `dropdown-item${isActive ? ' active' : ''} ${darkMode ? 'text-light' : ''}`} to="/gift-registry" onClick={() => { setIsOpen(false); setIsOtherDropdownOpen(false); }}><i className="bi bi-gift-fill me-2"></i>{t('gift_registry')}</NavLink></li>
                     </ul>
                   )}
                 </li>

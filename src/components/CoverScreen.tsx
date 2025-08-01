@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 import './CoverScreen.css';
+import { useLanguage } from '../utils/LanguageContext';
 
 interface CoverScreenProps {
   onOpenInvitation: () => void;
 }
 
 const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
+  const { t } = useLanguage();
+  
   // Ambil nama tamu dari parameter URL 'to'
   const searchParams = new URLSearchParams(window.location.search);
   let guestName = searchParams.get('to');
@@ -58,16 +61,16 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
         />
       ))}
       <div className="cover-content text-center">
-        <p className="cover-subtitle animated-subtitle">The Wedding Of</p>
+        <p className="cover-subtitle animated-subtitle">{t('wedding_of')}</p>
         <h1 className="cover-title animated-title">D & N</h1>
         {guestName && (
           <div className="guest-info mt-4">
-            <p className="mb-0">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+            <p className="mb-0">{t('to_guest')}</p>
             <h2 className="guest-name">{guestName.replace(/\+/g, ' ')}</h2>
           </div>
         )}
         <button className="cover-button-estetik mt-5" onClick={onOpenInvitation}>
-          <span className="cover-button-text">Buka Undangan</span>
+          <span className="cover-button-text">{t('open_invitation')}</span>
         </button>
       </div>
     </div>

@@ -3,8 +3,10 @@ import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 import { SecurityUtils } from '../utils/security';
+import { useLanguage } from '../utils/LanguageContext';
 
 const GuestBook: React.FC = () => {
+  const { t, language } = useLanguage();
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -93,30 +95,38 @@ const GuestBook: React.FC = () => {
       });
 
       if (response.ok) {
-        setMessage('Terima kasih atas pesan Anda! Pesan Anda telah tercatat.');
+        setMessage(language === 'en' ? 
+          'Thank you for your message! Your message has been recorded.' : 
+          'Terima kasih atas pesan Anda! Pesan Anda telah tercatat.');
         setSubmitStatus('success');
         setShowToast(true);
-        setToastMsg('Pesan buku tamu berhasil dikirim!');
+        setToastMsg(t('guestbook_success'));
         setName('');
         setMessage('');
         setCaptchaToken(null);
       } else if (response.status === 429) {
-        setMessage('Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
+        setMessage(language === 'en' ? 
+          'Too many requests. Please try again later.' : 
+          'Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
         setSubmitStatus('error');
         setShowToast(true);
-        setToastMsg('Terlalu banyak permintaan, coba lagi nanti.');
+        setToastMsg(language === 'en' ? 'Too many requests, try again later.' : 'Terlalu banyak permintaan, coba lagi nanti.');
       } else {
-        setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon coba lagi.');
+        setMessage(language === 'en' ? 
+          'An error occurred while sending your message. Please try again.' : 
+          'Terjadi kesalahan saat mengirim pesan Anda. Mohon coba lagi.');
         setSubmitStatus('error');
         setShowToast(true);
-        setToastMsg('Gagal mengirim pesan buku tamu.');
+        setToastMsg(t('guestbook_error'));
         console.error('Discord Webhook Error:', response.status, response.statusText);
       }
     } catch (error) {
-      setMessage('Terjadi kesalahan saat mengirim pesan Anda. Mohon periksa koneksi internet Anda.');
+      setMessage(language === 'en' ? 
+        'An error occurred while sending your message. Please check your internet connection.' : 
+        'Terjadi kesalahan saat mengirim pesan Anda. Mohon periksa koneksi internet Anda.');
       setSubmitStatus('error');
       setShowToast(true);
-      setToastMsg('Gagal mengirim pesan buku tamu.');
+      setToastMsg(t('guestbook_error'));
       console.error('Network or other error:', error);
     } finally {
       setIsSubmitting(false);
@@ -142,14 +152,14 @@ const GuestBook: React.FC = () => {
   return (
     <div style={{position:'relative'}}>
       <ToastNotification show={showToast} message={toastMsg} />
-      <StoryItem><h2>Buku Tamu</h2></StoryItem>
-      <StoryItem delay="0.2s"><p>Mohon tinggalkan harapan dan pesan Anda untuk Dimas & Niken!</p></StoryItem>
+      <StoryItem><h2>{t('guestbook_title')}</h2></StoryItem>
+      <StoryItem delay="0.2s"><p>{t('guestbook_message')}</p></StoryItem>
       <StoryItem delay="0.4s">
         <form onSubmit={handleSubmit} autoComplete="off">
           {/* Honeypot field untuk anti-bot */}
           <input type="text" name="website" tabIndex={-1} autoComplete="off" style={{display:'none'}} aria-hidden="true" />
           <div className="mb-3">
-            <label htmlFor="guestName" className="form-label">Nama Anda:</label>
+            <label htmlFor="guestName" className="form-label">{t('your_name')}:</label>
             <input
               type="text"
               className={`form-control ${nameError ? 'is-invalid' : ''}`}
@@ -164,7 +174,7 @@ const GuestBook: React.FC = () => {
             {nameError && <div className="invalid-feedback">{nameError}</div>}
           </div>
           <div className="mb-3">
-            <label htmlFor="guestMessage" className="form-label">Pesan Anda:</label>
+            <label htmlFor="guestMessage" className="form-label">{t('your_message')}:</label>
             <textarea
               className={`form-control ${messageError ? 'is-invalid' : ''}`}
               id="guestMessage"
@@ -189,7 +199,7 @@ const GuestBook: React.FC = () => {
             {captchaError && <div className="text-danger mt-2">{captchaError}</div>}
           </div>
           <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting || submitStatus === 'success'} style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}>
-            {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+            {isSubmitting ? t('sending') : t('send_message')}
           </button>
         </form>
       </StoryItem>

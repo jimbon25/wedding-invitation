@@ -1,20 +1,22 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const menuItems = [
-  { label: 'Home', to: '/', icon: 'bi-house-door-fill' },
-  { label: 'RSVP', to: '/rsvp-guestbook', icon: 'bi-check-circle-fill' },
-  { label: 'Galeri', to: '/gallery', icon: 'bi-image-fill' },
-  { label: 'Cerita', to: '/our-story', icon: 'bi-book-fill' },
-  { label: 'Hadiah', to: '/gift-info', icon: 'bi-gift-fill' },
-  { label: 'Akomodasi', to: '/accommodation-info', icon: 'bi-car-front-fill' },
-];
+import { useLanguage } from '../utils/LanguageContext';
 
 interface FloatingMenuProps {
   darkMode: boolean;
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
+  const { language } = useLanguage();
+  const menuItems = [
+    { label: language === 'en' ? 'Home' : 'Beranda', to: '/', icon: 'bi-house-door-fill' },
+    { label: 'RSVP', to: '/rsvp-guestbook', icon: 'bi-check-circle-fill' },
+    { label: language === 'en' ? 'Gallery' : 'Galeri', to: '/gallery', icon: 'bi-image-fill' },
+    { label: language === 'en' ? 'Story' : 'Cerita', to: '/our-story', icon: 'bi-book-fill' },
+    { label: language === 'en' ? 'Gifts' : 'Hadiah', to: '/gift-info', icon: 'bi-gift-fill' },
+    { label: language === 'en' ? 'Accommodation' : 'Akomodasi', to: '/accommodation-info', icon: 'bi-car-front-fill' },
+  ];
+  
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ x: 24, y: 120 });
   const [dragging, setDragging] = useState(false);

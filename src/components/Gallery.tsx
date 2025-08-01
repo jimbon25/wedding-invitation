@@ -3,8 +3,11 @@ import Slider from 'react-slick';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import StoryItem from './StoryItem';
+import { useLanguage } from '../utils/LanguageContext';
 
 const Gallery: React.FC = () => {
+  const { t } = useLanguage();
+  
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
@@ -72,8 +75,8 @@ const Gallery: React.FC = () => {
 
   return (
     <div>
-      <StoryItem><h2>Galeri</h2></StoryItem>
-      <StoryItem delay="0.2s"><p className="mb-4">Kumpulan momen berharga kami.</p></StoryItem>
+      <StoryItem><h2>{t('gallery_title')}</h2></StoryItem>
+      <StoryItem delay="0.2s"><p className="mb-4">{t('gallery_subtitle')}</p></StoryItem>
 
       {!showGallery && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '32px 0' }}>
@@ -95,7 +98,7 @@ const Gallery: React.FC = () => {
             }}
             className="gallery-btn"
           >
-            Lihat Galeri
+            {t('view_gallery')}
           </button>
           <img src="/galeri.gif" alt="Galeri gif kanan" style={{ width: '68px', height: '68px', marginLeft: '18px' }} />
         </div>
@@ -120,7 +123,7 @@ const Gallery: React.FC = () => {
                 transition: 'background 0.2s, color 0.2s',
               }}
             >
-              Tutup Galeri
+              {t('hide_gallery')}
             </button>
           </div>
           {/* Top Slider */}

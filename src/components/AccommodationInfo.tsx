@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import StoryItem from './StoryItem';
-
+import { useLanguage } from '../utils/LanguageContext';
 
 const AccommodationInfo: React.FC = () => {
+  const { language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (text: string) => {
@@ -30,7 +31,7 @@ const AccommodationInfo: React.FC = () => {
           animation: 'fadeInOut 1.5s',
           border: '2px solid #556B2F',
         }}>
-          Tersalin!
+          {language === 'en' ? 'Copied!' : 'Tersalin!'}
         </div>
       )}
       <style>{`
@@ -41,10 +42,12 @@ const AccommodationInfo: React.FC = () => {
           100% { opacity: 0; }
         }
       `}</style>
-      <StoryItem><h2>Akomodasi & Transportasi</h2></StoryItem>
-      <StoryItem delay="0.2s"><p>Untuk tamu-tamu tercinta kami yang bepergian dari luar kota, berikut adalah beberapa rekomendasi akomodasi dan transportasi:</p></StoryItem>
+      <StoryItem><h2>{language === 'en' ? 'Accommodation & Transportation' : 'Akomodasi & Transportasi'}</h2></StoryItem>
+      <StoryItem delay="0.2s"><p>{language === 'en' 
+        ? 'For our beloved guests traveling from out of town, here are some accommodation and transportation recommendations:'
+        : 'Untuk tamu-tamu tercinta kami yang bepergian dari luar kota, berikut adalah beberapa rekomendasi akomodasi dan transportasi:'}</p></StoryItem>
 
-      <StoryItem delay="0.4s"><h3>Rekomendasi Akomodasi:</h3></StoryItem>
+      <StoryItem delay="0.4s"><h3>{language === 'en' ? 'Accommodation Recommendations:' : 'Rekomendasi Akomodasi:'}</h3></StoryItem>
       <StoryItem delay="0.6s">
         <ul>
           <li>
@@ -96,12 +99,16 @@ const AccommodationInfo: React.FC = () => {
         </ul>
       </StoryItem>
 
-      <StoryItem delay="0.8s"><h3>Panduan Transportasi:</h3></StoryItem>
-      <StoryItem delay="1s"><p>The wedding venue is easily accessible by various modes of transportation:</p></StoryItem>
+      <StoryItem delay="0.8s"><h3>{language === 'en' ? 'Transportation Guide:' : 'Panduan Transportasi:'}</h3></StoryItem>
+      <StoryItem delay="1s"><p>{language === 'en' 
+        ? 'The wedding venue is easily accessible by various modes of transportation:' 
+        : 'Lokasi pernikahan mudah dijangkau dengan berbagai jenis transportasi:'}</p></StoryItem>
       <StoryItem delay="1.2s">
         <ul>
           <li>
-            <strong>Dengan Mobil:</strong> Tersedia banyak tempat parkir di lokasi acara. Anda bisa menggunakan aplikasi seperti Grab atau Gojek.
+            <strong>{language === 'en' ? 'By Car:' : 'Dengan Mobil:'}</strong> {language === 'en' 
+              ? 'Plenty of parking is available at the event venue. You can use ride-hailing apps like Grab or Gojek.'
+              : 'Tersedia banyak tempat parkir di lokasi acara. Anda bisa menggunakan aplikasi seperti Grab atau Gojek.'}
           </li>
         </ul>
       </StoryItem>

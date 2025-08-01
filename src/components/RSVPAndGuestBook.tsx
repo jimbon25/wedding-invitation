@@ -2,11 +2,14 @@ import React from 'react';
 import RSVPForm from './RSVPForm';
 import GuestBook from './GuestBook';
 import StoryItem from './StoryItem';
+import { useLanguage } from '../utils/LanguageContext';
 
 const RSVPAndGuestBook: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
     <div id="rsvp-guestbook">
-      <StoryItem><h1>Konfirmasi Kehadiran & Buku Tamu</h1></StoryItem>
+      <StoryItem><h1>{`${t('rsvp_title')} & ${t('guestbook_title')}`}</h1></StoryItem>
       <div className="row g-4 mt-3 align-items-stretch">
         <div className="col-12 col-lg-6 d-flex flex-column">
           <RSVPForm />

@@ -3,8 +3,11 @@ import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 import { SecurityUtils } from '../utils/security';
+import { useLanguage } from '../utils/LanguageContext';
 
 const RSVPForm: React.FC = () => {
+  const { t, language } = useLanguage();
+  
   const [name, setName] = useState('');
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState('');
@@ -102,32 +105,40 @@ const RSVPForm: React.FC = () => {
       });
 
       if (response.ok) {
-        setMessage('Terima kasih atas konfirmasi kehadiran Anda! Tanggapan Anda telah tercatat.');
+        setMessage(language === 'en' ? 
+          'Thank you for your attendance confirmation! Your response has been recorded.' : 
+          'Terima kasih atas konfirmasi kehadiran Anda! Tanggapan Anda telah tercatat.');
         setSubmitStatus('success');
         setShowToast(true);
-        setToastMsg('Konfirmasi kehadiran berhasil dikirim!');
+        setToastMsg(t('rsvp_success'));
         setName('');
         setAttendance('');
         setGuests(0);
         setFoodPreference('');
         setCaptchaToken(null);
       } else if (response.status === 429) {
-        setMessage('Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
+        setMessage(language === 'en' ? 
+          'Too many requests. Please try again later.' : 
+          'Terlalu banyak permintaan. Silakan coba lagi beberapa saat lagi.');
         setSubmitStatus('error');
         setShowToast(true);
-        setToastMsg('Terlalu banyak permintaan, coba lagi nanti.');
+        setToastMsg(language === 'en' ? 'Too many requests, try again later.' : 'Terlalu banyak permintaan, coba lagi nanti.');
       } else {
-        setMessage('Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon coba lagi.');
+        setMessage(language === 'en' ? 
+          'An error occurred while sending your attendance confirmation. Please try again.' : 
+          'Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon coba lagi.');
         setSubmitStatus('error');
         setShowToast(true);
-        setToastMsg('Gagal mengirim konfirmasi kehadiran.');
+        setToastMsg(t('rsvp_error'));
         console.error('Discord Webhook Error:', response.status, response.statusText);
       }
     } catch (error) {
-      setMessage('Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon periksa koneksi internet Anda.');
+      setMessage(language === 'en' ? 
+        'An error occurred while sending your attendance confirmation. Please check your internet connection.' : 
+        'Terjadi kesalahan saat mengirim konfirmasi kehadiran Anda. Mohon periksa koneksi internet Anda.');
       setSubmitStatus('error');
       setShowToast(true);
-      setToastMsg('Gagal mengirim konfirmasi kehadiran.');
+      setToastMsg(t('rsvp_error'));
       console.error('Network or other error:', error);
     } finally {
       setIsSubmitting(false);
@@ -153,14 +164,14 @@ const RSVPForm: React.FC = () => {
   return (
     <div style={{position:'relative'}}>
       <ToastNotification show={showToast} message={toastMsg} />
-      <StoryItem><h2>Konfirmasi Kehadiran</h2></StoryItem>
-      <StoryItem delay="0.2s"><p>Mohon beritahu kami jika Anda bisa hadir!</p></StoryItem>
+      <StoryItem><h2>{t('rsvp_title')}</h2></StoryItem>
+      <StoryItem delay="0.2s"><p>{t('rsvp_message')}</p></StoryItem>
       <StoryItem delay="0.4s">
         <form onSubmit={handleSubmit} autoComplete="off">
           {/* Honeypot field untuk anti-bot */}
           <input type="text" name="website" tabIndex={-1} autoComplete="off" style={{display:'none'}} aria-hidden="true" />
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">Nama Anda:</label>
+            <label htmlFor="name" className="form-label">{t('your_name')}:</label>
             <input
               type="text"
               className={`form-control ${nameError ? 'is-invalid' : ''}`}
@@ -175,23 +186,23 @@ const RSVPForm: React.FC = () => {
             {nameError && <div className="invalid-feedback">{nameError}</div>}
           </div>
           <div className="mb-3">
-            <label htmlFor="attendance" className="form-label">Apakah Anda akan hadir?</label>
+            <label htmlFor="attendance" className="form-label">{t('will_you_attend')}?</label>
             <select
               className={`form-select ${attendanceError ? 'is-invalid' : ''}`}
               id="attendance"
               value={attendance}
               onChange={(e) => setAttendance(e.target.value)}
             >
-              <option value="">Pilih opsi</option>
-              <option value="Yes, I will attend">Ya, saya akan hadir</option>
-              <option value="No, I cannot attend">Tidak, saya tidak bisa hadir</option>
+              <option value="">{t('select_option')}</option>
+              <option value="Yes, I will attend">{t('yes_attend')}</option>
+              <option value="No, I cannot attend">{t('no_attend')}</option>
             </select>
             {attendanceError && <div className="invalid-feedback">{attendanceError}</div>}
           </div>
           {attendance === 'Yes, I will attend' && (
             <>
               <div className="mb-3">
-                <label htmlFor="guests" className="form-label">Jumlah Tamu (termasuk Anda):</label>
+                <label htmlFor="guests" className="form-label">{t('guest_count')}:</label>
                 <input
                   type="number"
                   className={`form-control ${guestsError ? 'is-invalid' : ''}`}
@@ -206,17 +217,17 @@ const RSVPForm: React.FC = () => {
                 {guestsError && <div className="invalid-feedback">{guestsError}</div>}
               </div>
               <div className="mb-3">
-                <label htmlFor="foodPreference" className="form-label">Preferensi Makanan:</label>
+                <label htmlFor="foodPreference" className="form-label">{t('food_preference')}:</label>
                 <select
                   className="form-select"
                   id="foodPreference"
                   value={foodPreference}
                   onChange={(e) => setFoodPreference(e.target.value)}
                 >
-                  <option value="">Pilih opsi</option>
-                  <option value="Regular">Reguler</option>
-                  <option value="Vegetarian">Vegetarian</option>
-                  <option value="Gluten-Free">Bebas Gluten</option>
+                  <option value="">{t('select_option')}</option>
+                  <option value="Regular">{t('regular')}</option>
+                  <option value="Vegetarian">{t('vegetarian')}</option>
+                  <option value="Gluten-Free">{t('gluten_free')}</option>
                 </select>
               </div>
             </>
@@ -232,7 +243,7 @@ const RSVPForm: React.FC = () => {
             {captchaError && <div className="text-danger mt-2">{captchaError}</div>}
           </div>
           <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting || submitStatus === 'success'} style={{ fontSize: '1.1rem', padding: '0.75rem 1rem' }}>
-            {isSubmitting ? 'Mengirim...' : 'Kirim Konfirmasi'}
+            {isSubmitting ? t('sending') : t('send_confirmation')}
           </button>
         </form>
       </StoryItem>

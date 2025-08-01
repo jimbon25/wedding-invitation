@@ -1,10 +1,13 @@
 import React from 'react';
 import StoryItem from './StoryItem';
+import { useLanguage } from '../utils/LanguageContext';
 
 const EventDetails: React.FC = () => {
+  const { t, language } = useLanguage();
+  
   // Replace with your actual wedding date, time, location, and address
-  const weddingDateText = "Sabtu, 25 Juli 2026";
-  const weddingTimeText = "10:00 AM - Selesai";
+  const weddingDateText = language === 'en' ? "Saturday, July 25, 2026" : "Sabtu, 25 Juli 2026";
+  const weddingTimeText = language === 'en' ? "10:00 AM - End" : "10:00 WIB - Selesai";
   const venueName = "Masjid Agung Baitul Mukminin ";
   const venueAddress = "Jl. KH. A. Dahlan No.28, Jombatan, Kec. Jombang, Kabupaten Jombang, Jawa Timur 61419";
 
@@ -71,23 +74,23 @@ const EventDetails: React.FC = () => {
 
   return (
     <div>
-      <StoryItem><h2>Detail Acara</h2></StoryItem>
-      <StoryItem delay="0.2s"><p>Tanggal: <strong>{weddingDateText}</strong></p></StoryItem>
-      <StoryItem delay="0.4s"><p>Waktu: <strong>{weddingTimeText}</strong></p></StoryItem>
-      <StoryItem delay="0.6s"><p>Lokasi: <strong>{venueName}</strong></p></StoryItem>
+      <StoryItem><h2>{t('event_details')}</h2></StoryItem>
+      <StoryItem delay="0.2s"><p>{t('date')}: <strong>{weddingDateText}</strong></p></StoryItem>
+      <StoryItem delay="0.4s"><p>{t('time')}: <strong>{weddingTimeText}</strong></p></StoryItem>
+      <StoryItem delay="0.6s"><p>{t('location')}: <strong>{venueName}</strong></p></StoryItem>
       <StoryItem delay="0.8s"><p>{venueAddress}</p></StoryItem>
 
       <StoryItem delay="1s">
         <div className="mt-4">
           <button className="btn btn-primary" onClick={handleDownloadICS}>
-            Tambahkan ke Kalender
+            {t('add_to_calendar')}
           </button>
         </div>
       </StoryItem>
 
       <StoryItem delay="1.2s">
         <div className="mt-4">
-          <h3>Lokasi Kami</h3>
+          <h3>{t('our_location')}</h3>
           <div className="embed-responsive embed-responsive-16by9" style={{ height: '450px' }}>
             <iframe
               src={googleMapsEmbedUrl}

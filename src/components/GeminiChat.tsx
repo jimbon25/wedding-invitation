@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '../utils/LanguageContext';
 
 interface GeminiChatProps {
   darkMode?: boolean;
 }
 
 const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
+  const { t, language } = useLanguage();
+  
   const [messages, setMessages] = useState<{ from: 'user' | 'ai', text: string }[]>([
-    { from: 'ai', text: 'Halo! Saya asisten AI untuk undangan Dimas & Niken 😊. Siap bantu kamu seputar acara, lokasi, RSVP, hadiah, galeri, akomodasi, atau fitur undangan lainnya. Saya juga punya 60% selera humor!' }
+    { from: 'ai', text: t('ai_intro') }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,16 +25,21 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
       const res = await fetch('/.netlify/functions/gemini-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: input })
+        body: JSON.stringify({ 
+          prompt: input,
+          language: language // Pass the current language
+        })
       });
       const data = await res.json();
       let aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!aiText) {
-        aiText = '[Tidak ada jawaban dari Gemini API]\n' + JSON.stringify(data, null, 2);
+        aiText = language === 'en' 
+          ? '[No response from Gemini API]\n' + JSON.stringify(data, null, 2)
+          : '[Tidak ada jawaban dari Gemini API]\n' + JSON.stringify(data, null, 2);
       }
       setMessages(msgs => [...msgs, { from: 'ai', text: aiText }]);
     } catch {
-      setMessages(msgs => [...msgs, { from: 'ai', text: 'Terjadi kesalahan.' }]);
+      setMessages(msgs => [...msgs, { from: 'ai', text: t('ai_error') }]);
     }
     setLoading(false);
   };
@@ -61,7 +69,7 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
       position: 'relative',
       color: darkMode ? '#EEE' : undefined
     }}>
-      <h4 style={{ margin: '0 0 8px 0', fontSize: '1.1rem', color: darkMode ? '#9CAF88' : '#9CAF88', textAlign: 'center' }}>Tanya Asisten Undangan</h4>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '1.1rem', color: darkMode ? '#9CAF88' : '#9CAF88', textAlign: 'center' }}>{t('ask_assistant')}</h4>
       <div style={{ minHeight: 90, maxHeight: 200, overflowY: 'auto', marginBottom: 10 }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ textAlign: msg.from === 'user' ? 'right' : 'left', margin: '8px 0' }}>
@@ -83,7 +91,7 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
         ))}
         {loading && (
           <div style={{ color: '#888', fontSize: '0.95em', display: 'flex', alignItems: 'center', height: 24 }}>
-            <span>Mengetik</span>
+            <span>{t('typing')}</span>
             <span style={{ display: 'inline-block', width: 24, marginLeft: 2 }}>
               <span style={{
                 display: 'inline-block',
@@ -114,7 +122,7 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && sendMessage()}
-          placeholder="Tulis pertanyaan..."
+          placeholder={t('write_question')}
           style={{
             flex: 1,
             borderRadius: 8,
@@ -140,7 +148,7 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
             alignItems: 'center',
             justifyContent: 'center'
           }}
-          aria-label="Kirim"
+          aria-label={t('send')}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.5 10.833l13.334-5.555c.833-.347 1.667.486 1.32 1.32l-5.555 13.334c-.347.833-1.486.833-1.833 0l-2.222-5.555-5.555-2.222c-.833-.347-.833-1.486 0-1.833z" fill="#fff"/>

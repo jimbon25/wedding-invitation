@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import StoryItem from './StoryItem';
+import { useLanguage } from '../utils/LanguageContext';
 
 const Home: React.FC = () => {
+  const { t } = useLanguage();
+  
   // Set your wedding date here (Year, Month (0-11), Day, Hour, Minute, Second)
   const weddingDate = new Date(2026, 6, 25, 10, 0, 0).getTime(); // July 25, 2026, 10:00:00
 
@@ -40,7 +43,7 @@ const Home: React.FC = () => {
     <>
       <div className="hero-section text-center d-flex flex-column justify-content-center align-items-center">
         <StoryItem><h1 className="display-3 text-white">Dimas & Niken</h1></StoryItem>
-        <StoryItem delay="0.2s"><h2 className="text-white">Wedding Invitation</h2></StoryItem>
+        <StoryItem delay="0.2s"><h2 className="text-white">{t('wedding_invitation')}</h2></StoryItem>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0 0 0' }}>
           <Link
             to="/rsvp-guestbook"
@@ -59,29 +62,29 @@ const Home: React.FC = () => {
               letterSpacing: '0.5px',
             }}
           >
-            Klik RSVP & Buku Tamu
+            {t('rsvp_guestbook')}
           </Link>
         </div>
-        {/* <StoryItem delay="0.4s"><p className="lead text-white">Bergabunglah bersama kami merayakan hari istimewa kami!</p></StoryItem> */}
+        {/* <StoryItem delay="0.4s"><p className="lead text-white">{t('join_celebration')}</p></StoryItem> */}
 
-        <StoryItem delay="0.7s"><h3 className="text-white mt-5">Countdown</h3></StoryItem>
+        <StoryItem delay="0.7s"><h3 className="text-white mt-5">{t('countdown')}</h3></StoryItem>
         <StoryItem delay="0.9s">
           <div className="d-flex justify-content-center gap-3 countdown-container">
             <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.days}</h4>
-              <p>Hari</p>
+              <p>{t('days')}</p>
             </div>
             <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.hours}</h4>
-              <p>Jam</p>
+              <p>{t('hours')}</p>
             </div>
             <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.minutes}</h4>
-              <p>Menit</p>
+              <p>{t('minutes')}</p>
             </div>
             <div className="p-2 countdown-item" style={{ border: '2.5px solid #556B2F', borderRadius: '50px', minWidth: '60px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)' }}>
               <h4>{countdown.seconds}</h4>
-              <p>Detik</p>
+              <p>{t('seconds')}</p>
             </div>
           </div>
         </StoryItem>

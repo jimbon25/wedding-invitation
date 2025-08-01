@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import StoryItem from './StoryItem';
+import { useLanguage } from '../utils/LanguageContext';
 
 const GiftRegistry: React.FC = () => {
+  const { language } = useLanguage();
   // ...existing code...
   const [showSaweria, setShowSaweria] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -31,7 +33,7 @@ const GiftRegistry: React.FC = () => {
           animation: 'fadeInOut 1.5s',
           border: '2px solid #556B2F',
         }}>
-          Tersalin!
+          {language === 'en' ? 'Copied!' : 'Tersalin!'}
         </div>
       )}
       <style>{`
@@ -42,12 +44,16 @@ const GiftRegistry: React.FC = () => {
           100% { opacity: 0; }
         }
       `}</style>
-      <StoryItem><h2>Daftar Hadiah</h2></StoryItem>
-      <StoryItem delay="0.2s"><p>Kehadiran Anda di pernikahan kami adalah hadiah terbesar. Namun, jika Anda ingin memberikan hadiah, kami telah menyiapkan beberapa opsi:</p></StoryItem>
+      <StoryItem><h2>{language === 'en' ? 'Gift Registry' : 'Daftar Hadiah'}</h2></StoryItem>
+      <StoryItem delay="0.2s"><p>{language === 'en' 
+        ? 'Your presence at our wedding is the biggest gift. However, if you wish to give a gift, we have prepared some options:'
+        : 'Kehadiran Anda di pernikahan kami adalah hadiah terbesar. Namun, jika Anda ingin memberikan hadiah, kami telah menyiapkan beberapa opsi:'}</p></StoryItem>
 
-      <StoryItem delay="0.4s"><h3>Hadiah Moneter:</h3></StoryItem>
+      <StoryItem delay="0.4s"><h3>{language === 'en' ? 'Monetary Gifts:' : 'Hadiah Moneter:'}</h3></StoryItem>
       {/* ...existing code... */}
-      <StoryItem delay="0.6s"><p>Hadiah moneter akan sangat kami hargai saat kami memulai kehidupan baru bersama. Anda dapat mengirimkan hadiah melalui transfer bank:</p></StoryItem>
+      <StoryItem delay="0.6s"><p>{language === 'en'
+        ? 'Monetary gifts will be greatly appreciated as we start our new life together. You can send gifts via bank transfer:'
+        : 'Hadiah moneter akan sangat kami hargai saat kami memulai kehidupan baru bersama. Anda dapat mengirimkan hadiah melalui transfer bank:'}</p></StoryItem>
       <StoryItem delay="0.8s">
         <ul className="gift-list" style={{ paddingLeft: '18px' }}>
           <li>
@@ -72,15 +78,20 @@ const GiftRegistry: React.FC = () => {
                 aria-expanded={showSaweria}
                 aria-controls="saweria-barcode"
               >
-                {showSaweria ? 'Tutup Barcode Saweria' : (
-                  <span style={{ fontSize: '0.92em', color: '#556B2F', fontWeight: 'bold' }}>Klik untuk barcode</span>
+                {showSaweria 
+                  ? (language === 'en' ? 'Close Saweria Barcode' : 'Tutup Barcode Saweria') 
+                  : (<span style={{ fontSize: '0.92em', color: '#556B2F', fontWeight: 'bold' }}>
+                      {language === 'en' ? 'Click for barcode' : 'Klik untuk barcode'}
+                    </span>
                 )}
               </button>
             </div>
             {showSaweria && (
               <div id="saweria-barcode" style={{ marginTop: '10px', textAlign: 'left' }}>
                 <img src="/images/saweria.png" alt="Barcode Saweria" style={{ maxWidth: '180px', width: '100%', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} />
-                <div style={{ fontSize: '0.85em', color: '#555', marginTop: '4px' }}>Scan barcode Saweria</div>
+                <div style={{ fontSize: '0.85em', color: '#555', marginTop: '4px' }}>
+                  {language === 'en' ? 'Scan Saweria barcode' : 'Scan barcode Saweria'}
+                </div>
               </div>
             )}
           </li>
