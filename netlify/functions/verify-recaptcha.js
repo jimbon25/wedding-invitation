@@ -57,10 +57,11 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Pesan terlalu panjang (maksimal 150 karakter).' }) };
     }
   } catch (e) {
+    console.error('JSON.parse error:', e);
     return {
       statusCode: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success: false, error: 'Invalid JSON' })
+      body: JSON.stringify({ success: false, error: 'Invalid JSON', detail: String(e) })
     };
   }
   // Ambil IP address dari header (Netlify: x-forwarded-for)
