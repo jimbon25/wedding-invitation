@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS CSS
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
@@ -47,29 +48,43 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('darkMode');
     return saved === 'true';
   });
-  useEffect(() => {
-    // Tracking kunjungan undangan ke Telegram
-    const params = new URLSearchParams(window.location.search);
-    const guest = params.get('guest');
-    // Session ID: generate if not exist
-    let sessionId = localStorage.getItem('sessionId');
-    if (!sessionId) {
-      sessionId = Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
-      localStorage.setItem('sessionId', sessionId);
+  // Ref untuk invisible reCAPTCHA
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  // Handler untuk invisible reCAPTCHA
+  const handleRecaptcha = (token: string | null) => {
+    if (token) {
+      const params = new URLSearchParams(window.location.search);
+      const guest = params.get('guest');
+      let sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        sessionId = Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
+        localStorage.setItem('sessionId', sessionId);
+      }
+      fetch('/.netlify/functions/verify-recaptcha', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'visit',
+          name: guest,
+          message: navigator.userAgent,
+          attendance: new Date().toISOString(),
+          guests: sessionId,
+          token
+        })
+      });
     }
-    fetch('/.netlify/functions/guest-visiter', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        guest,
-        userAgent: navigator.userAgent,
-        timestamp: new Date().toISOString(),
-        sessionId
-      })
-    });
+  };
+
+  // Jalankan invisible reCAPTCHA hanya sekali saat mount
+  useEffect(() => {
+    if (recaptchaRef.current) {
+      (recaptchaRef.current as any).execute();
+    }
     document.body.classList.toggle('dark-mode', darkMode);
     localStorage.setItem('darkMode', darkMode.toString());
-  }, [darkMode]);
+    // eslint-disable-next-line
+  }, []);
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const toggleNavbar = () => {
@@ -176,10 +191,18 @@ const App: React.FC = () => {
   }, [isOpen, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   return (
-    <Router>
-      {!isInvitationOpened && <CoverScreen onOpenInvitation={handleOpenInvitation} />}
-
-      <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
+    <>
+      {/* Invisible reCAPTCHA untuk tracking kunjungan */}
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey="6LeahZArAAAAAD46TApigkNmPwS7qMCuLt8EAUG9"
+        size="invisible"
+        badge="inline"
+        onChange={handleRecaptcha}
+      />
+      <Router>
+        {!isInvitationOpened && <CoverScreen onOpenInvitation={handleOpenInvitation} />}
+        <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
         {isOpen && <div className="menu-overlay" onClick={toggleNavbar}></div>}
         <nav className={`navbar navbar-expand-lg fixed-top ${darkMode ? 'navbar-dark' : 'navbar-light'} ${isScrolled ? 'scrolled' : ''} ${darkMode ? 'bg-dark' : 'bg-light'}`}
           style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', paddingTop: 0, marginTop: 0 } : { background: 'var(--navbar-bg-light, #f8f9fa)', paddingTop: 0, marginTop: 0 }}>
@@ -303,6 +326,7 @@ const App: React.FC = () => {
         </div>
       </div>
     </Router>
+    </>
   );
 };
 

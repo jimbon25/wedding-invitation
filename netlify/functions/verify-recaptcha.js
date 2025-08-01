@@ -45,36 +45,134 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, ...data }) };
     }
 
-    // 2. Kirim ke Telegram
+    // 2. Format pesan Telegram (triple backtick)
     let telegramText = '';
     if (type === 'rsvp') {
-      telegramText = `RSVP\nNama: ${name}\nKehadiran: ${attendance}\nJumlah Tamu: ${guests}\nMakanan: ${foodPreference}\nPesan: ${message}`;
+      telegramText = [
+        '```',
+        'RSVP Baru:',
+        `Nama: ${name || '-'}`,
+        `Kehadiran: ${attendance || '-'}`,
+        `Jumlah Tamu: ${guests || '-'}`,
+        `Preferensi Makanan: ${foodPreference || '-'}`,
+        `Pesan: ${message || '-'}`,
+        '```'
+      ].join('\n');
     } else if (type === 'guestbook') {
-      telegramText = `Guestbook\nNama: ${name}\nPesan: ${message}`;
+      telegramText = [
+        '```',
+        'Buku Tamu Baru:',
+        `Nama: ${name || '-'}`,
+        `Pesan: ${message || '-'}`,
+        '```'
+      ].join('\n');
+    } else if (type === 'visit') {
+      // Tracking kunjungan
+      const guest = name || '-';
+      const userAgent = message || '-';
+      const timestamp = attendance || new Date().toISOString();
+      const sessionId = guests || '-';
+      telegramText = [
+        '```',
+        'Kunjungan Baru:',
+        `Guest: ${guest}`,
+        `UserAgent: ${userAgent}`,
+        `Timestamp: ${timestamp}`,
+        `SessionId: ${sessionId}`,
+        '```'
+      ].join('\n');
     } else {
-      telegramText = `Nama: ${name}\nPesan: ${message}`;
+      telegramText = [
+        '```',
+        `Nama: ${name || '-'}`,
+        `Pesan: ${message || '-'}`,
+        '```'
+      ].join('\n');
     }
     let telegramResult = { ok: true };
-    if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
-      const telegramRes = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    let discordResult = { ok: true };
+    // Pilih bot/channel sesuai type
+    let telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+    let telegramChatId = process.env.TELEGRAM_CHAT_ID;
+    let discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
+    if (type === 'visit') {
+      telegramBotToken = process.env.VISIT_TELEGRAM_BOT_TOKEN || telegramBotToken;
+      telegramChatId = process.env.VISIT_TELEGRAM_CHAT_ID || telegramChatId;
+      discordWebhookUrl = process.env.VISIT_DISCORD_WEBHOOK_URL || discordWebhookUrl;
+    }
+
+    // Kirim ke Telegram
+    if (telegramBotToken && telegramChatId) {
+      const telegramRes = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chat_id: process.env.TELEGRAM_CHAT_ID,
+          chat_id: telegramChatId,
           text: telegramText,
+          parse_mode: 'Markdown'
         }),
       });
       telegramResult.ok = telegramRes.ok;
     }
 
-    // 3. Kirim ke Discord
-    let discordResult = { ok: true };
-    if (process.env.DISCORD_WEBHOOK_URL) {
-      const discordRes = await fetch(process.env.DISCORD_WEBHOOK_URL, {
+    // Kirim ke Discord
+    if (discordWebhookUrl) {
+      let embed = {};
+      if (type === 'rsvp') {
+        embed = {
+          title: 'RSVP Baru',
+          color: 0x00bfff,
+          fields: [
+            { name: 'Nama', value: name || '-', inline: true },
+            { name: 'Kehadiran', value: attendance || '-', inline: true },
+            { name: 'Jumlah Tamu', value: guests ? String(guests) : '-', inline: true },
+            { name: 'Preferensi Makanan', value: foodPreference || '-', inline: true },
+            { name: 'Pesan', value: message || '-', inline: false },
+          ],
+          timestamp: new Date().toISOString(),
+        };
+      } else if (type === 'guestbook') {
+        embed = {
+          title: 'Buku Tamu Baru',
+          color: 0x00bfff,
+          fields: [
+            { name: 'Nama', value: name || '-', inline: true },
+            { name: 'Pesan', value: message || '-', inline: false },
+          ],
+          timestamp: new Date().toISOString(),
+        };
+      } else if (type === 'visit') {
+        const guest = name || '-';
+        const userAgent = message || '-';
+        const timestamp = attendance || new Date().toISOString();
+        const sessionId = guests || '-';
+        embed = {
+          title: 'Kunjungan Baru',
+          color: 0x00bfff,
+          fields: [
+            { name: 'Guest', value: guest, inline: true },
+            { name: 'UserAgent', value: userAgent, inline: false },
+            { name: 'Timestamp', value: timestamp, inline: false },
+            { name: 'SessionId', value: sessionId, inline: false },
+          ],
+          timestamp: new Date().toISOString(),
+        };
+      } else {
+        embed = {
+          title: 'Pesan Baru',
+          color: 0x00bfff,
+          fields: [
+            { name: 'Nama', value: name || '-', inline: true },
+            { name: 'Pesan', value: message || '-', inline: false },
+          ],
+          timestamp: new Date().toISOString(),
+        };
+      }
+      const discordRes = await fetch(discordWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          content: telegramText,
+          embeds: [embed],
         }),
       });
       discordResult.ok = discordRes.ok;
