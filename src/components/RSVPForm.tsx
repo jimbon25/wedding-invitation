@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
+import { SecurityUtils } from '../utils/security';
 
 const RSVPForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -43,17 +44,16 @@ const RSVPForm: React.FC = () => {
 
     let isValid = true;
 
-    // Validasi nama hanya huruf, spasi, titik, koma, dan tanda hubung
-    // NOTE: Jika target ES5, hapus flag 'u' pada regex berikut agar tidak error.
-    const namePattern = /^[a-zA-Z .,'-]+$/;
-    if (!name.trim()) {
-      setNameError('Nama tidak boleh kosong.');
+    // Enhanced validation using SecurityUtils
+    const nameValidation = SecurityUtils.validateName(name);
+    if (!nameValidation.isValid) {
+      setNameError(nameValidation.error || 'Nama tidak valid.');
       isValid = false;
-    } else if (!namePattern.test(name.trim())) {
-      setNameError('Nama hanya boleh huruf, spasi, titik, koma, dan tanda hubung.');
-      isValid = false;
-    } else if (name.length > 50) {
-      setNameError('Nama terlalu panjang (maksimal 50 karakter).');
+    }
+
+    // Client-side rate limiting check
+    if (!SecurityUtils.checkRateLimit('rsvp_form', 3, 10 * 60 * 1000)) {
+      setNameError('Terlalu banyak percobaan. Silakan coba lagi dalam 10 menit.');
       isValid = false;
     }
 

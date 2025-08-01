@@ -3,15 +3,23 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS CSS
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
 
-
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import MainContentWrapper from './components/MainContentWrapper';
 import CoverScreen from './components/CoverScreen';
 import FloatingMenu from './components/FloatingMenu';
 import FloatingGeminiChat from './components/FloatingGeminiChat';
+import { SecurityUtils } from './utils/security';
 
 const App: React.FC = () => {
+  // Environment validation on startup
+  useEffect(() => {
+    const envValidation = SecurityUtils.validateEnvVars();
+    if (!envValidation.isValid) {
+      console.warn('Missing environment variables:', envValidation.missing);
+    }
+  }, []);
+
   // Guest visitor tracking (best practice: panggil di App agar setiap kunjungan terdeteksi)
   useEffect(() => {
     fetch('/.netlify/functions/guest-count', {

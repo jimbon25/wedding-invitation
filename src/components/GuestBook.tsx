@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ToastNotification from './ToastNotification';
 import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
+import { SecurityUtils } from '../utils/security';
 
 const GuestBook: React.FC = () => {
   const [name, setName] = useState('');
@@ -38,35 +39,25 @@ const GuestBook: React.FC = () => {
     setMessageError('');
     setCaptchaError('');
 
-    // Blacklist kata kasar/spam/link sederhana
-    const blacklist = [
-      'anjing', 'babi', 'bangsat', 'kontol', 'memek', 'asu', 'tolol', 'goblok', 'http://', 'https://', 'www.', '.com', '.xyz', '.net', '.org', 'sex', 'porno', 'judi', 'slot', 'casino'
-    ];
-    if (blacklist.some(word => message.toLowerCase().includes(word))) {
-      setMessageError('Pesan mengandung kata yang tidak diperbolehkan.');
-      setIsSubmitting(false);
-      return;
-    }
-
     let isValid = true;
-    // Validasi nama hanya huruf, spasi, titik, koma, dan tanda hubung
-    const namePattern = /^[a-zA-Z .,'-]+$/;
-    if (!name.trim()) {
-      setNameError('Nama tidak boleh kosong.');
-      isValid = false;
-    } else if (!namePattern.test(name.trim())) {
-      setNameError('Nama hanya boleh huruf, spasi, titik, koma, dan tanda hubung.');
-      isValid = false;
-    } else if (name.length > 50) {
-      setNameError('Nama terlalu panjang (maksimal 50 karakter).');
+
+    // Blacklist kata kasar/spam/link sederhana - now using SecurityUtils
+    const nameValidation = SecurityUtils.validateName(name);
+    const messageValidation = SecurityUtils.validateMessage(message);
+
+    if (!nameValidation.isValid) {
+      setNameError(nameValidation.error || 'Nama tidak valid.');
       isValid = false;
     }
 
-    if (!message.trim()) {
-      setMessageError('Pesan tidak boleh kosong.');
+    if (!messageValidation.isValid) {
+      setMessageError(messageValidation.error || 'Pesan tidak valid.');
       isValid = false;
-    } else if (message.length > 300) {
-      setMessageError('Pesan terlalu panjang (maksimal 300 karakter).');
+    }
+
+    // Client-side rate limiting check
+    if (!SecurityUtils.checkRateLimit('guestbook_form', 3, 10 * 60 * 1000)) {
+      setMessageError('Terlalu banyak percobaan. Silakan coba lagi dalam 10 menit.');
       isValid = false;
     }
 
