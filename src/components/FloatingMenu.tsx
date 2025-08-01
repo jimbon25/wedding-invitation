@@ -7,7 +7,7 @@ interface FloatingMenuProps {
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const menuItems = [
     { label: language === 'en' ? 'Home' : 'Beranda', to: '/', icon: 'bi-house-door-fill' },
     { label: 'RSVP', to: '/rsvp-guestbook', icon: 'bi-check-circle-fill' },
@@ -18,11 +18,14 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
   ];
   
   const [open, setOpen] = useState(false);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
   const [pos, setPos] = useState({ x: 24, y: 120 });
   const [dragging, setDragging] = useState(false);
   const [mini, setMini] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const offset = useRef({ x: 0, y: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
 
   // Drag logic (mouse)
@@ -82,6 +85,60 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
     };
   }, [dragging, onMouseMove]);
 
+  // Find audio element on the page
+  React.useEffect(() => {
+    const audio = document.querySelector('audio');
+    if (audio) {
+      audioRef.current = audio;
+      setIsPlaying(!audio.paused);
+      
+      // Add event listeners to keep track of audio state
+      audio.addEventListener('play', () => setIsPlaying(true));
+      audio.addEventListener('pause', () => setIsPlaying(false));
+      
+      return () => {
+        audio.removeEventListener('play', () => setIsPlaying(true));
+        audio.removeEventListener('pause', () => setIsPlaying(false));
+      };
+    }
+  }, []);
+  
+  // Toggle audio playback
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => console.error("Error playing audio:", e));
+      }
+    }
+  };
+  
+  // Toggle language
+  const toggleLanguage = () => {
+    setLanguage(language === 'id' ? 'en' : 'id');
+  };
+  
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    // Gunakan custom event untuk mengubah state dark mode di App
+    const newDarkMode = !darkMode;
+    localStorage.setItem('darkMode', newDarkMode ? 'true' : 'false');
+    
+    // Dispatch event untuk mengubah dark mode tanpa me-refresh halaman
+    const event = new CustomEvent('toggleDarkMode', { detail: newDarkMode });
+    window.dispatchEvent(event);
+    
+    // Tambahkan/lepaskan class dark-mode pada body
+    if (newDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  };
+  
+  // Fungsi handleShare telah dihapus karena tidak diperlukan lagi
+  
   // Mode mini: auto shrink jika idle
   React.useEffect(() => {
     if (open || dragging) {
@@ -104,22 +161,28 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
         transition: dragging ? 'none' : 'box-shadow 0.2s, left 0.22s, top 0.22s',
       }}
     >
+      {/* Quick Actions akan selalu bersama main menu */}
+      
       {/* Floating button */}
       <div
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          // Klik akan membuka/menutup menu utama dan quick action secara bersamaan
+          setOpen(!open);
+          setQuickActionsOpen(!open);
+        }}
         onMouseEnter={() => setMini(false)}
         style={{
-          width: mini ? 42 : 54,
-          height: mini ? 42 : 54,
+          width: mini ? 38 : 48,
+          height: mini ? 38 : 48,
           borderRadius: '50%',
           background: darkMode
             ? 'linear-gradient(135deg, #232d2b 0%, #181A1B 100%)'
             : 'linear-gradient(135deg, #7ed957 0%, #556B2F 100%)',
-          boxShadow: open
+          boxShadow: (open || quickActionsOpen)
             ? (darkMode ? '0 4px 16px rgba(30,30,30,0.28)' : '0 4px 16px rgba(85,107,47,0.18)')
             : (darkMode ? '0 2px 8px rgba(30,30,30,0.18)' : '0 2px 8px rgba(0,0,0,0.12)'),
           display: 'flex',
@@ -138,7 +201,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
       >
         <i
           className={`bi bi-grid-3x3-gap-fill${open ? ' floating-menu-rotate' : ''}`}
-          style={{ fontSize: mini ? 22 : 28, fontWeight: 700, userSelect: 'none', transition: 'transform 0.32s cubic-bezier(.42,1.6,.58,1), font-size 0.22s' }}
+          style={{ fontSize: mini ? 20 : 24, fontWeight: 700, userSelect: 'none', transition: 'transform 0.32s cubic-bezier(.42,1.6,.58,1), font-size 0.22s' }}
         ></i>
       </div>
       {/* Menu pop-up */}
@@ -146,23 +209,71 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
         <div
           style={{
             position: 'absolute',
-            left: 60,
+            left: 56,
             top: 0,
-            minWidth: 120,
+            minWidth: 110,
             background: darkMode ? 'rgba(24,26,27,0.96)' : 'rgba(255,255,255,0.82)',
             color: darkMode ? '#EEE' : '#556B2F',
             backdropFilter: 'blur(8px)',
-            borderRadius: 16,
+            borderRadius: 12,
             boxShadow: darkMode ? '0 4px 24px rgba(30,30,30,0.18)' : '0 4px 24px rgba(85,107,47,0.13)',
-            padding: '10px 0',
+            padding: '8px 0',
             display: 'flex',
             flexDirection: 'column',
-            gap: 2,
-            border: darkMode ? '1.5px solid #333' : '1.5px solid #e0e0e0',
+            gap: 1,
+            border: darkMode ? '1px solid #333' : '1px solid #e0e0e0',
             animation: 'scaleFadeInMenu 0.22s cubic-bezier(.42,1.6,.58,1) both',
             transformOrigin: 'left top',
+            fontSize: '0.92rem',
           }}
         >
+          {/* Quick Action Buttons */}
+          <div className="quick-actions-container" style={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '6px',
+            borderBottom: darkMode ? '1px solid #333' : '1px solid #e0e0e0',
+            marginBottom: '4px'
+          }}>
+            {/* Music Button */}
+            <button 
+              className="menu-action-button" 
+              onClick={togglePlay} 
+              title={isPlaying ? (language === 'en' ? 'Pause Music' : 'Jeda Musik') : (language === 'en' ? 'Play Music' : 'Putar Musik')}
+              style={{
+                background: isPlaying ? (darkMode ? '#3a5a40' : '#7ed957') : (darkMode ? '#232d2b' : '#f8f9fa')
+              }}
+            >
+              <i className={`bi ${isPlaying ? 'bi-pause-fill' : 'bi-play-fill'}`} style={{fontSize: "12px"}}></i>
+            </button>
+            
+            {/* Language Toggle Button */}
+            <button 
+              className="menu-action-button"
+              onClick={toggleLanguage}
+              title={language === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              style={{
+                background: darkMode ? '#232d2b' : '#f8f9fa'
+              }}
+            >
+              <span style={{ fontSize: '0.65rem', fontWeight: 'bold' }}>{language === 'id' ? 'EN' : 'ID'}</span>
+            </button>
+            
+            {/* Dark/Light Mode Button */}
+            <button 
+              className="menu-action-button"
+              onClick={toggleDarkMode}
+              title={darkMode ? (language === 'en' ? 'Light Mode' : 'Mode Terang') : (language === 'en' ? 'Dark Mode' : 'Mode Gelap')}
+              style={{
+                background: darkMode ? '#232d2b' : '#f8f9fa'
+              }}
+            >
+              <i className={`bi ${darkMode ? 'bi-brightness-high-fill' : 'bi-moon-stars-fill'}`} style={{fontSize: "12px"}}></i>
+            </button>
+          </div>
+
           {menuItems.map((item) => (
             <button
               key={item.to}
@@ -187,21 +298,21 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
                 border: 'none',
                 color: darkMode ? '#EEE' : '#556B2F',
                 fontWeight: 600,
-                fontSize: 16,
-                padding: '10px 18px',
+                fontSize: 14,
+                padding: '7px 14px',
                 textAlign: 'left',
-                borderRadius: 10,
+                borderRadius: 8,
                 cursor: 'pointer',
                 transition: 'background 0.18s, box-shadow 0.18s',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 10,
+                gap: 8,
                 position: 'relative',
                 overflow: 'hidden',
               }}
               onMouseDown={e => e.stopPropagation()}
             >
-              <i className={`bi ${item.icon}`} style={{ fontSize: 18, marginRight: 6, minWidth: 18 }}></i>
+              <i className={`bi ${item.icon}`} style={{ fontSize: 16, marginRight: 5, minWidth: 16 }}></i>
               {item.label}
             </button>
           ))}
@@ -244,6 +355,39 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
           to {
             transform: scale(2.2);
             opacity: 0;
+          }
+        }
+        
+        /* Quick Action Buttons Styles */
+        .menu-action-button {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border: 1.5px solid ${darkMode ? '#444' : '#fff'};
+          color: ${darkMode ? '#EEE' : '#556B2F'};
+          font-size: 14px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+          transition: all 0.3s;
+          animation: scaleInQuickAction 0.3s ease-out both;
+        }
+        
+        .menu-action-button:hover, .menu-action-button:focus {
+          transform: scale(1.1);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes scaleInQuickAction {
+          from {
+            transform: scale(0);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
           }
         }
       `}</style>

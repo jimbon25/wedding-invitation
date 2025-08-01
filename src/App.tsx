@@ -79,6 +79,16 @@ const App: React.FC = () => {
     }
     // Simpan preferensi ke localStorage
     localStorage.setItem('darkMode', darkMode ? 'true' : 'false');
+    
+    // Listen untuk event toggle dark mode dari FloatingMenu
+    const handleToggleDarkMode = (e: CustomEvent) => {
+      setDarkMode(e.detail);
+    };
+    
+    window.addEventListener('toggleDarkMode', handleToggleDarkMode as EventListener);
+    return () => {
+      window.removeEventListener('toggleDarkMode', handleToggleDarkMode as EventListener);
+    };
   }, [darkMode]);
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
