@@ -17,6 +17,10 @@ function escapeMarkdown(text) {
 }
 
 exports.handler = async function(event, context) {
+  // Debug log untuk tracing request
+  console.log('=== Incoming Request ===');
+  console.log('event.body:', event.body);
+  console.log('event.headers:', event.headers);
   // Ganti dengan domain undangan Anda
   const allowedOrigin = 'https://wedding-invitation-dn.netlify.app';
   const corsHeaders = {
