@@ -89,11 +89,11 @@ exports.handler = async function(event, context) {
     return { statusCode: 400, headers: corsHeaders, body: 'Invalid JSON' };
   }
 
-  // Ambil parameter ?guest= dari URL jika ada
+  // Ambil parameter ?to= dari URL jika ada
   let guestParam = '-';
   try {
     const url = new URL(event.headers.referer || '', allowedOrigin);
-    guestParam = url.searchParams.get('guest') || '-';
+    guestParam = url.searchParams.get('to') || '-';
   } catch (e) {
     // ignore
   }
