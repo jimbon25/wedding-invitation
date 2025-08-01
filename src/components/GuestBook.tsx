@@ -76,41 +76,19 @@ const GuestBook: React.FC = () => {
       type: 'guestbook',
       name: name.trim(),
       message: message.trim(),
-      recaptchaToken: captchaToken // gunakan field recaptchaToken agar konsisten dengan backend
+      token: captchaToken // gunakan field 'token' agar konsisten dengan backend
     };
-    // Tidak perlu verifikasi captcha ke endpoint khusus, langsung kirim ke endpoint utama
 
-    // Pilih endpoint sesuai environment (Netlify/Vercel)
-    const endpoint = window.location.hostname.includes('vercel.app')
-      ? '/api/send-discord-message'
-      : '/.netlify/functions/send-discord-message';
+    // Endpoint Netlify Function
+    const endpoint = '/.netlify/functions/verify-recaptcha';
 
     try {
-      // Kirim ke Discord
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-      });
-
-      // Kirim ke Telegram (format khusus Guestbook, tidak menunggu hasil)
-      const telegramEndpoint = window.location.hostname.includes('vercel.app')
-        ? '/api/send-telegram-message'
-        : '/.netlify/functions/send-telegram-message';
-
-      fetch(telegramEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'guestbook',
-          name: name,
-          message: message,
-          recaptchaToken: captchaToken // tambahkan juga ke request telegram
-        }),
       });
 
       if (response.ok) {

@@ -77,43 +77,19 @@ const RSVPForm: React.FC = () => {
       guests,
       foodPreference,
       message: message.trim(),
-      recaptchaToken: captchaToken // tambahkan token reCAPTCHA ke payload
+      token: captchaToken // gunakan field 'token' agar konsisten dengan backend
     };
 
-    // Pilih endpoint sesuai environment (Netlify/Vercel)
-    const endpoint = window.location.hostname.includes('vercel.app')
-      ? '/api/send-discord-message'
-      : '/.netlify/functions/send-discord-message';
+    // Endpoint Netlify Function
+    const endpoint = '/.netlify/functions/verify-recaptcha';
 
     try {
-      // Kirim ke Discord
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-      });
-
-      // Kirim ke Telegram (format khusus RSVP, tidak menunggu hasil)
-          const telegramEndpoint = window.location.hostname.includes('vercel.app')
-            ? '/api/send-telegram-message'
-            : '/.netlify/functions/send-telegram-message';
-
-      fetch(telegramEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'rsvp',
-          nama: name,
-          kehadiran: attendance,
-          jumlahTamu: guests,
-          preferensiMakanan: foodPreference,
-          pesan: message,
-          recaptchaToken: captchaToken // tambahkan juga ke request telegram
-        }),
       });
 
       if (response.ok) {
