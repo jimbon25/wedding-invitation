@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../utils/LanguageContext';
 
 const GiftInfo: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage(); // Removed unused 't'
   
   // Content based on language
   const content = language === 'en' ? {

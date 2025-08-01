@@ -3,7 +3,7 @@ import StoryItem from './StoryItem';
 import { useLanguage } from '../utils/LanguageContext';
 
 const OurStory: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage(); // Removed unused 't'
   const videoSrc = "/videos/our.mp4";
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);

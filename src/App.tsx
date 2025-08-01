@@ -10,7 +10,7 @@ import CoverScreen from './components/CoverScreen';
 import FloatingMenu from './components/FloatingMenu';
 import FloatingGeminiChat from './components/FloatingGeminiChat';
 import { SecurityUtils } from './utils/security';
-import { LanguageProvider, useLanguage } from './utils/LanguageContext';
+import { useLanguage } from './utils/LanguageContext'; // Removed unused LanguageProvider
 
 const App: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
