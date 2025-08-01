@@ -27,7 +27,11 @@ exports.handler = async function(event, context) {
   // Debug/log event.body untuk tracing error Invalid JSON
   if (!event.body || typeof event.body !== 'string' || event.body.trim() === '') {
     console.error('Request body kosong atau bukan string:', event.body);
-    return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Request body kosong atau tidak valid.' }) };
+    return {
+      statusCode: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success: false, error: 'Request body kosong atau tidak valid.' })
+    };
   }
 
   let token, name, message, attendance, guests, foodPreference, type;
@@ -49,7 +53,11 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Pesan terlalu panjang (maksimal 150 karakter).' }) };
     }
   } catch (e) {
-    return { statusCode: 400, headers: corsHeaders, body: 'Invalid JSON' };
+    return {
+      statusCode: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success: false, error: 'Invalid JSON' })
+    };
   }
   // Ambil IP address dari header (Netlify: x-forwarded-for)
   const ip = event.headers['x-forwarded-for'] ? event.headers['x-forwarded-for'].split(',')[0].trim() : 'unknown';
