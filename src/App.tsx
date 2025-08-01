@@ -12,6 +12,17 @@ import FloatingMenu from './components/FloatingMenu';
 import FloatingGeminiChat from './components/FloatingGeminiChat';
 
 const App: React.FC = () => {
+  // Guest visitor tracking (best practice: panggil di App agar setiap kunjungan terdeteksi)
+  useEffect(() => {
+    fetch('/.netlify/functions/guest-count', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'wedding992507'
+      },
+      body: JSON.stringify({})
+    });
+  }, []);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isInvitationOpened, setIsInvitationOpened] = useState(false); // New state for cover screen
