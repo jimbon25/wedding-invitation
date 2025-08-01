@@ -9,6 +9,7 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 import MainContentWrapper from './components/MainContentWrapper';
 import CoverScreen from './components/CoverScreen';
 import FloatingMenu from './components/FloatingMenu';
+import FloatingGeminiChat from './components/FloatingGeminiChat';
 
 const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -47,7 +48,16 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('darkMode');
     return saved === 'true';
   });
-  // ...existing code...
+  // Tambahkan/lepaskan class dark-mode pada body saat darkMode berubah
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    // Simpan preferensi ke localStorage
+    localStorage.setItem('darkMode', darkMode ? 'true' : 'false');
+  }, [darkMode]);
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const toggleNavbar = () => {
@@ -265,18 +275,15 @@ const App: React.FC = () => {
           <MainContentWrapper />
           <audio ref={audioRef} loop>
             {/* Replace with your actual music file URL */}
-            <source src="/music/wedding-joy-189888.mp3" type="audio/mpeg" />
+            <source src="/music/wedding-music.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
           <Footer />
           <ScrollToTopButton />
           {/* Floating Gemini Chat Icon & Bubble */}
-          {typeof window !== 'undefined' && (
-            require('./components/FloatingGeminiChat').default ?
-              React.createElement(require('./components/FloatingGeminiChat').default) : null
-          )}
+          <FloatingGeminiChat darkMode={darkMode} />
           {/* Floating AssistiveTouch-style Menu */}
-          <FloatingMenu />
+          <FloatingMenu darkMode={darkMode} />
         </div>
       </div>
     </Router>

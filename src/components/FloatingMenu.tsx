@@ -10,7 +10,11 @@ const menuItems = [
   { label: 'Akomodasi', to: '/accommodation-info', icon: 'bi-car-front-fill' },
 ];
 
-const FloatingMenu: React.FC = () => {
+interface FloatingMenuProps {
+  darkMode: boolean;
+}
+
+const FloatingMenu: React.FC<FloatingMenuProps> = ({ darkMode }) => {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ x: 24, y: 120 });
   const [dragging, setDragging] = useState(false);
@@ -110,14 +114,18 @@ const FloatingMenu: React.FC = () => {
           width: mini ? 42 : 54,
           height: mini ? 42 : 54,
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #7ed957 0%, #556B2F 100%)',
-          boxShadow: open ? '0 4px 16px rgba(85,107,47,0.18)' : '0 2px 8px rgba(0,0,0,0.12)',
+          background: darkMode
+            ? 'linear-gradient(135deg, #232d2b 0%, #181A1B 100%)'
+            : 'linear-gradient(135deg, #7ed957 0%, #556B2F 100%)',
+          boxShadow: open
+            ? (darkMode ? '0 4px 16px rgba(30,30,30,0.28)' : '0 4px 16px rgba(85,107,47,0.18)')
+            : (darkMode ? '0 2px 8px rgba(30,30,30,0.18)' : '0 2px 8px rgba(0,0,0,0.12)'),
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'grab',
-          border: '2.5px solid #fff',
-          color: '#fff',
+          border: darkMode ? '2.5px solid #EEE' : '2.5px solid #fff',
+          color: darkMode ? '#EEE' : '#fff',
           fontSize: mini ? 22 : 28,
           fontWeight: 700,
           transition: 'background 0.2s, box-shadow 0.2s, width 0.22s, height 0.22s, font-size 0.22s',
@@ -139,15 +147,16 @@ const FloatingMenu: React.FC = () => {
             left: 60,
             top: 0,
             minWidth: 120,
-            background: 'rgba(255,255,255,0.82)',
+            background: darkMode ? 'rgba(24,26,27,0.96)' : 'rgba(255,255,255,0.82)',
+            color: darkMode ? '#EEE' : '#556B2F',
             backdropFilter: 'blur(8px)',
             borderRadius: 16,
-            boxShadow: '0 4px 24px rgba(85,107,47,0.13)',
+            boxShadow: darkMode ? '0 4px 24px rgba(30,30,30,0.18)' : '0 4px 24px rgba(85,107,47,0.13)',
             padding: '10px 0',
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
-            border: '1.5px solid #e0e0e0',
+            border: darkMode ? '1.5px solid #333' : '1.5px solid #e0e0e0',
             animation: 'scaleFadeInMenu 0.22s cubic-bezier(.42,1.6,.58,1) both',
             transformOrigin: 'left top',
           }}
@@ -174,7 +183,7 @@ const FloatingMenu: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#556B2F',
+                color: darkMode ? '#EEE' : '#556B2F',
                 fontWeight: 600,
                 fontSize: 16,
                 padding: '10px 18px',
@@ -213,7 +222,7 @@ const FloatingMenu: React.FC = () => {
           }
         }
         .floating-menu-item-btn:hover, .floating-menu-item-btn:focus {
-          background: rgba(85,107,47,0.08);
+          background: ${darkMode ? 'rgba(80,80,80,0.18)' : 'rgba(85,107,47,0.08)'};
           box-shadow: 0 2px 12px 0 rgba(85,107,47,0.18), 0 0 0 2px #d0e6c1;
           outline: none;
         }
@@ -223,7 +232,7 @@ const FloatingMenu: React.FC = () => {
         .floating-menu-ripple {
           position: absolute;
           border-radius: 50%;
-          background: rgba(85,107,47,0.18);
+          background: ${darkMode ? 'rgba(80,80,80,0.28)' : 'rgba(85,107,47,0.18)'};
           transform: scale(0);
           animation: floatingMenuRipple 0.5s linear;
           pointer-events: none;

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import GeminiChat from './GeminiChat';
 
-const FloatingGeminiChat: React.FC = () => {
+
+interface FloatingGeminiChatProps {
+  darkMode: boolean;
+}
+
+const FloatingGeminiChat: React.FC<FloatingGeminiChatProps> = ({ darkMode }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -14,12 +19,12 @@ const FloatingGeminiChat: React.FC = () => {
           right: 24,
           bottom: 24,
           zIndex: 9999,
-          background: '#fff',
-          border: '2.5px solid #9CAF88',
+          background: darkMode ? '#232d2b' : '#fff',
+          border: darkMode ? '2.5px solid #EEE' : '2.5px solid #9CAF88',
           borderRadius: '50%',
           width: 56,
           height: 56,
-          boxShadow: '0 2px 12px rgba(156,175,136,0.18)',
+          boxShadow: darkMode ? '0 2px 12px rgba(30,30,30,0.18)' : '0 2px 12px rgba(156,175,136,0.18)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -32,8 +37,8 @@ const FloatingGeminiChat: React.FC = () => {
         {/* Gemini Icon SVG */}
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <circle cx="16" cy="16" r="16" fill="#9CAF88" />
-          <ellipse cx="16" cy="16" rx="10" ry="6" fill="#fff" fillOpacity="0.85" />
-          <ellipse cx="16" cy="16" rx="6" ry="10" fill="#fff" fillOpacity="0.7" />
+          <ellipse cx="16" cy="16" rx="10" ry="6" fill={darkMode ? '#232d2b' : '#fff'} fillOpacity="0.85" />
+          <ellipse cx="16" cy="16" rx="6" ry="10" fill={darkMode ? '#232d2b' : '#fff'} fillOpacity="0.7" />
           <circle cx="16" cy="16" r="4.5" fill="#9CAF88" />
         </svg>
       </button>
@@ -55,8 +60,8 @@ const FloatingGeminiChat: React.FC = () => {
                 position: 'absolute',
                 top: -12,
                 right: -12,
-                background: '#fff',
-                border: '1.5px solid #9CAF88',
+                background: darkMode ? '#232d2b' : '#fff',
+                border: darkMode ? '1.5px solid #EEE' : '1.5px solid #9CAF88',
                 borderRadius: '50%',
                 width: 28,
                 height: 28,
@@ -64,7 +69,7 @@ const FloatingGeminiChat: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                boxShadow: '0 1px 4px rgba(156,175,136,0.13)',
+                boxShadow: darkMode ? '0 1px 4px rgba(30,30,30,0.13)' : '0 1px 4px rgba(156,175,136,0.13)',
                 fontWeight: 700,
                 color: '#9CAF88',
                 fontSize: 18,
@@ -73,7 +78,7 @@ const FloatingGeminiChat: React.FC = () => {
             >
               ×
             </button>
-            <GeminiChat />
+            <GeminiChat darkMode={darkMode} />
           </div>
         </div>
       )}

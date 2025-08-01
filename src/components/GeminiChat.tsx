@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const GeminiChat: React.FC = () => {
+interface GeminiChatProps {
+  darkMode?: boolean;
+}
+
+const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
   const [messages, setMessages] = useState<{ from: 'user' | 'ai', text: string }[]>([
     { from: 'ai', text: 'Halo! Saya asisten AI untuk undangan Dimas & Niken 😊. Siap bantu kamu seputar acara, lokasi, RSVP, hadiah, galeri, akomodasi, atau fitur undangan lainnya. Saya juga punya 60% selera humor!' }
   ]);
@@ -47,15 +51,28 @@ const GeminiChat: React.FC = () => {
   }, [loading]);
 
   return (
-    <div style={{ maxWidth: 350, minWidth: 260, background: '#fff', borderRadius: 16, boxShadow: '0 4px 24px rgba(0,0,0,0.13)', padding: 16, position: 'relative' }}>
-      <h4 style={{ margin: '0 0 8px 0', fontSize: '1.1rem', color: '#9CAF88', textAlign: 'center' }}>Tanya Asisten Undangan</h4>
+    <div style={{
+      maxWidth: 350,
+      minWidth: 260,
+      background: darkMode ? '#232d2b' : '#fff',
+      borderRadius: 16,
+      boxShadow: darkMode ? '0 4px 24px rgba(30,30,30,0.18)' : '0 4px 24px rgba(0,0,0,0.13)',
+      padding: 16,
+      position: 'relative',
+      color: darkMode ? '#EEE' : undefined
+    }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '1.1rem', color: darkMode ? '#9CAF88' : '#9CAF88', textAlign: 'center' }}>Tanya Asisten Undangan</h4>
       <div style={{ minHeight: 90, maxHeight: 200, overflowY: 'auto', marginBottom: 10 }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ textAlign: msg.from === 'user' ? 'right' : 'left', margin: '8px 0' }}>
             <span style={{
               display: 'inline-block',
-              background: msg.from === 'user' ? '#9CAF88' : '#f3f3f3',
-              color: msg.from === 'user' ? '#fff' : '#333',
+              background: msg.from === 'user'
+                ? (darkMode ? '#9CAF88' : '#9CAF88')
+                : (darkMode ? '#181A1B' : '#f3f3f3'),
+              color: msg.from === 'user'
+                ? '#fff'
+                : (darkMode ? '#EEE' : '#333'),
               borderRadius: 8,
               padding: '6px 12px',
               maxWidth: '80%',
@@ -98,10 +115,33 @@ const GeminiChat: React.FC = () => {
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && sendMessage()}
           placeholder="Tulis pertanyaan..."
-          style={{ flex: 1, borderRadius: 8, border: '1px solid #ccc', padding: 8, fontSize: '0.98em' }}
+          style={{
+            flex: 1,
+            borderRadius: 8,
+            border: darkMode ? '1px solid #444' : '1px solid #ccc',
+            background: darkMode ? '#181A1B' : '#fff',
+            color: darkMode ? '#EEE' : undefined,
+            padding: 8,
+            fontSize: '0.98em'
+          }}
           disabled={loading}
         />
-        <button onClick={sendMessage} disabled={loading || !input.trim()} style={{ borderRadius: 8, padding: '8px 12px', background: '#9CAF88', color: '#fff', border: 'none', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Kirim">
+        <button
+          onClick={sendMessage}
+          disabled={loading || !input.trim()}
+          style={{
+            borderRadius: 8,
+            padding: '8px 12px',
+            background: '#9CAF88',
+            color: '#fff',
+            border: 'none',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Kirim"
+        >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.5 10.833l13.334-5.555c.833-.347 1.667.486 1.32 1.32l-5.555 13.334c-.347.833-1.486.833-1.833 0l-2.222-5.555-5.555-2.222c-.833-.347-.833-1.486 0-1.833z" fill="#fff"/>
             <path d="M2.5 10.833l13.334-5.555c.833-.347 1.667.486 1.32 1.32l-5.555 13.334c-.347.833-1.486.833-1.833 0l-2.222-5.555-5.555-2.222c-.833-.347-.833-1.486 0-1.833z" fill="#fff" fillOpacity=".3"/>
