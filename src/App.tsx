@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS CSS
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
@@ -48,43 +47,7 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('darkMode');
     return saved === 'true';
   });
-  // Ref untuk invisible reCAPTCHA
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-
-  // Handler untuk invisible reCAPTCHA
-  const handleRecaptcha = (token: string | null) => {
-    if (token) {
-      const params = new URLSearchParams(window.location.search);
-      const guest = params.get('guest');
-      let sessionId = localStorage.getItem('sessionId');
-      if (!sessionId) {
-        sessionId = Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
-        localStorage.setItem('sessionId', sessionId);
-      }
-      fetch('/.netlify/functions/verify-recaptcha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'visit',
-          name: guest,
-          message: navigator.userAgent,
-          attendance: new Date().toISOString(),
-          guests: sessionId,
-          token
-        })
-      });
-    }
-  };
-
-  // Jalankan invisible reCAPTCHA hanya sekali saat mount
-  useEffect(() => {
-    if (recaptchaRef.current) {
-      (recaptchaRef.current as any).execute();
-    }
-    document.body.classList.toggle('dark-mode', darkMode);
-    localStorage.setItem('darkMode', darkMode.toString());
-    // eslint-disable-next-line
-  }, []);
+  // ...existing code...
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const toggleNavbar = () => {
@@ -191,18 +154,9 @@ const App: React.FC = () => {
   }, [isOpen, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   return (
-    <>
-      {/* Invisible reCAPTCHA untuk tracking kunjungan */}
-      <ReCAPTCHA
-        ref={recaptchaRef}
-        sitekey="6LeahZArAAAAAD46TApigkNmPwS7qMCuLt8EAUG9"
-        size="invisible"
-        badge="inline"
-        onChange={handleRecaptcha}
-      />
-      <Router>
-        {!isInvitationOpened && <CoverScreen onOpenInvitation={handleOpenInvitation} />}
-        <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
+    <Router>
+      {!isInvitationOpened && <CoverScreen onOpenInvitation={handleOpenInvitation} />}
+      <div style={{ display: isInvitationOpened ? 'block' : 'none' }}>
         {isOpen && <div className="menu-overlay" onClick={toggleNavbar}></div>}
         <nav className={`navbar navbar-expand-lg fixed-top ${darkMode ? 'navbar-dark' : 'navbar-light'} ${isScrolled ? 'scrolled' : ''} ${darkMode ? 'bg-dark' : 'bg-light'}`}
           style={darkMode ? { background: 'var(--navbar-bg-dark, #233d2b)', paddingTop: 0, marginTop: 0 } : { background: 'var(--navbar-bg-light, #f8f9fa)', paddingTop: 0, marginTop: 0 }}>
@@ -326,7 +280,6 @@ const App: React.FC = () => {
         </div>
       </div>
     </Router>
-    </>
   );
 };
 

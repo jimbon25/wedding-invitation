@@ -67,20 +67,8 @@ exports.handler = async function(event, context) {
         '```'
       ].join('\n');
     } else if (type === 'visit') {
-      // Tracking kunjungan
-      const guest = name || '-';
-      const userAgent = message || '-';
-      const timestamp = attendance || new Date().toISOString();
-      const sessionId = guests || '-';
-      telegramText = [
-        '```',
-        'Kunjungan Baru:',
-        `Guest: ${guest}`,
-        `UserAgent: ${userAgent}`,
-        `Timestamp: ${timestamp}`,
-        `SessionId: ${sessionId}`,
-        '```'
-      ].join('\n');
+      // Tidak melakukan tracking kunjungan
+      return { statusCode: 200, headers: corsHeaders, body: JSON.stringify({ success: true, info: 'Visit tracking disabled.' }) };
     } else {
       telegramText = [
         '```',
@@ -115,8 +103,8 @@ exports.handler = async function(event, context) {
       telegramResult.ok = telegramRes.ok;
     }
 
-    // Kirim ke Discord
-    if (discordWebhookUrl) {
+    // Kirim ke Discord kecuali type 'visit'
+    if (discordWebhookUrl && type !== 'visit') {
       let embed = {};
       if (type === 'rsvp') {
         embed = {
@@ -138,22 +126,6 @@ exports.handler = async function(event, context) {
           fields: [
             { name: 'Nama', value: name || '-', inline: true },
             { name: 'Pesan', value: message || '-', inline: false },
-          ],
-          timestamp: new Date().toISOString(),
-        };
-      } else if (type === 'visit') {
-        const guest = name || '-';
-        const userAgent = message || '-';
-        const timestamp = attendance || new Date().toISOString();
-        const sessionId = guests || '-';
-        embed = {
-          title: 'Kunjungan Baru',
-          color: 0x00bfff,
-          fields: [
-            { name: 'Guest', value: guest, inline: true },
-            { name: 'UserAgent', value: userAgent, inline: false },
-            { name: 'Timestamp', value: timestamp, inline: false },
-            { name: 'SessionId', value: sessionId, inline: false },
           ],
           timestamp: new Date().toISOString(),
         };
