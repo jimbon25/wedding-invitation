@@ -76,7 +76,7 @@ const GuestBook: React.FC = () => {
       type: 'guestbook',
       name: name.trim(),
       message: message.trim(),
-      captcha: captchaToken
+      recaptchaToken: captchaToken // gunakan field recaptchaToken agar konsisten dengan backend
     };
 
     // Pilih endpoint sesuai environment (Netlify/Vercel)
@@ -107,7 +107,8 @@ const GuestBook: React.FC = () => {
         body: JSON.stringify({
           type: 'guestbook',
           name: name,
-          message: message
+          message: message,
+          recaptchaToken: captchaToken // tambahkan juga ke request telegram
         }),
       });
 

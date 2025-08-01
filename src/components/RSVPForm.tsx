@@ -93,6 +93,7 @@ const RSVPForm: React.FC = () => {
       guests,
       foodPreference,
       message: message.trim(),
+      recaptchaToken: captchaToken // tambahkan token reCAPTCHA ke payload
     };
 
     // Pilih endpoint sesuai environment (Netlify/Vercel)
@@ -115,7 +116,7 @@ const RSVPForm: React.FC = () => {
             ? '/api/send-telegram-message'
             : '/.netlify/functions/send-telegram-message';
 
-          fetch(telegramEndpoint, {
+      fetch(telegramEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +127,8 @@ const RSVPForm: React.FC = () => {
           kehadiran: attendance,
           jumlahTamu: guests,
           preferensiMakanan: foodPreference,
-          pesan: message
+          pesan: message,
+          recaptchaToken: captchaToken // tambahkan juga ke request telegram
         }),
       });
 
