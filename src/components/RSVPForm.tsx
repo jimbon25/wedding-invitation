@@ -216,7 +216,6 @@ const RSVPForm: React.FC = () => {
                   <option value="">Pilih opsi</option>
                   <option value="Regular">Reguler</option>
                   <option value="Vegetarian">Vegetarian</option>
-                  <option value="Vegan">Vegan</option>
                   <option value="Gluten-Free">Bebas Gluten</option>
                 </select>
               </div>
