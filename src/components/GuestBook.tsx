@@ -78,6 +78,7 @@ const GuestBook: React.FC = () => {
       message: message.trim(),
       recaptchaToken: captchaToken // gunakan field recaptchaToken agar konsisten dengan backend
     };
+    // Tidak perlu verifikasi captcha ke endpoint khusus, langsung kirim ke endpoint utama
 
     // Pilih endpoint sesuai environment (Netlify/Vercel)
     const endpoint = window.location.hostname.includes('vercel.app')

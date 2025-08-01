@@ -68,23 +68,7 @@ const RSVPForm: React.FC = () => {
       return;
     }
 
-        // Pilih endpoint reCAPTCHA sesuai environment
-        const recaptchaEndpoint = window.location.hostname.includes('vercel.app')
-          ? '/api/verify-recaptcha'
-          : '/.netlify/functions/verify-recaptcha';
 
-        // Verifikasi captcha ke backend
-        const verifyRes = await fetch(recaptchaEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: captchaToken })
-        });
-        const verifyData = await verifyRes.json();
-        if (!verifyData.success) {
-          setCaptchaError('Verifikasi captcha gagal. Silakan coba lagi.');
-          setIsSubmitting(false);
-          return;
-        }
 
     const payload = {
       type: 'rsvp',
