@@ -1,5 +1,6 @@
 // netlify/functions/guest-count.js
 const fetch = require('node-fetch');
+const UAParser = require('ua-parser-js');
 
 // Rate limit: max 10 request per IP per 10 menit
 const RATE_LIMIT_WINDOW = 10 * 60 * 1000;
@@ -52,11 +53,16 @@ exports.handler = async function(event, context) {
     return { statusCode: 405, headers: corsHeaders, body: 'Method Not Allowed' };
   }
 
-  // User-Agent validation
+  // User-Agent validation & parsing
   const userAgent = event.headers['user-agent'] || '';
   if (!userAgent || userAgent.length < 10) {
     return { statusCode: 400, headers: corsHeaders, body: 'Invalid User-Agent' };
   }
+  const parser = new UAParser(userAgent);
+  const uaResult = parser.getResult();
+  const device = uaResult.device.type || 'Desktop';
+  const browser = uaResult.browser.name || '-';
+  const os = uaResult.os.name || '-';
 
   // Rate limiting
   const ip = event.headers['x-forwarded-for'] ? event.headers['x-forwarded-for'].split(',')[0].trim() : 'unknown';
@@ -73,10 +79,8 @@ exports.handler = async function(event, context) {
   ipRequestLog[ip].push(now);
 
   // Parse body
-  let name = '';
   try {
     const body = JSON.parse(event.body);
-    name = String(body.name || '');
     // Honeypot (opsional)
     if (body.website) {
       return { statusCode: 400, headers: corsHeaders, body: 'Bot detected.' };
@@ -85,15 +89,22 @@ exports.handler = async function(event, context) {
     return { statusCode: 400, headers: corsHeaders, body: 'Invalid JSON' };
   }
 
-  // Ambil info device/browser
-  const device = event.headers['sec-ch-ua-platform'] || '-';
-  const browser = event.headers['sec-ch-ua'] || '-';
+  // Ambil parameter ?guest= dari URL jika ada
+  let guestParam = '-';
+  try {
+    const url = new URL(event.headers.referer || '', allowedOrigin);
+    guestParam = url.searchParams.get('guest') || '-';
+  } catch (e) {
+    // ignore
+  }
+
+
 
   // Kirim ke Telegram bot (aktif)
   try {
     const BOT_TOKEN = process.env.VISITOR_BOT_TOKEN;
     const CHAT_ID = process.env.VISITOR_CHAT_ID;
-    const text = `Visitor\nIP: ${ip}\nDevice: ${device}\nBrowser: ${browser}\nUser-Agent: ${userAgent}\nReferer: ${referer}`;
+    const text = `Visitor\nGuest: ${guestParam}\nIP: ${ip}\nDevice: ${device} (${os})\nBrowser: ${browser}\nUser-Agent: ${userAgent}\nReferer: ${referer}`;
     if (BOT_TOKEN && CHAT_ID) {
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
