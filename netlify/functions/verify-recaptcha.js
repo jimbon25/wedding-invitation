@@ -17,13 +17,18 @@ function escapeMarkdown(text) {
 }
 
 exports.handler = async function(event, context) {
-  // ...existing code...
   // Ganti dengan domain undangan Anda
   const allowedOrigin = 'https://wedding-invitation-dn.netlify.app';
   const corsHeaders = {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Vary': 'Origin'
   };
+
+  // Debug/log event.body untuk tracing error Invalid JSON
+  if (!event.body || typeof event.body !== 'string' || event.body.trim() === '') {
+    console.error('Request body kosong atau bukan string:', event.body);
+    return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Request body kosong atau tidak valid.' }) };
+  }
 
   let token, name, message, attendance, guests, foodPreference, type;
   try {
