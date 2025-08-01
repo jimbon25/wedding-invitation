@@ -21,11 +21,27 @@ exports.handler = async function(event, context) {
   console.log('=== Incoming Request ===');
   console.log('event.body:', event.body);
   console.log('event.headers:', event.headers);
+  
+  // Ambil IP address dari header (Netlify: x-forwarded-for) - pindahkan ke atas
+  const ip = event.headers['x-forwarded-for'] ? event.headers['x-forwarded-for'].split(',')[0].trim() : 'unknown';
+  
   // Ganti dengan domain undangan Anda
-  const allowedOrigin = 'https://wedding-invitation-dn.netlify.app';
+  const allowedOrigins = [
+    'https://wedding-invitation-dn.netlify.app',
+    process.env.REACT_APP_SITE_URL,
+    'http://localhost:3000' // untuk development
+  ].filter(Boolean);
+  
+  const origin = event.headers.origin || event.headers.referer || '';
+  const isAllowedOrigin = allowedOrigins.some(allowed => origin.startsWith(allowed));
+  
   const corsHeaders = {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Vary': 'Origin'
+    'Access-Control-Allow-Origin': isAllowedOrigin ? origin : allowedOrigins[0],
+    'Vary': 'Origin',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin'
   };
 
   // Debug/log event.body untuk tracing error Invalid JSON
@@ -50,11 +66,28 @@ exports.handler = async function(event, context) {
     type = body.type || '';
 
     // Validasi panjang nama dan pesan (backend, anti-bypass)
-    if (name.length > 25) {
-      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Nama terlalu panjang (maksimal 25 karakter).' }) };
+    if (name.length > 50) {
+      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Nama terlalu panjang (maksimal 50 karakter).' }) };
     }
-    if (message.length > 150) {
-      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Pesan terlalu panjang (maksimal 150 karakter).' }) };
+    if (message.length > 300) {
+      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Pesan terlalu panjang (maksimal 300 karakter).' }) };
+    }
+
+    // Enhanced content validation
+    const suspiciousPatterns = [
+      /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+      /javascript:/gi,
+      /on\w+\s*=/gi,
+      /(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION)/gi,
+      /(\+?\d{1,4}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9})/g
+    ];
+
+    const combinedText = `${name} ${message}`.toLowerCase();
+    for (const pattern of suspiciousPatterns) {
+      if (pattern.test(combinedText)) {
+        console.warn(`Suspicious content detected from IP ${ip}:`, combinedText.substring(0, 100));
+        return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ success: false, error: 'Konten tidak valid terdeteksi.' }) };
+      }
     }
   } catch (e) {
     console.error('JSON.parse error:', e);
@@ -64,8 +97,7 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({ success: false, error: 'Invalid JSON', detail: String(e) })
     };
   }
-  // Ambil IP address dari header (Netlify: x-forwarded-for)
-  const ip = event.headers['x-forwarded-for'] ? event.headers['x-forwarded-for'].split(',')[0].trim() : 'unknown';
+  // Rate limiting sudah menggunakan ip dari atas
   const now = Date.now();
   if (!ipRequestLog[ip]) {
     ipRequestLog[ip] = [];

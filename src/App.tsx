@@ -18,7 +18,7 @@ const App: React.FC = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'wedding992507'
+        'x-api-key': process.env.REACT_APP_GUEST_API_KEY || 'wedding992507'
       },
       body: JSON.stringify({})
     });
