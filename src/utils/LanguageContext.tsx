@@ -20,6 +20,8 @@ const translations: Record<Language, Record<string, string>> = {
     'wedding_of': 'Pernikahan',
     'wedding_invitation': 'Undangan Pernikahan',
     'join_celebration': 'Bergabunglah bersama kami merayakan hari istimewa kami!',
+    'join_community': 'Bergabunglah dengan komunitas kami',
+    'stay_connected': 'Gabung untuk konfirmasi kehadiran & ucapan',
     'countdown': 'Hitung Mundur',
     'days': 'Hari',
     'hours': 'Jam',
@@ -92,6 +94,12 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Language
     'language': 'Bahasa',
+    
+    // External Link Dialog
+    'external_link': 'Link Eksternal',
+    'external_link_warning': 'Anda akan diarahkan ke situs eksternal. Lanjutkan?',
+    'cancel': 'Batal',
+    'continue': 'Lanjutkan',
   },
   
   en: {
@@ -101,6 +109,8 @@ const translations: Record<Language, Record<string, string>> = {
     'wedding_of': 'The Wedding Of',
     'wedding_invitation': 'Wedding Invitation',
     'join_celebration': 'Join us to celebrate our special day!',
+    'join_community': 'Join our community',
+    'stay_connected': 'Join for RSVP & guestbook support',
     'countdown': 'Countdown',
     'days': 'Days',
     'hours': 'Hours',
@@ -173,6 +183,12 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Language
     'language': 'Language',
+    
+    // External Link Dialog
+    'external_link': 'External Link',
+    'external_link_warning': 'You\'re about to leave this site. Continue?',
+    'cancel': 'Cancel',
+    'continue': 'Continue',
   }
 };
 
