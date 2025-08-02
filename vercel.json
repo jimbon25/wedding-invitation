@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/*.js", "use": "@vercel/node" },
+    { "src": "build/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/build/$1" }
+  ],
+  "env": {
+    "RECAPTCHA_SECRET_KEY": "@recaptcha_secret_key",
+    "GEMINI_API_KEY": "@gemini_api_key",
+    "GUEST_API_KEY": "@guest_api_key",
+    "NEXT_PUBLIC_RECAPTCHA_SITE_KEY": "@next_public_recaptcha_site_key",
+    "NEXT_PUBLIC_SITE_URL": "@next_public_site_url",
+    "NEXT_PUBLIC_GUEST_API_KEY": "@next_public_guest_api_key",
+    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
+    "TELEGRAM_CHAT_ID": "@telegram_chat_id",
+    "ANALYTICS_BOT_TOKEN": "@analytics_bot_token",
+    "ANALYTICS_CHAT_ID": "@analytics_chat_id",
+    "DISCORD_WEBHOOK_URL": "@discord_webhook_url"
+  }
+}

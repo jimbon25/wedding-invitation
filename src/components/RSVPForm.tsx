@@ -4,6 +4,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import StoryItem from './StoryItem';
 import { SecurityUtils } from '../utils/security';
 import { useLanguage } from '../utils/LanguageContext';
+import { getApiEndpoint } from '../utils/apiUtils';
 
 const RSVPForm: React.FC = () => {
   const { t, language } = useLanguage();
@@ -92,8 +93,8 @@ const RSVPForm: React.FC = () => {
       token: captchaToken // gunakan field 'token' agar konsisten dengan backend
     };
 
-    // Endpoint Netlify Function
-    const endpoint = '/.netlify/functions/verify-recaptcha';
+    // Get appropriate API endpoint based on environment
+    const endpoint = getApiEndpoint('send-notification');
 
     try {
       const response = await fetch(endpoint, {
@@ -101,7 +102,11 @@ const RSVPForm: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...payload,
+          platform: 'all',
+          attendance: attendance === 'yes'
+        }),
       });
 
       if (response.ok) {

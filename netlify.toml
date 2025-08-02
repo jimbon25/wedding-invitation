@@ -2,6 +2,9 @@
   command = "npm run build"
   publish = "build"
 
+[build.environment]
+  REACT_APP_SITE_URL = "https://wedding-invitation-dn.netlify.app"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

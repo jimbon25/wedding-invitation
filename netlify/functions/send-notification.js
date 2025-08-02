@@ -1,5 +1,5 @@
-// netlify/functions/verify-recaptcha.js
-// Endpoint untuk verifikasi reCAPTCHA dan notifikasi
+// netlify/functions/send-notification.js
+// Endpoint untuk RSVP, buku tamu, dan notifikasi
 
 // Menggunakan kode bersama dari functions-shared.js
 const sharedFunctions = require('./functions-shared');

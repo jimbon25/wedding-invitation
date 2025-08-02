@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../utils/LanguageContext';
+import { getApiEndpoint } from '../utils/apiUtils';
 
 interface GeminiChatProps {
   darkMode?: boolean;
@@ -22,16 +23,16 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
     setLoading(true);
     setInput('');
     try {
-      const res = await fetch('/.netlify/functions/gemini-chat', {
+      const res = await fetch(getApiEndpoint('gemini-chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          prompt: input,
+          message: input,
           language: language // Pass the current language
         })
       });
       const data = await res.json();
-      let aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      let aiText = data.reply;
       if (!aiText) {
         aiText = language === 'en' 
           ? '[No response from Gemini API]\n' + JSON.stringify(data, null, 2)

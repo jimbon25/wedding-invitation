@@ -102,8 +102,8 @@ exports.handler = async function(event, context) {
 
   // Kirim ke Telegram bot (aktif)
   try {
-    const BOT_TOKEN = process.env.VISITOR_BOT_TOKEN;
-    const CHAT_ID = process.env.VISITOR_CHAT_ID;
+    const BOT_TOKEN = process.env.ANALYTICS_BOT_TOKEN;
+    const CHAT_ID = process.env.ANALYTICS_CHAT_ID;
     const text = `Visitor\nGuest: ${guestParam}\nIP: ${ip}\nDevice: ${device} (${os})\nBrowser: ${browser}\nUser-Agent: ${userAgent}\nReferer: ${referer}`;
     if (BOT_TOKEN && CHAT_ID) {
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
