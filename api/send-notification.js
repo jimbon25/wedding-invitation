@@ -88,12 +88,14 @@ export default async function handler(req, res) {
   };
 
   // Parse the request body
-  let guestName, guestMessage, attendance, platform, recaptchaToken, messageType;
+  let guestName, guestMessage, attendance, platform, recaptchaToken, messageType, guests, foodPreference;
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     guestName = body.name?.trim();
     guestMessage = body.message?.trim();
     attendance = body.attendance;
+    guests = body.guests;
+    foodPreference = body.foodPreference;
     recaptchaToken = body.token;
     // Get message type: 'rsvp' or 'guestbook'
     messageType = body.type || 'rsvp';
@@ -192,6 +194,8 @@ export default async function handler(req, res) {
               fields: [
                 { name: "Nama", value: `\`${guestName}\``, inline: true },
                 { name: "Kehadiran", value: `\`${typeof attendance === 'boolean' ? (attendance ? "Hadir" : "Tidak Hadir") : attendance}\``, inline: true },
+                { name: "Jumlah Tamu", value: `\`${guests || "-"}\``, inline: true },
+                { name: "Preferensi Makanan", value: `\`${foodPreference || "-"}\``, inline: true },
                 { name: "Pesan", value: escapedMessage || "(Tidak ada pesan)", inline: false },
                 { name: "Waktu", value: `\`${new Date().toLocaleString('id-ID')}\``, inline: false }
               ],
@@ -257,6 +261,8 @@ export default async function handler(req, res) {
 *RSVP Baru*
 *Nama:* \`${escapedName}\`
 *Kehadiran:* \`${escapeTelegramMarkdown(attendanceStatus)}\`
+*Jumlah Tamu:* \`${escapeTelegramMarkdown(guests ? String(guests) : '-')}\`
+*Preferensi Makanan:* \`${escapeTelegramMarkdown(foodPreference || '-')}\`
 *Pesan:* ${escapedMessage}
 *Waktu:* \`${escapeTelegramMarkdown(new Date().toLocaleString('id-ID'))}\``.trim();
         }
