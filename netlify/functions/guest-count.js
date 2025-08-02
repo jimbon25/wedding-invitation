@@ -100,16 +100,32 @@ exports.handler = async function(event, context) {
 
 
 
-  // Kirim ke Telegram bot (aktif)
+  // Kirim ke Telegram bot (aktif) dengan format yang lebih menarik seperti di Vercel
   try {
     const BOT_TOKEN = process.env.ANALYTICS_BOT_TOKEN;
     const CHAT_ID = process.env.ANALYTICS_CHAT_ID;
-    const text = `Visitor\nGuest: ${guestParam}\nIP: ${ip}\nDevice: ${device} (${os})\nBrowser: ${browser}\nUser-Agent: ${userAgent}\nReferer: ${referer}`;
+    
+    // Format data dengan emoji dan format yang lebih menarik
+    const formattedMessage = `
+📊 *Pengunjung Baru*
+🔹 *IP:* \`${ip}\`
+🔹 *Waktu:* \`${new Date().toISOString()}\`
+🔹 *Browser:* \`${browser}\`
+🔹 *OS:* \`${os}\`
+🔹 *Perangkat:* \`${device}\`
+🔹 *Referrer:* \`${referer || '-'}\`
+${guestParam !== '-' ? '👤 *Tamu:* `' + guestParam + '`' : ''}
+    `.trim();
+    
     if (BOT_TOKEN && CHAT_ID) {
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text })
+        body: JSON.stringify({ 
+          chat_id: CHAT_ID, 
+          text: formattedMessage,
+          parse_mode: 'Markdown'
+        })
       });
     }
   } catch (err) {

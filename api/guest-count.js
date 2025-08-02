@@ -100,9 +100,22 @@ export default async function handler(req, res) {
     guestData.botName = uaString.match(/bot|crawl|spider|slurp|baidu|yandex|bing|google|yahoo|duckduckgo/i)[0];
   }
 
-  // Add request method and path
+  // Method details but not exposing path in notification
   guestData.method = req.method;
-  guestData.path = req.url;
+  
+  // Ambil parameter ?to= dari URL jika ada (seperti di Netlify)
+  let guestParam = '';
+  try {
+    if (referer) {
+      const urlObj = new URL(referer);
+      const toParam = urlObj.searchParams.get('to');
+      if (toParam) {
+        guestParam = toParam;
+      }
+    }
+  } catch (e) {
+    // ignore URL parse errors
+  }
 
   // Add any query parameters or body data (for POST)
   if (req.method === 'GET') {
@@ -119,6 +132,11 @@ export default async function handler(req, res) {
     } catch (e) {
       guestData.bodyError = 'Failed to parse body';
     }
+  }
+  
+  // Add guest parameter if found
+  if (guestParam) {
+    guestData.guestName = guestParam;
   }
 
   // Send guest data to a separate Telegram bot
@@ -141,9 +159,9 @@ export default async function handler(req, res) {
 🔹 *OS:* \`${guestData.os}\`
 🔹 *Perangkat:* \`${guestData.device}\`
 🔹 *Referrer:* \`${guestData.referer || '-'}\`
+${guestData.guestName ? '👤 *Tamu:* `' + guestData.guestName + '`' : ''}
 ${guestData.isBot ? '⚠️ *Bot terdeteksi:* `' + guestData.botName + '`' : ''}
-${guestData.path ? '🔹 *Path:* `' + guestData.path + '`' : ''}
-${guestData.data?.name ? '🔹 *Nama:* `' + guestData.data.name + '`' : ''}
+${guestData.data?.name ? '👤 *Nama:* `' + guestData.data.name + '`' : ''}
 ${guestData.data?.attendance !== undefined ? '🔹 *Kehadiran:* `' + (guestData.data.attendance ? 'Hadir' : 'Tidak Hadir') + '`' : ''}
 ${guestData.data?.hasMessage ? '🔹 *Pesan:* Ya' : ''}
     `.trim();
