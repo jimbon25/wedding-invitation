@@ -47,6 +47,30 @@ exports.handler = async function(event, context) {
       body: ''
     };
   }
+  
+  // Parameter rahasia untuk mode developer
+  const DEV_MODE_SECRET = 'dev-666'; // Kode rahasia untuk mode developer
+  
+  // Cek apakah request dari developer berdasarkan parameter URL
+  try {
+    if (referer && referer !== '-') {
+      const urlObj = new URL(referer);
+      const devMode = urlObj.searchParams.get('devMode');
+      if (devMode === DEV_MODE_SECRET) {
+        console.log('Dev mode terdeteksi dari parameter URL, tracking diabaikan');
+        return { 
+          statusCode: 200, 
+          headers: corsHeaders,
+          body: JSON.stringify({ 
+            success: true, 
+            message: 'Developer mode active, tracking skipped' 
+          })
+        };
+      }
+    }
+  } catch (e) {
+    // ignore URL parse errors
+  }
 
   // Only allow POST
   if (event.httpMethod !== 'POST') {

@@ -29,6 +29,27 @@ export default async function handler(req, res) {
     res.status(200).end();
     return;
   }
+  
+  // Parameter rahasia untuk mode developer
+  const DEV_MODE_SECRET = 'dev-666'; // Kode rahasia untuk mode developer
+  
+  // Cek apakah request dari developer berdasarkan parameter URL
+  try {
+    const referer = req.headers.referer || '';
+    if (referer) {
+      const urlObj = new URL(referer);
+      const devMode = urlObj.searchParams.get('devMode');
+      if (devMode === DEV_MODE_SECRET) {
+        console.log('Dev mode terdeteksi dari parameter URL, tracking diabaikan');
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Developer mode active, tracking skipped'
+        });
+      }
+    }
+  } catch (e) {
+    // ignore URL parse errors
+  }
 
   // API Key validation
   const apiKey = req.headers['x-api-key'];
