@@ -23,14 +23,20 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
     setLoading(true);
     setInput('');
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 second timeout
+      
       const res = await fetch(getApiEndpoint('gemini-chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           message: input,
           language: language // Pass the current language
-        })
+        }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
       const data = await res.json();
       let aiText = data.reply;
       if (!aiText) {
