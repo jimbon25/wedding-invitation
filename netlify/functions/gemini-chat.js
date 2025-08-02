@@ -103,19 +103,38 @@ exports.handler = async function(event, context) {
   }
 
   // Select the appropriate prompt based on the language
-  const SYSTEM_PROMPT = language.toLowerCase() === 'en' ? SYSTEM_PROMPT_EN : SYSTEM_PROMPT_ID;
-  const CLOSING = language.toLowerCase() === 'en' ? EN_CLOSING : ID_CLOSING;
+  const SYSTEM_PROMPT = language.toLowerCase() === 'en' ? 
+    SYSTEM_PROMPT_EN + EN_CLOSING : 
+    SYSTEM_PROMPT_ID + ID_CLOSING;
   
-  // Build the full prompt with the appropriate language
-  const promptLabel = language.toLowerCase() === 'en' ? 'Guest question: ' : 'Pertanyaan tamu: ';
-  const fullPrompt = SYSTEM_PROMPT + '\n\n' + promptLabel + prompt + CLOSING;
-
+  // Build the conversation format for better context retention
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: fullPrompt }] }]
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: SYSTEM_PROMPT }]
+          },
+          {
+            role: 'model',
+            parts: [{ text: language.toLowerCase() === 'en' 
+              ? 'I understand. I will assist guests with information about Dimas & Niken\'s wedding.'
+              : 'Saya mengerti. Saya akan membantu tamu dengan informasi seputar pernikahan Dimas & Niken.' }]
+          },
+          {
+            role: 'user',
+            parts: [{ text: prompt }]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 800
+        }
       })
     });
     const data = await response.json();

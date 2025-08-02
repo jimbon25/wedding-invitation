@@ -30,7 +30,9 @@ const GeminiChat: React.FC<GeminiChatProps> = ({ darkMode }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          message: input,
+          // Keep compatibility with both Vercel and Netlify endpoints
+          message: input, // for Vercel
+          prompt: input,  // for Netlify
           language: language // Pass the current language
         }),
         signal: controller.signal
