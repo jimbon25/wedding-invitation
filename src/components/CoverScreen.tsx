@@ -61,7 +61,7 @@ const CoverScreen: React.FC<CoverScreenProps> = ({ onOpenInvitation }) => {
         />
       ))}
       <div className="cover-content text-center">
-        <p className="cover-subtitle animated-subtitle">{t('wedding_of')}</p>
+        <p className="cover-subtitle animated-subtitle">The Wedding Of</p>
         <h1 className="cover-title animated-title">D & N</h1>
         {guestName && (
           <div className="guest-info mt-4">
