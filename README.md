@@ -7,8 +7,12 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License" />
   </a>
-  <img src="https://img.shields.io/badge/node.js-16%20%7C%2018%20%7C%2020-brightgreen" alt="Node.js Version" />
-  <img src="https://img.shields.io/github/last-commit/jimbon25/wedding-invitation?logo=github" alt="Last Commit" />
+  <a href="https://nodejs.org/">
+    <img src="https://img.shields.io/badge/node.js-16%20%7C%2018%20%7C%2020-brightgreen" alt="Node.js Version" />
+  </a>
+  <a href="https://github.com/jimbon25/wedding-invitation/commits/main">
+    <img src="https://img.shields.io/github/last-commit/jimbon25/wedding-invitation?logo=github" alt="Last Commit" />
+  </a>
 </p>
 
 This digital wedding invitation app is built with React, TypeScript, providing a seamless, interactive, and responsive experience for all guests. It features personalized invitations, RSVP and guest book forms protected by Google reCAPTCHA, and all submissions are securely sent to Discord via serverless functions, as well as to Telegram via bot integration. The app supports both Netlify and Vercel deployments, with all serverless endpoints (Discord, Telegram, reCAPTCHA) auto-selected based on the environment.
@@ -75,13 +79,13 @@ This digital wedding invitation app is built with React, TypeScript, providing a
 
 ## Tech Stack
 
-- **Frontend**: React, TypeScript, Bootstrap 5
-- **Styling**: CSS, Bootstrap Icons, AOS (Animate On Scroll)
-- **Interactivity**: Slick Carousel, Custom Animations
-- **Backend**: Serverless Functions (Netlify/Vercel)
-- **Security**: Google reCAPTCHA, Input Validation, Rate Limiting
-- **Notifications**: Discord Webhooks, Telegram Bot API
-- **AI**: Google Gemini API for AI chat assistant
+- **Frontend**: [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), [Bootstrap 5](https://getbootstrap.com/)
+- **Styling**: CSS, [Bootstrap Icons](https://icons.getbootstrap.com/), [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/)
+- **Interactivity**: [Slick Carousel](https://kenwheeler.github.io/slick/), Custom Animations
+- **Backend**: Serverless Functions ([Netlify](https://www.netlify.com/products/functions/)/[Vercel](https://vercel.com/docs/functions))
+- **Security**: [Google reCAPTCHA](https://developers.google.com/recaptcha), Input Validation, Rate Limiting
+- **Notifications**: [Discord Webhooks](https://discord.com/developers/docs/resources/webhook), [Telegram Bot API](https://core.telegram.org/bots/api)
+- **AI**: [Google Gemini API](https://ai.google.dev/gemini-api) for AI chat assistant
 
 ## Installation
 
@@ -206,6 +210,8 @@ To switch from Telegram to Discord:
    - Client side (Netlify): `REACT_APP_RECAPTCHA_SITE_KEY=your_site_key`
    - Client side (Vercel): `NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_site_key`
 
+3. For more information, see the [reCAPTCHA documentation](https://developers.google.com/recaptcha/docs/display)
+
 ### Gemini AI Chat
 
 1. Get a Gemini API key:
@@ -218,6 +224,10 @@ To switch from Telegram to Discord:
    ```
 
 3. The AI chat is pre-configured to answer questions about your wedding invitation and will be available through a floating chat button.
+
+For more information on configuring and using the Gemini API, see:
+- [Gemini API Documentation](https://ai.google.dev/gemini-api/docs)
+- [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/get-started)
 
 ## Deployment
 
@@ -288,6 +298,10 @@ export const getApiEndpoint = (endpoint: string): string => {
 
 This ensures that API endpoints are correctly routed regardless of the hosting platform.
 
+For more details:
+- [Netlify Functions Documentation](https://docs.netlify.com/functions/overview/)
+- [Vercel API Routes Documentation](https://vercel.com/docs/functions/serverless-functions)
+
 ### Platform-Specific Configuration
 
 Each platform uses different environment variable prefixes for public variables:
@@ -316,7 +330,7 @@ The application implements several security measures:
 
 - IP-based rate limiting (max 5 requests per 10 minutes per IP)
 - Client-side rate limiting using local storage
-- Progressive delays with exponential backoff for repeated violations
+- Progressive delays with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) for repeated violations
 
 ### CAPTCHA Protection
 
@@ -338,20 +352,22 @@ The application implements several security measures:
 
 ### Security Best Practices
 
-1. Defense in depth with multiple security layers
+1. [Defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)) with multiple security layers
 2. Never trust user input, always validate
-3. Least privilege principle for all operations
+3. [Least privilege principle](https://en.wikipedia.org/wiki/Principle_of_least_privilege) for all operations
 4. Secure by default configurations
 5. Regular dependency updates
 6. Proper error handling without exposing sensitive information
 7. Monitoring and logging for suspicious activities
 
+For more information on web application security best practices, see the [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+
 ### Content Security Policy
 
-- Strict CSP headers to prevent XSS attacks
+- [Strict CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent XSS attacks
 - Whitelist of trusted domains only
 - Script restrictions with no inline scripts except necessary ones
-- Frame protection to prevent clickjacking
+- Frame protection to prevent [clickjacking](https://owasp.org/www-community/attacks/Clickjacking)
 
 ### Data Sanitization
 
@@ -361,10 +377,12 @@ The application implements several security measures:
 
 ### Security Headers
 
-- X-Content-Type-Options: Prevent MIME sniffing
-- X-Frame-Options: Prevent clickjacking
-- X-XSS-Protection: Enable browser XSS filtering
-- Referrer-Policy: Control referrer information
+- [X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options): Prevent MIME sniffing
+- [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options): Prevent clickjacking
+- [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection): Enable browser XSS filtering
+- [Referrer-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy): Control referrer information
+
+For a comprehensive guide on security headers, see [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/)
 
 ### Security Configuration
 
@@ -489,6 +507,7 @@ When maintaining this project, keep these guidelines in mind:
 - GitHub: [jimbon25](https://github.com/jimbon25)
 - Instagram: [@dimasladty](https://instagram.com/dimasladty)
 - Facebook: [Dimas LA](https://facebook.com/iv.dimas)
+- Report issues: [Create a new issue](https://github.com/jimbon25/wedding-invitation/issues/new)
 
 ## License
 
