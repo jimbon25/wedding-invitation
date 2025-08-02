@@ -1,46 +1,63 @@
 # Wedding Invitation
 
-<!-- Badges -->
 <p align="left">
-  <!-- Netlify Deploy Status Badge -->
   <a href="https://app.netlify.com/projects/wedding-invitation-dn/deploys">
     <img src="https://api.netlify.com/api/v1/badges/7ed1979a-a91d-47b6-b442-0debc1cbb755/deploy-status" alt="Netlify Status" />
   </a>
-  <!-- License Badge -->
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License" />
   </a>
-  <!-- Node.js Version Badge -->
   <img src="https://img.shields.io/badge/node.js-16%20%7C%2018%20%7C%2020-brightgreen" alt="Node.js Version" />
-  <!-- Last Commit Badge -->
   <img src="https://img.shields.io/github/last-commit/jimbon25/wedding-invitation?logo=github" alt="Last Commit" />
 </p>
 
-This digital wedding invitation app is built with React, TypeScript, providing a seamless, interactive, and responsive experience for all guests. It features personalized invitations, RSVP and guest book forms protected by Google reCAPTCHA, and all submissions are securely sent to Discord via serverless functions, as well as to Telegram via bot integration. The app supports both Netlify and Vercel deployments, with all serverless endpoints (Discord, Telegram, reCAPTCHA) auto-selected based on the environment. The app also includes a photo gallery, event details, gift and accommodation info, and a floating Gemini AI chat for instant Q&A. All guest interactions are processed securely, and the modern UI ensures accessibility and ease of use across devices.
-- **Screenshot:**
+This digital wedding invitation app is built with React, TypeScript, providing a seamless, interactive, and responsive experience for all guests. It features personalized invitations, RSVP and guest book forms protected by Google reCAPTCHA, and all submissions are securely sent to Discord via serverless functions, as well as to Telegram via bot integration. The app supports both Netlify and Vercel deployments, with all serverless endpoints (Discord, Telegram, reCAPTCHA) auto-selected based on the environment.
 
 <p align="center">
 <img src="public/images/screenshoot/ss.jpg" width="500" alt="Screenshot 1"/>
 </p>
 
-
 ## Table of Contents
 
 - [Main Features](#main-features)
-- [Languages & Frameworks](#languages--frameworks)
-- [Download](#download)
-- [How to Run](#how-to-run)
-- [Gemini AI Chat Setup](#gemini-ai-chat-setup)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Environment Variables](#environment-variables)
+  - [Notification Systems](#notification-systems)
+    - [Discord Webhook](#discord-webhook)
+    - [Telegram Bot](#telegram-bot)
+    - [Using Both Systems](#using-both-systems)
+    - [Switching Between Systems](#switching-between-systems)
+  - [Google reCAPTCHA](#google-recaptcha)
+  - [Gemini AI Chat](#gemini-ai-chat)
 - [Deployment](#deployment)
-- [Environment Configuration](#environment-configuration)
+  - [Netlify Deployment](#netlify-deployment)
+  - [Vercel Deployment](#vercel-deployment)
+  - [Multi-platform Support](#multi-platform-support)
+  - [Platform-Specific Configuration](#platform-specific-configuration)
+- [Security Measures](#security-measures)
+  - [Input Validation & Sanitization](#input-validation--sanitization)
+  - [Rate Limiting](#rate-limiting)
+  - [CAPTCHA Protection](#captcha-protection)
+  - [CORS & Origin Validation](#cors--origin-validation)
+  - [Anti-Bot Protection](#anti-bot-protection)
+  - [Security Best Practices](#security-best-practices)
+  - [Content Security Policy](#content-security-policy)
+  - [Data Sanitization](#data-sanitization)
+  - [Security Headers](#security-headers)
+  - [Security Configuration](#security-configuration)
+  - [Monitoring & Alerts](#monitoring--alerts)
+  - [Security Maintenance](#security-maintenance)
+- [Customization Guide](#customization-guide)
 - [Troubleshooting](#troubleshooting)
-- [Node.js Version](#nodejs-version)
-- [Available Scripts](#available-scripts)
-- [Contact Me](#contact-me)
+- [Development](#development)
+  - [Available Scripts](#available-scripts)
+  - [Node.js Version](#nodejs-version)
+- [Maintenance](#maintenance)
+- [Contact](#contact)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
-
-
 
 ## Main Features
 
@@ -49,204 +66,429 @@ This digital wedding invitation app is built with React, TypeScript, providing a
 - **Our Story**: The couple's journey and love story.
 - **Event Details**: Information about time, location, and agenda.
 - **Gallery**: Prewedding and special moment photos.
-- **RSVP Confirmation**: Form for guests to confirm attendance. Data is sent to Discord via Netlify Function. **Protected by Google reCAPTCHA to prevent spam bots.**
-- **Guest Book**: Guests can leave messages and wishes. **Protected by Google reCAPTCHA to prevent spam bots.**
+- **RSVP Confirmation**: Form for guests to confirm attendance. Protected by Google reCAPTCHA.
+- **Guest Book**: Guests can leave messages and wishes. Protected by Google reCAPTCHA.
 - **Gift Info & Registry**: Bank account, e-wallet, and gift registry information.
 - **Accommodation & Transportation**: Hotel and transport recommendations for out-of-town guests.
 - **Modern UI & Animation**: Uses AOS, Bootstrap, and custom CSS.
 - **Gemini AI Chat**: Floating Gemini AI Chat for instant Q&A about the event.
 
-## Languages & Frameworks
+## Tech Stack
 
-- TypeScript
-- React
-- Node.js
-- Bootstrap 5 & Bootstrap Icons
-- AOS (Animate On Scroll)
-- Slick Carousel (for gallery)
+- **Frontend**: React, TypeScript, Bootstrap 5
+- **Styling**: CSS, Bootstrap Icons, AOS (Animate On Scroll)
+- **Interactivity**: Slick Carousel, Custom Animations
+- **Backend**: Serverless Functions (Netlify/Vercel)
+- **Security**: Google reCAPTCHA, Input Validation, Rate Limiting
+- **Notifications**: Discord Webhooks, Telegram Bot API
+- **AI**: Google Gemini API for AI chat assistant
 
+## Installation
 
-## Download
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jimbon25/wedding-invitation.git
+   cd wedding-invitation
+   ```
 
-
-You can download or clone this repository using Git:
-
-**Linux / macOS:**
-```bash
-git clone https://github.com/jimbon25/wedding-invitation.git
-```
-
-**Windows (Command Prompt or PowerShell):**
-```powershell
-git clone https://github.com/jimbon25/wedding-invitation.git
-```
-
-Or, click the green "Code" button on GitHub and choose "Download ZIP" to get the source files directly.
-
-
-## How to Run
-
-1. Clone this repository ([Wedding-invitation](https://github.com/jimbon25/wedding-invitation.git))
 2. Install dependencies:
    ```bash
    npm install
    ```
-3. Start development mode:
+
+3. Set up environment variables:
+   - Copy `.env.local.example` to `.env.local`
+   - Fill in your values (see Configuration section)
+
+4. Start development server:
    ```bash
    npm start
    ```
-4. Open in browser: [http://localhost:3000](http://localhost:3000)
 
+5. Access the site at [http://localhost:3000](http://localhost:3000)
 
-
-
-## Gemini AI Chat Setup
-
-
-To enable the Gemini AI Chat feature ([Google Gemini API Docs](https://ai.google.dev/gemini-api/docs/get-started)):
-
-1. Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. In your Netlify or Vercel dashboard, add a new environment variable:
-   - **Key:** `GEMINI_API_KEY`
-   - **Value:** (your Gemini API key)
-3. Deploy or redeploy your site so the environment variable is available to the serverless function.
-4. The floating Gemini icon and chat bubble will appear automatically, allowing guests to ask questions about the invitation.
-
-> **Note:**
-> - Your Gemini API key is kept secure in the backend (serverless function) and never exposed to the browser.
-> - The AI will only answer questions about the wedding invitation and will politely decline out-of-context questions.
-
----
-
-## Deployment
-
-
-### Netlify
-1. Make sure you have a Netlify account ([Netlify Docs: Getting Started](https://docs.netlify.com/get-started/)).
-2. Click "New site from Git" and connect to this repository.
-3. Set the environment variable `DISCORD_WEBHOOK_URL` in the Netlify dashboard.
-4. Build command: `npm run build`, publish directory: `build`.
-5. Deploy and your app is ready to use.
-
-### Vercel
-1. Make sure you have a Vercel account ([Vercel Docs: Getting Started](https://vercel.com/docs/get-started)) and your repo is pushed to GitHub.
-2. Import the project from GitHub to Vercel.
-3. Set the environment variable `DISCORD_WEBHOOK_URL` in the Vercel dashboard (Project Settings > Environment Variables).
-4. Build command: `npm run build`, output directory: `build`, install command: `npm install`.
-5. Make sure the `node-fetch` dependency in package.json is version 2.x (already set if you use this repo).
-6. Deploy and your app is ready to use.
-
-> **Note:**
-> - The Discord webhook endpoint will automatically adjust (Netlify/Vercel) without any code changes needed.
-> - If you get a 500 error on Vercel, make sure the environment variable and dependency are correct.
-
-
-## Environment Configuration
-
-
+## Configuration
 
 ### Environment Variables
 
-Set the following environment variables in your Netlify ([Netlify Docs: Environment Variables](https://docs.netlify.com/configure-builds/environment-variables/)) or Vercel ([Vercel Docs: Environment Variables](https://vercel.com/docs/projects/environment-variables)) dashboard:
+Set these environment variables on your hosting platform:
 
+| Variable Name | Netlify | Vercel | Description |
+|---------------|---------|--------|-------------|
+| `DISCORD_WEBHOOK_URL` | ✅ | ✅ | Your Discord channel webhook URL |
+| `RECAPTCHA_SECRET_KEY` | ✅ | ✅ | reCAPTCHA v2 secret key (server side) |
+| `TELEGRAM_BOT_TOKEN` | ✅ | ✅ | Your Telegram bot token |
+| `TELEGRAM_CHAT_ID` | ✅ | ✅ | Chat ID to send notifications |
+| `GEMINI_API_KEY` | ✅ | ✅ | Google Gemini API key |
+| `GUEST_API_KEY` | ✅ | ✅ | Custom API key for guest tracking |
+| `ANALYTICS_BOT_TOKEN` | ✅ | ✅ | Token for analytics Telegram bot |
+| `ANALYTICS_CHAT_ID` | ✅ | ✅ | Chat ID for analytics data |
+| `REACT_APP_RECAPTCHA_SITE_KEY` | ✅ | ❌ | Public reCAPTCHA key (Netlify) |
+| `REACT_APP_GUEST_API_KEY` | ✅ | ❌ | Public guest API key (Netlify) |
+| `REACT_APP_SITE_URL` | ✅ | ❌ | Site URL for Netlify |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | ❌ | ✅ | Public reCAPTCHA key (Vercel) |
+| `NEXT_PUBLIC_GUEST_API_KEY` | ❌ | ✅ | Public guest API key (Vercel) |
+| `NEXT_PUBLIC_SITE_URL` | ❌ | ✅ | Site URL for Vercel |
+
+### Notification Systems
+
+You can use Discord webhook, Telegram bot, or both for receiving notifications from RSVP and guest book submissions.
+
+#### Discord Webhook
+
+To use only Discord webhook for notifications:
+
+1. Create a webhook in your Discord server:
+   - Go to Server Settings > Integrations > Webhooks
+   - Click "New Webhook", name it, and select a channel
+   - Copy the Webhook URL
+
+2. Add the webhook URL as environment variable:
+   ```
+   DISCORD_WEBHOOK_URL=your_webhook_url
+   ```
+
+3. To disable Telegram, simply don't set the `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` variables.
+
+#### Telegram Bot
+
+To use only Telegram bot for notifications:
+
+1. Create a Telegram bot:
+   - Message [@BotFather](https://t.me/botfather) on Telegram
+   - Use `/newbot` command and follow the steps
+   - Copy the bot token provided
+
+2. Get your chat ID:
+   - Add [@userinfobot](https://t.me/userinfobot) to your group
+   - The bot will show you the chat ID
+
+3. Add the Telegram variables:
+   ```
+   TELEGRAM_BOT_TOKEN=your_bot_token
+   TELEGRAM_CHAT_ID=your_chat_id
+   ```
+
+4. To disable Discord, simply don't set the `DISCORD_WEBHOOK_URL` variable.
+
+#### Using Both Systems
+
+To receive notifications on both Discord and Telegram:
+
+1. Configure both webhook URL and Telegram tokens as described above.
+2. Set all related environment variables.
+3. The system will automatically send notifications to both platforms.
+
+#### Switching Between Systems
+
+To switch from Discord to Telegram:
+
+1. Add the Telegram environment variables as described above
+2. Remove or comment out the Discord webhook URL
+3. Redeploy your application
+
+To switch from Telegram to Discord:
+
+1. Add the Discord webhook URL as described above
+2. Remove or comment out the Telegram variables
+3. Redeploy your application
+
+### Google reCAPTCHA
+
+1. Register for reCAPTCHA v2:
+   - Go to [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin/create)
+   - Choose reCAPTCHA v2 ("I'm not a robot" Checkbox)
+   - Add your domain(s)
+   - Complete the registration
+
+2. Set environment variables:
+   - Server side: `RECAPTCHA_SECRET_KEY=your_secret_key`
+   - Client side (Netlify): `REACT_APP_RECAPTCHA_SITE_KEY=your_site_key`
+   - Client side (Vercel): `NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_site_key`
+
+### Gemini AI Chat
+
+1. Get a Gemini API key:
+   - Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - Create an API key
+
+2. Set the environment variable:
+   ```
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+3. The AI chat is pre-configured to answer questions about your wedding invitation and will be available through a floating chat button.
+
+## Deployment
+
+The application supports deployment on both Netlify and Vercel platforms and automatically adapts to the hosting environment.
+
+### Netlify Deployment
+
+1. Connect your repository:
+   - Go to [Netlify](https://www.netlify.com/)
+   - Click "New site from Git"
+   - Select your repository
+
+2. Configure build settings:
+   - Build command: `npm run build`
+   - Publish directory: `build`
+
+3. Set environment variables:
+   - Go to Site settings > Build & deploy > Environment
+   - Add all variables with `REACT_APP_` prefix for public variables
+
+4. Deploy from terminal (alternative):
+   ```bash
+   npm run build
+   netlify deploy --prod
+   ```
+
+### Vercel Deployment
+
+1. Connect your repository:
+   - Go to [Vercel](https://vercel.com/)
+   - Click "Import Project"
+   - Select your repository
+
+2. Configure build settings:
+   - Build command: `npm run build`
+   - Output directory: `build`
+   - Install command: `npm install`
+
+3. Set environment variables:
+   - Go to Project Settings > Environment Variables
+   - Add all variables with `NEXT_PUBLIC_` prefix for public variables
+
+4. Deploy from terminal (alternative):
+   ```bash
+   vercel --prod
+   ```
+
+### Multi-platform Support
+
+The application automatically detects whether it's running on Netlify or Vercel:
+
+```typescript
+// From src/utils/apiUtils.ts
+export const getApiEndpoint = (endpoint: string): string => {
+  // Detect if running on Vercel
+  const isVercel = process.env.VERCEL === '1' || window.location.hostname.includes('vercel.app');
+  
+  // If on Vercel, use /api routes
+  if (isVercel) {
+    const endpointName = endpoint.replace('/.netlify/functions/', '');
+    return `/api/${endpointName}`;
+  }
+  
+  // If on Netlify or local development, use Netlify functions path
+  return endpoint.startsWith('/.netlify') ? endpoint : `/.netlify/functions/${endpoint}`;
+};
 ```
-DISCORD_WEBHOOK_URL=your_webhook_url
-GEMINI_API_KEY=your_gemini_api_key
-RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
-TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-TELEGRAM_CHAT_ID=your_telegram_chat_id
-```
 
-**RECAPTCHA_SECRET_KEY** is obtained from the Google reCAPTCHA dashboard (use the v2 secret key, not the site key!).
+This ensures that API endpoints are correctly routed regardless of the hosting platform.
 
+### Platform-Specific Configuration
 
+Each platform uses different environment variable prefixes for public variables:
 
-**Note:** Never put your secret key in the frontend code.
+- **Netlify**: Uses `REACT_APP_` prefix
+- **Vercel**: Uses `NEXT_PUBLIC_` prefix
 
+Serverless functions are also named differently:
+- Netlify: `/.netlify/functions/function-name`
+- Vercel: `/api/function-name`
 
-**Google reCAPTCHA:** [Register and get your keys here](https://www.google.com/recaptcha/admin/create)
+The application automatically handles these differences.
 
+## Security Measures
+
+The application implements several security measures:
+
+### Input Validation & Sanitization
+
+- Frontend and backend validation with regex patterns
+- Content filtering for profanity, XSS, SQL injection attempts
+- Length limits and character restrictions for inputs
+- HTML and Markdown escaping for user-generated content
+
+### Rate Limiting
+
+- IP-based rate limiting (max 5 requests per 10 minutes per IP)
+- Client-side rate limiting using local storage
+- Progressive delays with exponential backoff for repeated violations
+
+### CAPTCHA Protection
+
+- Google reCAPTCHA v2 integration on all forms
+- Server-side token verification
+- Environment variable configuration for site and secret keys
+
+### CORS & Origin Validation
+
+- Whitelist of allowed origins
+- Referrer validation to check request source
+- Dynamic CORS handling for development/production
+
+### Anti-Bot Protection
+
+- Honeypot fields to catch automated submissions
+- User agent validation
+- Behavioral analysis to detect suspicious patterns
+
+### Security Best Practices
+
+1. Defense in depth with multiple security layers
+2. Never trust user input, always validate
+3. Least privilege principle for all operations
+4. Secure by default configurations
+5. Regular dependency updates
+6. Proper error handling without exposing sensitive information
+7. Monitoring and logging for suspicious activities
+
+### Content Security Policy
+
+- Strict CSP headers to prevent XSS attacks
+- Whitelist of trusted domains only
+- Script restrictions with no inline scripts except necessary ones
+- Frame protection to prevent clickjacking
+
+### Data Sanitization
+
+- HTML escaping to prevent HTML injection
+- Markdown escaping for safe Discord/Telegram message formatting
+- Input trimming to remove unnecessary whitespace
+
+### Security Headers
+
+- X-Content-Type-Options: Prevent MIME sniffing
+- X-Frame-Options: Prevent clickjacking
+- X-XSS-Protection: Enable browser XSS filtering
+- Referrer-Policy: Control referrer information
+
+### Security Configuration
+
+Rate Limiting Configuration:
+- Window: 10 minutes
+- Max Requests: 5 per IP
+- Storage: In-memory (per serverless instance)
+
+Content Validation Patterns:
+- Profanity filtering
+- XSS pattern detection
+- SQL injection prevention
+- URL/email spam detection
+- Phone number spam prevention
+
+### Monitoring & Alerts
+
+What's Being Logged:
+- Suspicious content attempts
+- Rate limiting violations
+- CAPTCHA failures
+- Invalid requests
+- Unusual traffic patterns
+
+Alert Conditions:
+- Multiple failed submissions from same IP
+- Malicious content patterns detected
+- Unusual traffic spikes
+- CAPTCHA bypass attempts
+
+### Security Maintenance
+
+Regular Tasks:
+- Review and update blacklist patterns
+- Monitor error logs
+- Update dependencies
+- Review rate limiting effectiveness
+- Test security measures
+
+Updates Required:
+- Environment variables rotation
+- CAPTCHA key updates
+- Security pattern updates
+- Dependency updates
+
+## Customization Guide
+
+To customize the wedding invitation:
+
+1. **Personal Information**:
+   - Update names, dates, and locations in relevant components
+   - Modify text content in language files
+
+2. **Visual Elements**:
+   - Replace images in `/public/images/` directory
+   - Adjust colors and styles in CSS files
+   - Modify animations in components
+
+3. **Adding Features**:
+   - Components are modular and can be added/removed in `App.tsx`
+   - Adjust routes in `MainContentWrapper.tsx`
 
 ## Troubleshooting
 
-- **RSVP/Guest Book not sent to Discord:** ([Netlify Functions Docs](https://docs.netlify.com/functions/overview/))
-  - Make sure the `DISCORD_WEBHOOK_URL` environment variable is correct in the Netlify dashboard.
-  - Make sure the Discord webhook is still active.
-  - Check Netlify Functions logs for detailed errors.
-  - If you get a captcha-related error, make sure the `RECAPTCHA_SECRET_KEY` environment variable is correct and the site key in the frontend is from reCAPTCHA v2.
+- **RSVP/Guest Book not sent to Discord or Telegram:**
+  - Check environment variables are correctly set
+  - Verify webhook URL or bot token is valid
+  - Check platform logs for detailed errors
 
-- **Build failed on Netlify:**
-  - Make sure all dependencies are installed.
-  - Check the Node.js version in Netlify matches the project recommendation.
-  - If you get a reCAPTCHA "Invalid key type" error, make sure the site key used is v2 (not v3/invisible).
+- **reCAPTCHA errors:**
+  - Ensure site key and secret key match
+  - Verify domains are properly configured in reCAPTCHA admin
+  - Check for rate limiting or network issues
 
-- **App is not accessible:**
-  - Make sure your Netlify domain is active and there are no DNS issues.
-  - Check Netlify logs for runtime errors.
+- **Build failures:**
+  - Verify Node.js version compatibility
+  - Check for missing dependencies
+  - Review platform-specific logs
 
-- **Images, music, or videos not showing:**
-  - Make sure the files exist in the `public/` folder and the paths are correct in your code.
+- **API routes not working:**
+  - Check for correct environment detection
+  - Verify API paths are correct for the platform
+  - Inspect network requests for detailed errors
 
+## Development
 
-## Node.js Version
+### Available Scripts
 
+- `npm start`: Run development server
+- `npm test`: Run tests
+- `npm run build`: Create production build
+- `npm run eject`: Eject from Create React App
 
-Recommended Node.js versions: **16.x**, **18.x**, or **20.x** ([Node.js Downloads](https://nodejs.org/en/download/))
+### Node.js Version
 
-Make sure your local and Netlify environment use one of these versions for best compatibility.
+Recommended Node.js versions: **16.x**, **18.x**, or **20.x**
 
+## Maintenance
 
-## Available Scripts
+When maintaining this project, keep these guidelines in mind:
 
-In the project directory, you can run:
+1. **Environment Variables**:
+   - Ensure any new variables are added to both platforms
+   - Remember the different prefixes for public variables
 
-### `npm start`
+2. **API Routes**:
+   - Keep the platform detection logic updated
+   - Test on both platforms when modifying API endpoints
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3. **Security Updates**:
+   - Regularly update dependencies
+   - Review and update security patterns
+   - Monitor logs for potential issues
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+4. **Monitoring**:
+   - Check logs for suspicious activities
+   - Monitor rate limiting effectiveness
+   - Test security measures periodically
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
----
-## Contact Me
+## Contact
 
 - GitHub: [jimbon25](https://github.com/jimbon25)
 - Instagram: [@dimasladty](https://instagram.com/dimasladty)
 - Facebook: [Dimas LA](https://facebook.com/iv.dimas)
-
 
 ## License
 
@@ -261,5 +503,8 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/)
 - [Slick Carousel](https://kenwheeler.github.io/slick/)
 - [Netlify](https://www.netlify.com/)
+- [Vercel](https://vercel.com/)
 - [Discord](https://discord.com/)
-# Updated on Sat Aug  2 11:27:05 AM WIB 2025
+- [Telegram Bot API](https://core.telegram.org/bots/api)
+- [Google reCAPTCHA](https://developers.google.com/recaptcha)
+- [Google Gemini API](https://ai.google.dev/gemini-api)
