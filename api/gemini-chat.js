@@ -171,12 +171,20 @@ export default async function handler(req, res) {
   // Determine which system prompt to use based on language
   const systemPrompt = language.toLowerCase() === 'en' ? SYSTEM_PROMPT_EN : SYSTEM_PROMPT_ID;
 
+  // Setup for request with timeout
+  const controller = new AbortController();
+  let timeoutId;
+  
   try {
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+    
+    console.log('Calling Gemini API...');
+    timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout
     
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         contents: [
           {
@@ -220,6 +228,7 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    clearTimeout(timeoutId); // Clear timeout after response
 
     // Check if there's a valid response
     if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || 
@@ -239,6 +248,7 @@ export default async function handler(req, res) {
     
   } catch (error) {
     console.error('Error calling Gemini API:', error);
+    clearTimeout(timeoutId); // Clear timeout on error
     return res.status(500).json({
       error: 'Server Error',
       message: 'Failed to process your request'
