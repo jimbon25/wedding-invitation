@@ -105,7 +105,7 @@ const RSVPForm: React.FC = () => {
         body: JSON.stringify({
           ...payload,
           platform: 'all',
-          attendance: attendance === 'yes'
+          attendance: attendance === 'Yes, I will attend'
         }),
       });
 
