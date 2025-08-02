@@ -1,12 +1,19 @@
-// Vercel API Route for verifying reCAPTCHA and sending messages to Discord webhook and Telegram bot
+// Vercel API Route for sending notifications
 import fetch from 'node-fetch';
 
+// Helper function untuk escape karakter khusus di Telegram Markdown
+function escapeTelegramMarkdown(text) {
+  if (!text) return '';
+  return text.replace(/([_*[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
+}
+
+// Helper function untuk escape karakter khusus di Discord Markdown
+function escapeDiscordMarkdown(text) {
+  if (!text) return '';
+  return text.replace(/([*_~`|\\])/g, '\\$1');
+}
+
 export default async function handler(req, res) {
-  // Debug log untuk tracing request
-  console.log('=== Incoming Request ===');
-  console.log('req.body:', req.body);
-  console.log('req.headers:', req.headers);
-  
   // Ambil IP address dari header (Vercel: x-forwarded-for)
   const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : 'unknown';
   
@@ -68,34 +75,35 @@ export default async function handler(req, res) {
   // Increment and check
   ipRequestLog[ip].count++;
   if (ipRequestLog[ip].count > RATE_LIMIT_MAX) {
-    return res.status(429).json({
+    return res.status(429).json({ 
       error: 'Too Many Requests',
-      message: 'Terlalu banyak permintaan, coba lagi nanti'
+      message: 'Terlalu banyak permintaan, coba lagi dalam beberapa menit'
     });
   }
+  
+  // Result object to track which notification channels succeeded
+  const results = {
+    discord: { sent: false, error: null },
+    telegram: { sent: false, error: null }
+  };
 
   // Parse the request body
-  let guestName, guestMessage, attendance, platform, recaptchaToken;
+  let guestName, guestMessage, attendance, platform, recaptchaToken, messageType;
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     guestName = body.name?.trim();
     guestMessage = body.message?.trim();
     attendance = body.attendance;
     recaptchaToken = body.token;
+    // Get message type: 'rsvp' or 'guestbook'
+    messageType = body.type || 'rsvp';
     // Platform can be 'discord', 'telegram', or 'all' (default)
     platform = (body.platform || 'all').toLowerCase();
     
     if (!guestName) {
       return res.status(400).json({ 
         error: 'Bad Request', 
-        message: 'Guest name is required' 
-      });
-    }
-    
-    if (!recaptchaToken) {
-      return res.status(400).json({ 
-        error: 'Bad Request', 
-        message: 'reCAPTCHA token is required' 
+        message: 'Nama tidak boleh kosong' 
       });
     }
   } catch (error) {
@@ -148,49 +156,51 @@ export default async function handler(req, res) {
   console.log(`Request from: ${req.headers['x-forwarded-for'] || 'unknown'}`);
   console.log(`User Agent: ${req.headers['user-agent'] || 'unknown'}`);
   console.log(`Platform requested: ${platform}`);
-
-  // Track results from different platforms
-  const results = {
-    discord: { sent: false, error: null },
-    telegram: { sent: false, error: null }
-  };
-
-  // Helper function to escape Discord Markdown
-  function escapeDiscordMarkdown(text) {
-    if (!text) return '';
-    return text.replace(/([_*`~|])/g, '\\$1');
-  }
-
-  // Helper function to escape Telegram Markdown
-  function escapeTelegramMarkdown(text) {
-    if (!text) return '';
-    return text.replace(/([_*[\]()~`>#+=|{}.!-])/g, '\\$1');
-  }
-
+  
   // Send to Discord webhook if platform is 'discord' or 'all'
   if (platform === 'discord' || platform === 'all') {
     const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
     
     if (DISCORD_WEBHOOK_URL) {
       try {
-        const escapedName = escapeDiscordMarkdown(guestName);
+        // Prepare message for Discord
         const escapedMessage = escapeDiscordMarkdown(guestMessage);
-        const attendanceStatus = attendance ? '✅ Hadir' : '❌ Tidak Hadir';
-
-        // Format message for Discord
-        const discordMessage = {
-          username: "Wedding RSVP Bot",
-          avatar_url: "https://wedding-invitation-dn.vercel.app/favicon.ico",
-          embeds: [{
-            title: `${attendanceStatus} - ${escapedName}`,
-            description: escapedMessage || '(Tidak ada pesan)',
-            color: attendance ? 0x57F287 : 0xED4245,
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: "Wedding Invitation RSVP"
-            }
-          }]
-        };
+        
+        // Format Discord message differently based on message type
+        let discordMessage;
+        
+        if (messageType === 'guestbook') {
+          discordMessage = {
+            embeds: [{
+              title: "Pesan Buku Tamu Baru",
+              color: 0x00FFFF,
+              fields: [
+                { name: "Nama", value: `\`${guestName}\``, inline: true },
+                { name: "Pesan", value: escapedMessage || "(Tidak ada pesan)", inline: false },
+                { name: "Waktu", value: `\`${new Date().toLocaleString('id-ID')}\``, inline: false }
+              ],
+              footer: {
+                text: "Wedding Invitation Guestbook"
+              }
+            }]
+          };
+        } else {
+          discordMessage = {
+            embeds: [{
+              title: "RSVP Baru",
+              color: attendance ? 0x00FF00 : 0xFF0000,
+              fields: [
+                { name: "Nama", value: `\`${guestName}\``, inline: true },
+                { name: "Kehadiran", value: `\`${attendance ? "Hadir" : "Tidak Hadir"}\``, inline: true },
+                { name: "Pesan", value: escapedMessage || "(Tidak ada pesan)", inline: false },
+                { name: "Waktu", value: `\`${new Date().toLocaleString('id-ID')}\``, inline: false }
+              ],
+              footer: {
+                text: "Wedding Invitation RSVP"
+              }
+            }]
+          };
+        }
 
         // Send message to Discord webhook
         const response = await fetch(DISCORD_WEBHOOK_URL, {
@@ -205,7 +215,11 @@ export default async function handler(req, res) {
         }
 
         // Log the successful submission
-        console.log(`RSVP submitted to Discord: ${guestName} (${attendance ? 'Attending' : 'Not attending'})`);
+        if (messageType === 'guestbook') {
+          console.log(`Guestbook message submitted to Discord: ${guestName}`);
+        } else {
+          console.log(`RSVP submitted to Discord: ${guestName} (${attendance ? 'Attending' : 'Not attending'})`);
+        }
         results.discord.sent = true;
       } catch (error) {
         console.error('Error sending to Discord:', error);
@@ -226,17 +240,26 @@ export default async function handler(req, res) {
       try {
         const escapedName = escapeTelegramMarkdown(guestName);
         const escapedMessage = escapeTelegramMarkdown(guestMessage || '(Tidak ada pesan)');
-        const attendanceSymbol = attendance ? '✅' : '❌';
         const attendanceStatus = attendance ? 'Hadir' : 'Tidak Hadir';
-
-        // Format message for Telegram using MarkdownV2 format
-        const telegramMessage = `
-*RSVP Baru* ${attendanceSymbol}
-*Nama:* ${escapedName}
-*Kehadiran:* ${escapeTelegramMarkdown(attendanceStatus)}
+        
+        // Format message differently based on message type
+        let telegramMessage = '';
+        if (messageType === 'guestbook') {
+          // Format for guestbook entries
+          telegramMessage = `
+*Pesan Buku Tamu Baru*
+*Nama:* \`${escapedName}\`
 *Pesan:* ${escapedMessage}
-*Waktu:* ${escapeTelegramMarkdown(new Date().toLocaleString('id-ID'))}
-        `.trim();
+*Waktu:* \`${escapeTelegramMarkdown(new Date().toLocaleString('id-ID'))}\``.trim();
+        } else {
+          // Format for RSVP
+          telegramMessage = `
+*RSVP Baru*
+*Nama:* \`${escapedName}\`
+*Kehadiran:* \`${escapeTelegramMarkdown(attendanceStatus)}\`
+*Pesan:* ${escapedMessage}
+*Waktu:* \`${escapeTelegramMarkdown(new Date().toLocaleString('id-ID'))}\``.trim();
+        }
 
         // Send message to Telegram bot
         const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
@@ -257,7 +280,11 @@ export default async function handler(req, res) {
         }
 
         // Log the successful submission
-        console.log(`RSVP submitted to Telegram: ${guestName} (${attendance ? 'Attending' : 'Not attending'})`);
+        if (messageType === 'guestbook') {
+          console.log(`Guestbook message submitted to Telegram: ${guestName}`);
+        } else {
+          console.log(`RSVP submitted to Telegram: ${guestName} (${attendance ? 'Attending' : 'Not attending'})`);
+        }
         results.telegram.sent = true;
       } catch (error) {
         console.error('Error sending to Telegram:', error);
@@ -277,15 +304,20 @@ export default async function handler(req, res) {
   if (successCount > 0) {
     return res.status(200).json({
       success: true,
-      message: `RSVP submitted successfully to ${platforms.join(' and ')}`,
-      details: results
+      message: `Notification sent to ${successCount} platform(s): ${platforms.join(', ')}`,
+      results
     });
   } else {
-    // If all platforms failed or none were selected
+    // If all platforms failed, return an error
+    const errorMessage = Object.values(results)
+      .filter(r => r.error)
+      .map(r => r.error)
+      .join('; ');
+    
     return res.status(500).json({
-      error: 'Server Error',
-      message: 'Failed to send message to any platform',
-      details: results
+      error: 'Notification Failed',
+      message: `Failed to send notification: ${errorMessage}`,
+      results
     });
   }
 }
