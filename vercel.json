@@ -1,24 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/*.js", "use": "@vercel/node" },
-    { "src": "package.json", "use": "@vercel/static-build" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ],
-  "env": {
-    "RECAPTCHA_SECRET_KEY": "RECAPTCHA_SECRET_KEY",
-    "GEMINI_API_KEY": "GEMINI_API_KEY",
-    "GUEST_API_KEY": "GUEST_API_KEY",
-    "NEXT_PUBLIC_RECAPTCHA_SITE_KEY": "NEXT_PUBLIC_RECAPTCHA_SITE_KEY",
-    "NEXT_PUBLIC_SITE_URL": "NEXT_PUBLIC_SITE_URL",
-    "NEXT_PUBLIC_GUEST_API_KEY": "NEXT_PUBLIC_GUEST_API_KEY",
-    "TELEGRAM_BOT_TOKEN": "TELEGRAM_BOT_TOKEN",
-    "TELEGRAM_CHAT_ID": "TELEGRAM_CHAT_ID",
-    "ANALYTICS_BOT_TOKEN": "ANALYTICS_BOT_TOKEN",
-    "ANALYTICS_CHAT_ID": "ANALYTICS_CHAT_ID",
-    "DISCORD_WEBHOOK_URL": "DISCORD_WEBHOOK_URL"
-  }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ]
 }
