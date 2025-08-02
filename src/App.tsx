@@ -11,6 +11,7 @@ import FloatingMenu from './components/FloatingMenu';
 import FloatingGeminiChat from './components/FloatingGeminiChat';
 import { SecurityUtils } from './utils/security';
 import { useLanguage } from './utils/LanguageContext'; // Removed unused LanguageProvider
+import { getApiEndpoint } from './utils/apiUtils';
 
 const App: React.FC = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -25,7 +26,9 @@ const App: React.FC = () => {
 
   // Guest visitor tracking (best practice: panggil di App agar setiap kunjungan terdeteksi)
   useEffect(() => {
-    fetch('/.netlify/functions/guest-count', {
+    // Gunakan getApiEndpoint untuk mendeteksi platform (Netlify atau Vercel)
+    const endpoint = getApiEndpoint('guest-count');
+    fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
