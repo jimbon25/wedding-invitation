@@ -87,7 +87,7 @@ const translations: Record<Language, Record<string, string>> = {
     'typing': 'Mengetik',
     'write_question': 'Tulis pertanyaan...',
     'send': 'Kirim',
-    'ai_intro': 'Halo! Saya asisten AI untuk undangan Dimas & Niken. Siap bantu kamu seputar acara, lokasi, RSVP, hadiah, galeri, akomodasi, atau fitur undangan lainnya.',
+    'ai_intro': 'Halo! Saya asisten AI untuk undangan Dimas & Niken. Siap bantu kamu seputar acara, lokasi, RSVP, hadiah, galeri, akomodasi, atau fitur undangan lainnya. Ojo sungkan2 takok mbak mas!',
     'ai_error': 'Terjadi kesalahan.',
 
     // Language
