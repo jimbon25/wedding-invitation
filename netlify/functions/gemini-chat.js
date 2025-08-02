@@ -111,7 +111,7 @@ exports.handler = async function(event, context) {
   const fullPrompt = SYSTEM_PROMPT + '\n\n' + promptLabel + prompt + CLOSING;
 
   try {
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + GEMINI_API_KEY, {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -119,9 +119,22 @@ exports.handler = async function(event, context) {
       })
     });
     const data = await response.json();
+    
+    // Extract the actual response text
+    let reply = 'Tidak ada jawaban dari Gemini API';
+    
+    if (data.candidates && 
+        data.candidates[0] && 
+        data.candidates[0].content && 
+        data.candidates[0].content.parts && 
+        data.candidates[0].content.parts[0] && 
+        data.candidates[0].content.parts[0].text) {
+      reply = data.candidates[0].content.parts[0].text;
+    }
+    
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
+      body: JSON.stringify({ reply })
     };
   } catch (error) {
     return { statusCode: 500, body: 'Failed to call Gemini API.' };

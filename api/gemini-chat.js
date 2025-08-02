@@ -176,7 +176,7 @@ export default async function handler(req, res) {
   let timeoutId;
   
   try {
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
     
     console.log('Calling Gemini API...');
     timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout
