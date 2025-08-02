@@ -86,7 +86,8 @@ const RSVPForm: React.FC = () => {
     const payload = {
       type: 'rsvp',
       name: name.trim(),
-      attendance,
+      // Kirim nilai kehadiran yang lebih deskriptif, bukan boolean
+      attendance: attendance === 'Yes, I will attend' ? 'Hadir' : 'Tidak Hadir',
       guests,
       foodPreference,
       message: message.trim(),
@@ -104,8 +105,7 @@ const RSVPForm: React.FC = () => {
         },
         body: JSON.stringify({
           ...payload,
-          platform: 'all',
-          attendance: attendance === 'Yes, I will attend'
+          platform: 'all'
         }),
       });
 

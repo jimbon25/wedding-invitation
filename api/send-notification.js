@@ -188,10 +188,10 @@ export default async function handler(req, res) {
           discordMessage = {
             embeds: [{
               title: "RSVP Baru",
-              color: attendance ? 0x00FF00 : 0xFF0000,
+              color: (typeof attendance === 'boolean' ? attendance : attendance === 'Hadir') ? 0x00FF00 : 0xFF0000,
               fields: [
                 { name: "Nama", value: `\`${guestName}\``, inline: true },
-                { name: "Kehadiran", value: `\`${attendance ? "Hadir" : "Tidak Hadir"}\``, inline: true },
+                { name: "Kehadiran", value: `\`${typeof attendance === 'boolean' ? (attendance ? "Hadir" : "Tidak Hadir") : attendance}\``, inline: true },
                 { name: "Pesan", value: escapedMessage || "(Tidak ada pesan)", inline: false },
                 { name: "Waktu", value: `\`${new Date().toLocaleString('id-ID')}\``, inline: false }
               ],
@@ -218,7 +218,7 @@ export default async function handler(req, res) {
         if (messageType === 'guestbook') {
           console.log(`Guestbook message submitted to Discord: ${guestName}`);
         } else {
-          console.log(`RSVP submitted to Discord: ${guestName} (${attendance ? 'Attending' : 'Not attending'})`);
+          console.log(`RSVP submitted to Discord: ${guestName} (${typeof attendance === 'boolean' ? (attendance ? 'Attending' : 'Not attending') : attendance})`);
         }
         results.discord.sent = true;
       } catch (error) {
@@ -240,7 +240,7 @@ export default async function handler(req, res) {
       try {
         const escapedName = escapeTelegramMarkdown(guestName);
         const escapedMessage = escapeTelegramMarkdown(guestMessage || '(Tidak ada pesan)');
-        const attendanceStatus = attendance ? 'Hadir' : 'Tidak Hadir';
+        const attendanceStatus = typeof attendance === 'boolean' ? (attendance ? 'Hadir' : 'Tidak Hadir') : attendance;
         
         // Format message differently based on message type
         let telegramMessage = '';
@@ -283,7 +283,7 @@ export default async function handler(req, res) {
         if (messageType === 'guestbook') {
           console.log(`Guestbook message submitted to Telegram: ${guestName}`);
         } else {
-          console.log(`RSVP submitted to Telegram: ${guestName} (${attendance ? 'Attending' : 'Not attending'})`);
+          console.log(`RSVP submitted to Telegram: ${guestName} (${typeof attendance === 'boolean' ? (attendance ? 'Attending' : 'Not attending') : attendance})`);
         }
         results.telegram.sent = true;
       } catch (error) {
