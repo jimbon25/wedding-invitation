@@ -154,6 +154,54 @@ To use only Discord webhook for notifications:
 
 3. To disable Telegram, simply don't set the `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` variables.
 
+**Implementation Example (Discord Only):**
+
+```javascript
+// In your serverless function (e.g., api/send-notification.js or netlify/functions/send-notification.js)
+exports.handler = async function(event, context) {
+  try {
+    // Parse the incoming data
+    const data = JSON.parse(event.body);
+    
+    // Validate the data here...
+    
+    // Send to Discord webhook
+    const discordResponse = await fetch(process.env.DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          title: 'New RSVP Submission',
+          fields: [
+            { name: 'Name', value: data.name, inline: true },
+            { name: 'Attendance', value: data.attendance ? 'Yes' : 'No', inline: true },
+            { name: 'Number of Guests', value: data.guests, inline: true },
+            { name: 'Message', value: data.message || 'No message provided' }
+          ],
+          color: 3447003,
+          timestamp: new Date()
+        }]
+      })
+    });
+    
+    if (!discordResponse.ok) {
+      throw new Error('Failed to send to Discord webhook');
+    }
+    
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Notification sent successfully' })
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to send notification' })
+    };
+  }
+};
+```
+
 #### Telegram Bot
 
 To use only Telegram bot for notifications:
@@ -175,6 +223,56 @@ To use only Telegram bot for notifications:
 
 4. To disable Discord, simply don't set the `DISCORD_WEBHOOK_URL` variable.
 
+**Implementation Example (Telegram Only):**
+
+```javascript
+// In your serverless function (e.g., api/send-notification.js or netlify/functions/send-notification.js)
+exports.handler = async function(event, context) {
+  try {
+    // Parse the incoming data
+    const data = JSON.parse(event.body);
+    
+    // Validate the data here...
+    
+    // Format message for Telegram
+    const message = `
+*New RSVP Submission*
+*Name:* ${data.name}
+*Attendance:* ${data.attendance ? 'Yes' : 'No'}
+*Number of Guests:* ${data.guests}
+*Message:* ${data.message || 'No message provided'}
+`;
+
+    // Send to Telegram
+    const telegramUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const telegramResponse = await fetch(telegramUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: process.env.TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: 'Markdown'
+      })
+    });
+    
+    if (!telegramResponse.ok) {
+      throw new Error('Failed to send to Telegram');
+    }
+    
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Notification sent successfully' })
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to send notification' })
+    };
+  }
+};
+```
+
 #### Using Both Systems
 
 To receive notifications on both Discord and Telegram:
@@ -182,6 +280,81 @@ To receive notifications on both Discord and Telegram:
 1. Configure both webhook URL and Telegram tokens as described above.
 2. Set all related environment variables.
 3. The system will automatically send notifications to both platforms.
+
+**Implementation Example (Both Systems):**
+
+```javascript
+// In your serverless function (e.g., api/send-notification.js or netlify/functions/send-notification.js)
+exports.handler = async function(event, context) {
+  try {
+    // Parse the incoming data
+    const data = JSON.parse(event.body);
+    
+    // Validate the data here...
+    
+    const notifications = [];
+    
+    // Send to Discord if webhook URL is set
+    if (process.env.DISCORD_WEBHOOK_URL) {
+      const discordPromise = fetch(process.env.DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: 'New RSVP Submission',
+            fields: [
+              { name: 'Name', value: data.name, inline: true },
+              { name: 'Attendance', value: data.attendance ? 'Yes' : 'No', inline: true },
+              { name: 'Number of Guests', value: data.guests, inline: true },
+              { name: 'Message', value: data.message || 'No message provided' }
+            ],
+            color: 3447003,
+            timestamp: new Date()
+          }]
+        })
+      });
+      notifications.push(discordPromise);
+    }
+    
+    // Send to Telegram if bot token and chat ID are set
+    if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+      const message = `
+*New RSVP Submission*
+*Name:* ${data.name}
+*Attendance:* ${data.attendance ? 'Yes' : 'No'}
+*Number of Guests:* ${data.guests}
+*Message:* ${data.message || 'No message provided'}
+`;
+
+      const telegramUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const telegramPromise = fetch(telegramUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: process.env.TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: 'Markdown'
+        })
+      });
+      notifications.push(telegramPromise);
+    }
+    
+    // Wait for all notifications to complete
+    await Promise.all(notifications);
+    
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Notifications sent successfully' })
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to send notifications' })
+    };
+  }
+};
+```
 
 #### Switching Between Systems
 
