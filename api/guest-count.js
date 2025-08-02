@@ -9,8 +9,17 @@ const ipRequestLog = {};
 
 export default async function handler(req, res) {
   // Set CORS headers
-  const allowedOrigin = 'https://wedding-invitation-dn.vercel.app';
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  const allowedOrigins = [
+    'https://wedding-invitation-dn.vercel.app',
+    'https://wedding-invitation-dn2.vercel.app',
+    process.env.NEXT_PUBLIC_SITE_URL,
+    'http://localhost:3000' // for development
+  ].filter(Boolean);
+  
+  const origin = req.headers.origin || req.headers.referer || '';
+  const isAllowedOrigin = allowedOrigins.some(allowed => origin.startsWith(allowed));
+  
+  res.setHeader('Access-Control-Allow-Origin', isAllowedOrigin ? origin : allowedOrigins[0]);
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-API-Key');
@@ -28,12 +37,12 @@ export default async function handler(req, res) {
   }
 
   // Origin/Referer validation
-  const origin = req.headers['origin'] || '';
+  const clientOrigin = req.headers['origin'] || '';
   const referer = req.headers['referer'] || '-';
-  if (origin && origin !== allowedOrigin) {
+  if (clientOrigin && !allowedOrigins.some(allowed => clientOrigin.startsWith(allowed))) {
     return res.status(403).json({ error: 'Invalid origin' });
   }
-  if (referer !== '-' && !referer.startsWith(allowedOrigin)) {
+  if (referer !== '-' && !allowedOrigins.some(allowed => referer.startsWith(allowed))) {
     return res.status(403).json({ error: 'Invalid referer' });
   }
 

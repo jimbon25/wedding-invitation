@@ -2,11 +2,11 @@
   "version": 2,
   "builds": [
     { "src": "api/*.js", "use": "@vercel/node" },
-    { "src": "build/**", "use": "@vercel/static" }
+    { "src": "package.json", "use": "@vercel/static-build" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/build/$1" }
+    { "src": "/(.*)", "dest": "/$1" }
   ],
   "env": {
     "RECAPTCHA_SECRET_KEY": "RECAPTCHA_SECRET_KEY",

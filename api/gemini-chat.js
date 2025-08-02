@@ -84,6 +84,7 @@ export default async function handler(req, res) {
   // Set CORS headers
   const allowedOrigins = [
     'https://wedding-invitation-dn.vercel.app',
+    'https://wedding-invitation-dn2.vercel.app',
     process.env.NEXT_PUBLIC_SITE_URL,
     'http://localhost:3000' // for development
   ].filter(Boolean);
